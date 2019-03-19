@@ -16,6 +16,12 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>test-ear</artifactId>
+      <version>${project.version}</version>
+      <type>ear</type>
+    </dependency>
   </dependencies>
   
   <build>
@@ -39,6 +45,12 @@
                   </artifact>
                   <jvmserver>EYUCMCIJ</jvmserver>
                 </warbundle>
+                <earbundle>
+                  <artifact>
+                    <artifactId>test-ear</artifactId>
+                  </artifact>
+                  <jvmserver>EYUCMCIJ</jvmserver>
+                </earbundle>
               </bundleParts>
             </configuration>
           </execution>
