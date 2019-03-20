@@ -27,7 +27,7 @@
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
           <packagingExcludes>pom.xml</packagingExcludes>
-          <warName>test-ear</warName>
+          <earName>test-ear</earName>
         </configuration>
       </plugin>
       <plugin>
