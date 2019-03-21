@@ -2,12 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.ibm.cics</groupId>
-    <artifactId>test-reactor</artifactId>
+    <artifactId>test-reactor-war</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   
-  <artifactId>test-ear</artifactId>
-  <packaging>ear</packaging>
+  <artifactId>test-war</artifactId>
+  <packaging>war</packaging>
   
   <dependencies>
     <!-- provided -->
@@ -23,11 +23,11 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-ear-plugin</artifactId>
+        <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
           <packagingExcludes>pom.xml</packagingExcludes>
-          <earName>test-ear</earName>
+          <warName>test-war</warName>
         </configuration>
       </plugin>
       <plugin>
