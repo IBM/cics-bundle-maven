@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.ibm.cics</groupId>
-  <artifactId>test-reactor</artifactId>
+  <artifactId>test-reactor-war</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
   <packaging>pom</packaging>

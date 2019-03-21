@@ -11,12 +11,12 @@ import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 
-public class PostBuild {
+public class PostBuildEar {
 
 	private static final String CICS_XML = "cics.xml";
 	private static final String META_INF = "META-INF";
-	private static final String BASE_NAME = "test-war-0.0.1-SNAPSHOT";
-	private static final String WAR_BUNDLE_PART = BASE_NAME + ".warbundle";
+	private static final String EAR_BASE_NAME = "test-ear-0.0.1-SNAPSHOT";
+	private static final String EAR_BUNDLE_PART = EAR_BASE_NAME + ".earbundle";
 
 	static void assertOutput(File root) throws Exception {
 		File bundleArchive = new File(root, "test-bundle/target/test-bundle-0.0.1-SNAPSHOT.cicsbundle");
@@ -30,16 +30,16 @@ public class PostBuild {
 		
 		String[] files = tempDir.list();
 		assertEquals(3, files.length);
-		assertEquals(META_INF, files[0]);
-		assertEquals(WAR_BUNDLE_PART, files[1]);
+		assertEquals(EAR_BUNDLE_PART, files[1]);
+		assertEquals(META_INF, files[2]);
 		
-		List<String> wbpLines = FileUtils.readLines(new File(tempDir, WAR_BUNDLE_PART));
+		List<String> wbpLines = FileUtils.readLines(new File(tempDir, EAR_BUNDLE_PART));
 		assertEquals(2, wbpLines.size());
 		assertTrue(wbpLines.get(0).startsWith("<?xml"));
 		assertTrue(wbpLines.get(0).endsWith("?>"));
-		assertEquals("<warbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-war\"/>", wbpLines.get(1));
+		assertEquals("<earbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-ear\"/>", wbpLines.get(1));
 		
-		assertEquals(BASE_NAME + ".war", files[2]);
+		assertEquals(EAR_BASE_NAME + ".ear", files[0]);
 		
 		File metaInf = new File(tempDir, META_INF);
 		files = metaInf.list();
@@ -55,7 +55,7 @@ public class PostBuild {
 		assertEquals("  <meta_directives>", cxLines.get(2));
 		assertTrue(cxLines.get(3).matches("    <timestamp>\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d.\\d\\d\\dZ</timestamp>"));
 		assertEquals("  </meta_directives>", cxLines.get(4));
-		assertEquals("  <define name=\"test-war-0.0.1-SNAPSHOT\" path=\"test-war-0.0.1-SNAPSHOT.warbundle\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/WARBUNDLE\"/>", cxLines.get(5));
+		assertEquals("  <define name=\"test-ear-0.0.1-SNAPSHOT\" path=\"test-ear-0.0.1-SNAPSHOT.earbundle\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/EARBUNDLE\"/>", cxLines.get(5));
 		assertEquals("</manifest>", cxLines.get(6));
 	}
 	
