@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ibm.cics</groupId>
+    <artifactId>test-reactor-osgi</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>test-bundle</artifactId>
+  <packaging>pom</packaging>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>test-osgi</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>@pom.version@</version>
+        <executions>
+          <execution>
+            <id>foo</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <bundleParts>
+                <osgibundle>
+                  <artifact>
+                    <artifactId>test-osgi</artifactId>
+                  </artifact>
+                  <jvmserver>EYUCMCIJ</jvmserver>
+                </osgibundle>
+              </bundleParts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
