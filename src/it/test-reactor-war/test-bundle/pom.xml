@@ -7,7 +7,7 @@
   </parent>
   
   <artifactId>test-bundle</artifactId>
-  <packaging>pom</packaging>
+  <packaging>cics-bundle</packaging>
   
   <dependencies>
     <dependency>
@@ -24,25 +24,10 @@
         <groupId>com.ibm.cics</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
         <version>@pom.version@</version>
-        <executions>
-          <execution>
-            <id>foo</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>build</goal>
-            </goals>
-            <configuration>
-              <bundleParts>
-                <warbundle>
-                  <artifact>
-                    <artifactId>test-war</artifactId>
-                  </artifact>
-                  <jvmserver>EYUCMCIJ</jvmserver>
-                </warbundle>
-              </bundleParts>
-            </configuration>
-          </execution>
-        </executions>
+        <extensions>true</extensions>
+        <configuration>
+          <defaultjvmserver>EYUCMCIJ</defaultjvmserver>
+        </configuration>
       </plugin>
     </plugins>
   </build>

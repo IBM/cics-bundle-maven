@@ -107,7 +107,8 @@
           <addTestClassPath>true</addTestClassPath>
           <postBuildHookScript>postbuild.bsh</postBuildHookScript>
           <goals>install</goals>
-          <!-- mavenOpts>-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y</mavenOpts -->
+          <mergeUserSettings>true</mergeUserSettings>
+          <!--  mavenOpts>-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y</mavenOpts -->
         </configuration>
         <executions>
           <execution>

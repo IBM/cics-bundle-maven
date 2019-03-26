@@ -4,8 +4,12 @@ import java.io.File;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +24,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.maven.MavenExecutionException;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -34,9 +40,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
-public class CICSBundleMavenPlugin extends MojoSupport {
+public class BuildCICSBundleMojo extends MojoSupport {
 	
-	static final String NS = "http://www.ibm.com/xmlns/prod/cics/bundle";
+	private static final String EAR = "ear";
+	private static final String WAR = "war";
+	private static final String JAR = "jar";
+    
+    private static final Set<String> BUNDLEABLE_TYPES = new HashSet<>(Arrays.asList(WAR, EAR, JAR));
 	
 	static final DocumentBuilder DOCUMENT_BUILDER;
 	static final Transformer TRANSFORMER;
@@ -61,11 +71,54 @@ public class CICSBundleMavenPlugin extends MojoSupport {
     @Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
     private File workDir;
     
+    @Parameter(required = false, readonly = false)
+    private String classifier;
+    
     @Parameter(required = false)
-    private List<BundlePart> bundleParts;
+    private List<BundlePart> bundleParts = Collections.emptyList();
+    
+    @Parameter(defaultValue = "MYJVMS", required = false, readonly = false)
+	private String defaultjvmserver;
     
     @Component
 	private MavenProjectHelper projectHelper;
+    
+    private static boolean isArtifactBundleable(Artifact a) {
+    	return BUNDLEABLE_TYPES.contains(a.getType());
+    }
+    
+    private BundlePart getDefaultBundlePart(Artifact a) {
+		switch (a.getType()) {
+	    	default: throw new RuntimeException("Unsupported bundle part type:" + a.getType());
+	    	case WAR: {
+	    		Warbundle warbundle = new Warbundle();
+	    		warbundle.setJvmserver(defaultjvmserver);
+	    		warbundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
+	    		return warbundle;
+	    	}
+	    	case EAR: {
+	    		Earbundle earbundle = new Earbundle();
+	    		earbundle.setJvmserver(defaultjvmserver);
+	    		earbundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
+	    		return earbundle;
+	    	}
+	    	case JAR: {
+	    		Osgibundle osgibundle = new Osgibundle();
+	    		osgibundle.setJvmserver(defaultjvmserver);
+	    		osgibundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
+	    		return osgibundle;
+	    	}
+    	}
+    }
+    
+    private Define writeBundlePart(Artifact a) {
+    	return bundleParts
+    		.stream()
+    		.filter(bp -> bp.matches(a))
+    		.findFirst()
+    		.orElse(getDefaultBundlePart(a))
+    		.writeContent(workDir, a);
+    }
     
     @Override
     protected void doExecute() throws Exception {
@@ -73,39 +126,51 @@ public class CICSBundleMavenPlugin extends MojoSupport {
     	
     	workDir.mkdirs();
     	
-    	List<Define> defines = new ArrayList<>();
-    	if (bundleParts != null && !bundleParts.isEmpty()) {
-	    	for (BundlePart bundlePart : bundleParts) {
-	    		defines.add(bundlePart.writeContent(workDir, project));
-			}
-    	} else {
-    		log.info("No bundle parts defined");
+    	try {
+	    	List<Define> defines = project
+				.getArtifacts()
+				.stream()
+				.filter(BuildCICSBundleMojo::isArtifactBundleable)
+				.map(this::writeBundlePart)
+				.collect(Collectors.toList());
+	    	
+	    	DefaultVersioning v = new DefaultVersioning(project.getVersion());
+	    	
+	    	writeManifest(
+	    		defines,
+	    		project.getArtifactId(),
+	    		v.getMajor(),
+	    		v.getMinor(),
+	    		v.getPatch(),
+	    		v.getBuildNumber()
+	    	);
+    	} catch (MojoExecutionRuntimeException e) {
+    		throw new MavenExecutionException(e.getMessage(), e);
     	}
-    	
-    	DefaultVersioning v = new DefaultVersioning(project.getVersion());
-    	
-    	writeManifest(
-    		defines,
-    		project.getArtifactId(),
-    		v.getMajor(),
-    		v.getMinor(),
-    		v.getPatch(),
-    		v.getBuildNumber()
-    	);
     	
     	ZipArchiver zipArchiver = new ZipArchiver();
     	zipArchiver.addDirectory(workDir);
-    	File cicsBundle = new File(buildDir, project.getArtifactId() + "-" + project.getVersion() + ".cicsbundle");
+    	File cicsBundle = new File(buildDir, project.getArtifactId() + "-" + project.getVersion() + (classifier != null ? "-" + classifier : "") + ".cics-bundle");
 		zipArchiver.setDestFile(cicsBundle);
     	zipArchiver.createArchive();
     	
-    	projectHelper.attachArtifact(project, "cicsbundle", cicsBundle);
+        if (classifier != null) {
+            projectHelper.attachArtifact(project, "cics-bundle", classifier, cicsBundle);
+        } else {
+        	File artifactFile = project.getArtifact().getFile();
+			if (artifactFile != null && artifactFile.isFile()) {
+				//We already attached an artifact to this project in another mojo, don't override it!
+				throw new MojoExecutionException("Set classifier when there's already an artifact attached, to prevent overwriting the main artifact");
+            } else {            	
+            	project.getArtifact().setFile(cicsBundle);
+            }
+        }
     }
 
 	private void writeManifest(List<Define> defines, String id, int major, int minor, int micro, int release) throws MavenExecutionException {
 		Document d = DOCUMENT_BUILDER.newDocument();
-		Element root = d.createElementNS(NS, "manifest");
-		root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", NS);
+		Element root = d.createElementNS(BundleConstants.NS, "manifest");
+		root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", BundleConstants.NS);
 		root.setAttribute("id", id);
 		
 		root.setAttribute("bundleMajorVer", String.valueOf(major));
@@ -116,15 +181,15 @@ public class CICSBundleMavenPlugin extends MojoSupport {
 		
 		d.appendChild(root);
 		
-		Element metaDirectives = d.createElementNS(NS, "meta_directives");
+		Element metaDirectives = d.createElementNS(BundleConstants.NS, "meta_directives");
 		root.appendChild(metaDirectives);
 		
-		Element timestamp = d.createElementNS(NS, "timestamp");
+		Element timestamp = d.createElementNS(BundleConstants.NS, "timestamp");
 		metaDirectives.appendChild(timestamp);
 		timestamp.setTextContent(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
 		
 		for (Define define : defines) {
-			Element defineElement = d.createElementNS(NS, "define");
+			Element defineElement = d.createElementNS(BundleConstants.NS, "define");
 			defineElement.setAttribute("name", define.getName());
 			defineElement.setAttribute("type", define.getType());
 			defineElement.setAttribute("path", define.getPath());

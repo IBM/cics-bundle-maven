@@ -2,11 +2,20 @@ package com.ibm.cics.cbmp;
 
 import java.io.File;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.artifact.Artifact;
 
 public abstract class BundlePart {
 
-	public abstract Define writeContent(File workDir, MavenProject project) throws MojoExecutionException;
+	private com.ibm.cics.cbmp.Artifact artifact;
+
+	public void setArtifact(com.ibm.cics.cbmp.Artifact artifact) {
+		this.artifact = artifact;	
+	}
+	
+	public boolean matches(Artifact a) {
+		return artifact.matches(a);
+	}
+
+	public abstract Define writeContent(File workDir, Artifact a) throws MojoExecutionRuntimeException;
 
 }

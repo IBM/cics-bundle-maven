@@ -10,14 +10,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class Osgibundle extends BundlePart {
 	
-	private static final String TYPE = CICSBundleMavenPlugin.NS + "/OSGIBUNDLE";
+	private static final String TYPE = BundleConstants.NS + "/OSGIBUNDLE";
 	
 	private String name;
 	private String jvmserver;
@@ -51,25 +49,18 @@ public class Osgibundle extends BundlePart {
 	}
 
 	@Override
-	public Define writeContent(File workDir, MavenProject project) throws MojoExecutionException {
-		//copy osgi artifact from dependencies
-		org.apache.maven.artifact.Artifact a = project
-			.getArtifacts()
-			.stream()
-			.filter(artifact::matches)
-			.collect(toSingleton());
-		
+	public Define writeContent(File workDir, org.apache.maven.artifact.Artifact a) throws MojoExecutionRuntimeException {
 		if (name == null) name = a.getArtifactId() + "-" + a.getVersion();
 		try {
 			FileUtils.copyFile(a.getFile(), new File(workDir, name + "." + a.getType()));
 		} catch (IOException e) {
-			throw new MojoExecutionException("Error copying osgi", e);
+			throw new MojoExecutionRuntimeException("Error copying osgi", e);
 		}
 		
 		//write define
-		if (jvmserver == null || "".equals(jvmserver)) throw new MojoExecutionException("JVM server was not supplied");
+		if (jvmserver == null || "".equals(jvmserver)) throw new MojoExecutionRuntimeException("JVM server was not supplied");
 		
-		Document document = CICSBundleMavenPlugin.DOCUMENT_BUILDER.newDocument();
+		Document document = BuildCICSBundleMojo.DOCUMENT_BUILDER.newDocument();
 		Element rootElement = document.createElement("osgibundle");
 		rootElement.setAttribute("symbolicname", a.getArtifactId());
 		rootElement.setAttribute("jvmserver", jvmserver);
@@ -79,12 +70,12 @@ public class Osgibundle extends BundlePart {
 		File define = new File(workDir, definePath);
 		
 		try {
-			CICSBundleMavenPlugin.TRANSFORMER.transform(
+			BuildCICSBundleMojo.TRANSFORMER.transform(
 				new DOMSource(document),
 				new StreamResult(define)
 			);
 		} catch (TransformerException e) {
-			throw new MojoExecutionException("Error writing define", e);
+			throw new MojoExecutionRuntimeException("Error writing define", e);
 		}
 		
 		return new Define(name, TYPE, definePath);

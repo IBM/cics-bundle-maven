@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component-set>
+  <components>
+    <!-- Custom packaging for CICS bundles. -->
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>cics-bundle</role-hint>
+      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+      <configuration>
+        <lifecycles>
+          <lifecycle>
+            <id>default</id>
+            <phases>
+              <compile>
+                com.ibm.cics:cics-bundle-maven-plugin:build
+              </compile>
+            </phases>
+          </lifecycle>
+        </lifecycles>
+      </configuration>
+    </component>
+  </components>
+</component-set>
+         

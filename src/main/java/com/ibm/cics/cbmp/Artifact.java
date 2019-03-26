@@ -11,6 +11,14 @@ public class Artifact {
 	public Artifact() {
 	}
 	
+	public Artifact(org.apache.maven.artifact.Artifact a) {
+		artifactId = a.getArtifactId();
+		groupId = a.getGroupId();
+		type = a.getType();
+		version = a.getBaseVersion();
+		classifier = a.getClassifier();
+	}
+	
 	public String getClassifier() {
 		return classifier;
 	}

@@ -19,7 +19,7 @@ public class PostBuildOsgi {
 	private static final String OSGI_BUNDLE_PART = BASE_NAME + ".osgibundle";
 
 	static void assertOutput(File root) throws Exception {
-		File bundleArchive = new File(root, "test-bundle/target/test-bundle-0.0.1-SNAPSHOT.cicsbundle");
+		File bundleArchive = new File(root, "test-bundle/target/test-bundle-0.0.1-SNAPSHOT.cics-bundle");
 		
 		File tempDir = Files.createTempDirectory("cbmp").toFile();
 		
