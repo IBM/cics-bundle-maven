@@ -2,21 +2,23 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ibm.cics</groupId>
+  <parent>
+    <groupId>com.ibm.cics</groupId>
+    <artifactId>cics-bundle-maven</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
   <artifactId>cics-bundle-maven-plugin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>cics-bundle-maven-plugin Maven Plugin</name>
-
-  <url>https://github.ibm.com/stewartfrancis/cics-bundle-maven-plugin</url>
+  <name>CICS Bundle Maven Plugin</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
-  
+
     <dependency>
       <groupId>org.codehaus.mojo</groupId>
       <artifactId>plugin-support</artifactId>
@@ -36,25 +38,25 @@
         </exclusion>
       </exclusions>
     </dependency>
-    
+
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-archiver</artifactId>
       <version>3.0.1</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>3.5.0</version>
     </dependency>
-    
+
     <dependency>
      <groupId>org.codehaus.mojo</groupId>
      <artifactId>build-helper-maven-plugin</artifactId>
      <version>3.0.0</version>
     </dependency>
-    
+
     <!-- dependencies to annotations -->
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
@@ -62,7 +64,7 @@
       <version>3.5.2</version>
       <scope>provided</scope><!-- annotations are needed only to build the plugin -->
     </dependency>
-    
+
     <!-- test -->
     <dependency>
       <groupId>junit</groupId>
@@ -70,13 +72,13 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
-  
+
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
-  
+
   <build>
     <plugins>
       <plugin>
