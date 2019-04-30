@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ibm.cics</groupId>
+    <artifactId>cics-bundle-maven</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>war-bundle-archetype</artifactId>
+  <version>1.0.1</version>
+  <name>Archetype - war-bundle-archetype</name>
+  <packaging>maven-archetype</packaging>
+    
+  <description>
+      An archetype that generates the pom.xml for pointing to an existing web application module to build as a CICS Bundle
+  </description>
+    
+  <build>
+      <extensions>
+          <extension>
+              <groupId>org.apache.maven.archetype</groupId>
+              <artifactId>archetype-packaging</artifactId>
+              <version>3.0.0</version>
+          </extension>
+      </extensions>
+      <pluginManagement>
+          <plugins>
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-archetype-plugin</artifactId>
+                  <version>3.0.1</version>
+              </plugin>
+          </plugins>
+      </pluginManagement>
+  </build>
+</project>

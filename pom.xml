@@ -9,5 +9,6 @@
 
   <modules>
     <module>cics-bundle-maven-plugin</module>
+    <module>war-bundle-archetype</module>
   </modules>
 </project>
