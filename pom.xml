@@ -9,5 +9,6 @@
 
   <modules>
     <module>cics-bundle-maven-plugin</module>
+    <module>cics-bundle-reactor-archetype</module>
   </modules>
 </project>
