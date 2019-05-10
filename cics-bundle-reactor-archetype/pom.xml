@@ -18,6 +18,17 @@
         <version>3.0.0</version>
       </extension>
     </extensions>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <skipCheckLicense>true</skipCheckLicense>
+          <skipUpdateLicense>true</skipUpdateLicense>
+          <skipUpdateProjectLicense>true</skipUpdateProjectLicense>
+        </configuration>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
