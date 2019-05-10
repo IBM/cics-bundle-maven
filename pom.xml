@@ -7,6 +7,89 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <organization>
+    <name>IBM Corp.</name>
+  </organization>
+  <inceptionYear>2019</inceptionYear>
+
+  <properties>
+    <license-plugin-version>1.20</license-plugin-version>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${license-plugin-version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>check-licences</id>
+      <activation>
+        <property>
+          <name>env.CI</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>license-maven-plugin</artifactId>
+              <version>${license-plugin-version}</version>
+              <configuration>
+                <licenseName>epl_only_v2</licenseName>
+                <failOnMissingHeader>true</failOnMissingHeader>
+                <failOnNotUptodateHeader>true</failOnNotUptodateHeader>
+              </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>check-file-header</goal>
+                  </goals>
+                  <phase>process-sources</phase>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
+      <id>add-licences</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>license-maven-plugin</artifactId>
+              <version>${license-plugin-version}</version>
+              <configuration>
+                <licenseName>epl_only_v2</licenseName>
+              </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>update-file-header</goal>
+                    <goal>update-project-license</goal>
+                  </goals>
+                  <phase>process-sources</phase>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+
   <modules>
     <module>cics-bundle-maven-plugin</module>
     <module>cics-bundle-reactor-archetype</module>
