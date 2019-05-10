@@ -102,6 +102,7 @@ public class BuildCICSBundleMojo extends MojoSupport {
     }
     
     private BundlePart getDefaultBundlePart(Artifact a) {
+		getLog().info("Building bundle part for " + a.getId() + "(" + a.getType() + ")");
 		switch (a.getType()) {
 	    	default: throw new RuntimeException("Unsupported bundle part type:" + a.getType());
 	    	case WAR: {
@@ -136,6 +137,7 @@ public class BuildCICSBundleMojo extends MojoSupport {
     
     @Override
     protected void doExecute() throws Exception {
+    	getLog().info("Running CICS Bundle build");
     	if (workDir.exists()) workDir.delete();
     	
     	workDir.mkdirs();
