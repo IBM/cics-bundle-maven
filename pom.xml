@@ -17,12 +17,23 @@
   </properties>
 
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>license-maven-plugin</artifactId>
           <version>${license-plugin-version}</version>
+          <configuration>
+            <licenseName>epl_only_v2</licenseName>
+            <failOnMissingHeader>true</failOnMissingHeader>
+            <failOnNotUptodateHeader>true</failOnNotUptodateHeader>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -44,11 +55,6 @@
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>license-maven-plugin</artifactId>
               <version>${license-plugin-version}</version>
-              <configuration>
-                <licenseName>epl_only_v2</licenseName>
-                <failOnMissingHeader>true</failOnMissingHeader>
-                <failOnNotUptodateHeader>true</failOnNotUptodateHeader>
-              </configuration>
               <executions>
                 <execution>
                   <goals>
@@ -71,9 +77,6 @@
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>license-maven-plugin</artifactId>
               <version>${license-plugin-version}</version>
-              <configuration>
-                <licenseName>epl_only_v2</licenseName>
-              </configuration>
               <executions>
                 <execution>
                   <goals>
