@@ -15,6 +15,7 @@ package com.ibm.cics.cbmp;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,9 +38,10 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.maven.MavenExecutionException;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -48,13 +50,13 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.mojo.buildhelper.versioning.DefaultVersioning;
-import org.codehaus.mojo.pluginsupport.MojoSupport;
+import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
-public class BuildCICSBundleMojo extends MojoSupport {
+public class BuildCICSBundleMojo extends AbstractMojo {
 	
 	private static final String EAR = "ear";
 	private static final String WAR = "war";
@@ -136,7 +138,7 @@ public class BuildCICSBundleMojo extends MojoSupport {
     }
     
     @Override
-    protected void doExecute() throws Exception {
+    public void execute() throws MojoExecutionException, MojoFailureException {
     	getLog().info("Running CICS Bundle build");
     	if (workDir.exists()) workDir.delete();
     	
@@ -161,29 +163,33 @@ public class BuildCICSBundleMojo extends MojoSupport {
 	    		v.getBuildNumber()
 	    	);
     	} catch (MojoExecutionRuntimeException e) {
-    		throw new MavenExecutionException(e.getMessage(), e);
+    		throw new MojoExecutionException(e.getMessage(), e);
     	}
     	
-    	ZipArchiver zipArchiver = new ZipArchiver();
-    	zipArchiver.addDirectory(workDir);
-    	File cicsBundle = new File(buildDir, project.getArtifactId() + "-" + project.getVersion() + (classifier != null ? "-" + classifier : "") + ".cics-bundle");
-		zipArchiver.setDestFile(cicsBundle);
-    	zipArchiver.createArchive();
+    	try {
+    		ZipArchiver zipArchiver = new ZipArchiver();
+    		zipArchiver.addDirectory(workDir);
+    		File cicsBundle = new File(buildDir, project.getArtifactId() + "-" + project.getVersion() + (classifier != null ? "-" + classifier : "") + ".cics-bundle");
+    		zipArchiver.setDestFile(cicsBundle);
+			zipArchiver.createArchive();
     	
-        if (classifier != null) {
-            projectHelper.attachArtifact(project, "cics-bundle", classifier, cicsBundle);
-        } else {
-        	File artifactFile = project.getArtifact().getFile();
-			if (artifactFile != null && artifactFile.isFile()) {
-				//We already attached an artifact to this project in another mojo, don't override it!
-				throw new MojoExecutionException("Set classifier when there's already an artifact attached, to prevent overwriting the main artifact");
-            } else {            	
-            	project.getArtifact().setFile(cicsBundle);
-            }
-        }
+	        if (classifier != null) {
+	            projectHelper.attachArtifact(project, "cics-bundle", classifier, cicsBundle);
+	        } else {
+	        	File artifactFile = project.getArtifact().getFile();
+				if (artifactFile != null && artifactFile.isFile()) {
+					//We already attached an artifact to this project in another mojo, don't override it!
+					throw new MojoExecutionException("Set classifier when there's already an artifact attached, to prevent overwriting the main artifact");
+	            } else {            	
+	            	project.getArtifact().setFile(cicsBundle);
+	            }
+	        }
+    	} catch (ArchiverException | IOException e) {
+    		throw new MojoExecutionException("Failed to create cics bundle archive", e);
+    	}
     }
 
-	private void writeManifest(List<Define> defines, String id, int major, int minor, int micro, int release) throws MavenExecutionException {
+	private void writeManifest(List<Define> defines, String id, int major, int minor, int micro, int release) throws MojoExecutionException {
 		Document d = DOCUMENT_BUILDER.newDocument();
 		Element root = d.createElementNS(BundleConstants.NS, "manifest");
 		root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", BundleConstants.NS);
@@ -222,7 +228,7 @@ public class BuildCICSBundleMojo extends MojoSupport {
 				new StreamResult(manifest)
 			);
 		} catch (TransformerException e) {
-			throw new MavenExecutionException("Error writing cics.xml", e);
+			throw new MojoExecutionException("Error writing cics.xml", e);
 		}
 		
 	}
