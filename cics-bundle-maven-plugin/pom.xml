@@ -29,11 +29,18 @@
       <artifactId>maven-core</artifactId>
       <version>3.5.0</version>
     </dependency>
-
+    
+    <!--  force a newer version of Guava than in the dependency hierarchy for maven-core-3.5.0 (20.0) to avoid CVE-2018-10237 -->
     <dependency>
-     <groupId>org.codehaus.mojo</groupId>
-     <artifactId>build-helper-maven-plugin</artifactId>
-     <version>3.0.0</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>27.1-jre</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>build-helper-maven-plugin</artifactId>
+      <version>3.0.0</version>
     </dependency>
 
     <!-- dependencies to annotations -->
@@ -103,5 +110,4 @@
       </plugin>
     </plugins>
   </build>
-  
 </project>

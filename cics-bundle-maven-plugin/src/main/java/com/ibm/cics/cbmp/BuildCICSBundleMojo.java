@@ -49,7 +49,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.mojo.buildhelper.versioning.DefaultVersioning;
+import org.codehaus.mojo.buildhelper.versioning.VersionInformation;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.w3c.dom.Document;
@@ -152,7 +152,7 @@ public class BuildCICSBundleMojo extends AbstractMojo {
 				.map(this::writeBundlePart)
 				.collect(Collectors.toList());
 	    	
-	    	DefaultVersioning v = new DefaultVersioning(project.getVersion());
+	    	VersionInformation v = new VersionInformation(project.getVersion());
 	    	
 	    	writeManifest(
 	    		defines,
