@@ -14,8 +14,10 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.collection.ArrayMatching.arrayContainingInAnyOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -31,6 +33,7 @@ public class PostBuildOsgi {
 	private static final String META_INF = "META-INF";
 	private static final String BASE_NAME = "test-osgi-0.0.1-SNAPSHOT";
 	private static final String OSGI_BUNDLE_PART = BASE_NAME + ".osgibundle";
+	private static final String OSGI_BUNDLE = BASE_NAME + ".jar";
 
 	static void assertOutput(File root) throws Exception {
 		File bundleArchive = new File(root, "test-bundle/target/test-bundle-0.0.1-SNAPSHOT.cics-bundle");
@@ -43,10 +46,7 @@ public class PostBuildOsgi {
 		unArchiver.extract();
 		
 		String[] files = tempDir.list();
-		assertEquals(3, files.length);
-		assertEquals(BASE_NAME + ".jar", files[0]);
-		assertEquals(META_INF, files[1]);
-		assertEquals(OSGI_BUNDLE_PART, files[2]);
+		assertThat(files, arrayContainingInAnyOrder(META_INF, OSGI_BUNDLE_PART, OSGI_BUNDLE));
 		
 		List<String> wbpLines = FileUtils.readLines(new File(tempDir, OSGI_BUNDLE_PART));
 		assertEquals(2, wbpLines.size());
