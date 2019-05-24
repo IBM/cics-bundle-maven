@@ -9,7 +9,7 @@
   
   <artifactId>cics-bundle-reactor-archetype</artifactId>
   <packaging>maven-archetype</packaging>
-  
+  <name>CICS Bundle Reactor Archetype</name>
   <build>
     <extensions>
       <extension>
