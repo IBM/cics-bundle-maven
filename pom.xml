@@ -7,6 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <name>CICS Bundle Maven Parent</name>
+
   <organization>
     <name>IBM Corp.</name>
   </organization>

@@ -4,6 +4,7 @@
   <artifactId>${artifactId}</artifactId>
   <version>${version}</version>
   <packaging>pom</packaging>
+  <name>Example reactor module</name>
   
   <modules>
     <module>${rootArtifactId}-war</module>
