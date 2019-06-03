@@ -6,4 +6,4 @@ cache:
   directories:
   - "$HOME/.m2"
 install: true # Override the default install process with a no-op
-script: mvn -B -U verify
+script: mvn -Dstyle.color=always -B -U verify
