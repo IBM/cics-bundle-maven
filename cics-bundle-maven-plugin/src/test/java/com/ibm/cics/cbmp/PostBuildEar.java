@@ -52,7 +52,7 @@ public class PostBuildEar {
 		assertEquals(2, wbpLines.size());
 		assertTrue(wbpLines.get(0).startsWith("<?xml"));
 		assertTrue(wbpLines.get(0).endsWith("?>"));
-		assertEquals("<earbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-ear\"/>", wbpLines.get(1));
+		assertEquals("<earbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-ear-0.0.1-SNAPSHOT\"/>", wbpLines.get(1));
 		
 		File metaInf = new File(tempDir, META_INF);
 		files = metaInf.list();
