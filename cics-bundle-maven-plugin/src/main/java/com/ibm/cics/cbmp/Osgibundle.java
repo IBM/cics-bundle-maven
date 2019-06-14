@@ -76,7 +76,7 @@ public class Osgibundle extends BundlePart {
 		
 		Document document = BuildCICSBundleMojo.DOCUMENT_BUILDER.newDocument();
 		Element rootElement = document.createElement("osgibundle");
-		rootElement.setAttribute("symbolicname", a.getArtifactId());
+		rootElement.setAttribute("symbolicname", name);
 		rootElement.setAttribute("jvmserver", jvmserver);
 		document.appendChild(rootElement);
 		
