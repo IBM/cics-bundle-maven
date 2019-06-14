@@ -12,9 +12,33 @@ The `cics-bundle-maven-plugin` contributes a new packaging type called `cics-bun
 
 To use the `cics-bundle-maven-plugin`:
 
+1. Currently there are no release builds.  Snapshot builds are published to the Sonatype OSS Maven snapshots repository.  To try a snapshot build, you will need to add the following plugin repository to your `pom.xml`:
+    
+    ```xml
+    <project>
+      ...
+      <pluginRepositories>
+        <!-- Configure Sonatype OSS Maven snapshots repository -->
+        <pluginRepository>
+          <id>sonatype-nexus-snapshots</id>
+          <name>Sonatype Nexus Snapshots</name>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+      ...
+    </project>
+    ```
+
 1. Create a new Maven module for the CICS bundle.
 1. Register the plugin to the `pom.xml` of the CICS bundle module (NB it's not currently available in Maven Central so you'll need to download and [build it](#building-the-project):
-    ```
+    
+    ```xml
     <build>
       <plugins>
         <plugin>
@@ -27,12 +51,16 @@ To use the `cics-bundle-maven-plugin`:
     </build>
     ```
 1. Change the packaging type of the CICS bundle module to the new CICS bundle type:
-    ```
+    
+    ```xml
     <packaging>cics-bundle</packaging>
     ```
+    
     If at this point you build the CICS bundle module, it will create a valid CICS bundle! However, it doesn't do much, because it doesn't define any bundle parts.
+
 1. In the CICS bundle module, define a dependency on another module for a Java project that [can be included](#supported-bundlepart-types) into CICS, such as an OSGi bundle, WAR, or EAR.
-    ```
+    
+    ```xml
     <dependencies>
       <dependency>
         <groupId>my.group.id</groupId>
@@ -43,7 +71,8 @@ To use the `cics-bundle-maven-plugin`:
     </dependencies>
     ```
 1. The plugin requires very little configuration. However, an important property for Java bundleparts is the name of the JVM server that the application will be installed into. To define this, alter how you registered the plugin to add some configuration, with the `<defaultjvmserver>` property:
-    ```
+    
+    ```xml
     <build>
       <plugins>
         <plugin>
