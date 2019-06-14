@@ -52,7 +52,7 @@ public class PostBuildWar {
 		assertEquals(2, wbpLines.size());
 		assertTrue(wbpLines.get(0).startsWith("<?xml"));
 		assertTrue(wbpLines.get(0).endsWith("?>"));
-		assertEquals("<warbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-war\"/>", wbpLines.get(1));
+		assertEquals("<warbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-war-0.0.1-SNAPSHOT\"/>", wbpLines.get(1));
 		
 		File metaInf = new File(tempDir, META_INF);
 		files = metaInf.list();
