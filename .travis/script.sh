@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 # If this is a master build then deploy at the end
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then

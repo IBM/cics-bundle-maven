@@ -11,13 +11,6 @@
   <packaging>maven-archetype</packaging>
   <name>CICS Bundle Reactor Archetype</name>
   <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.archetype</groupId>
-        <artifactId>archetype-packaging</artifactId>
-        <version>3.0.0</version>
-      </extension>
-    </extensions>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
