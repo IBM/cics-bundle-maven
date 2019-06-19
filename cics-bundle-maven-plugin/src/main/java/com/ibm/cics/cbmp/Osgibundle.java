@@ -34,7 +34,7 @@ public class Osgibundle extends BundlePart {
 	private String name;
 	private String jvmserver;
 	private Artifact artifact;
-	
+
 	public Osgibundle() {
 	}
 	
@@ -63,13 +63,18 @@ public class Osgibundle extends BundlePart {
 	}
 
 	@Override
-	public Define writeContent(File workDir, org.apache.maven.artifact.Artifact a) throws MojoExecutionRuntimeException {
+	public void collectContent(File workDir, org.apache.maven.artifact.Artifact a) throws MojoExecutionRuntimeException {
 		if (name == null) name = a.getArtifactId() + "-" + a.getVersion();
 		try {
 			FileUtils.copyFile(a.getFile(), new File(workDir, name + "." + a.getType()));
 		} catch (IOException e) {
 			throw new MojoExecutionRuntimeException("Error copying osgi", e);
 		}
+	}
+
+	@Override
+	public Define writeBundlePart(File workDir, org.apache.maven.artifact.Artifact a) throws MojoExecutionRuntimeException {
+		if (name == null) name = a.getArtifactId() + "-" + a.getVersion();
 		
 		//write define
 		if (jvmserver == null || "".equals(jvmserver)) throw new MojoExecutionRuntimeException("JVM server was not supplied");

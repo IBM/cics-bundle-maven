@@ -24,6 +24,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.artifact.Artifact;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -54,13 +55,18 @@ public class Warbundle extends BundlePart {
 	}
 
 	@Override
-	public Define writeContent(File workDir, org.apache.maven.artifact.Artifact a) throws MojoExecutionRuntimeException {
+	public void collectContent(File workDir, Artifact a) throws MojoExecutionRuntimeException {
 		if (name == null) name = a.getArtifactId() + "-" + a.getVersion();
 		try {
 			FileUtils.copyFile(a.getFile(), new File(workDir, name + "." + a.getType()));
 		} catch (IOException e) {
 			throw new MojoExecutionRuntimeException("Error copying artifact file", e);
 		}
+	}
+
+	@Override
+	public Define writeBundlePart(File workDir, Artifact a) throws MojoExecutionRuntimeException {
+		if (name == null) name = a.getArtifactId() + "-" + a.getVersion();
 	
 		//write define
 		if (jvmserver == null || "".equals(jvmserver)) throw new MojoExecutionRuntimeException("JVM server was not supplied");

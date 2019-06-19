@@ -30,6 +30,9 @@ public abstract class BundlePart {
 		return artifact.matches(a);
 	}
 
-	public abstract Define writeContent(File workDir, Artifact a) throws MojoExecutionRuntimeException;
+	public abstract void collectContent(File workDir, Artifact a) throws MojoExecutionRuntimeException;
+
+	public abstract Define writeBundlePart(File workDir, Artifact a) throws MojoExecutionRuntimeException;
+
 
 }

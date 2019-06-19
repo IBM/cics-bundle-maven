@@ -15,15 +15,10 @@ package com.ibm.cics.cbmp;
  */
 
 import java.io.File;
-import java.io.IOException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -39,31 +34,18 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.mojo.buildhelper.versioning.VersionInformation;
-import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
-public class BuildCICSBundleMojo extends AbstractMojo {
-	
-	private static final String EAR = "ear";
-	private static final String WAR = "war";
-	private static final String JAR = "jar";
+public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
     
-    private static final Set<String> BUNDLEABLE_TYPES = new HashSet<>(Arrays.asList(WAR, EAR, JAR));
-	
 	static final DocumentBuilder DOCUMENT_BUILDER;
 	static final Transformer TRANSFORMER;
 
@@ -77,64 +59,19 @@ public class BuildCICSBundleMojo extends AbstractMojo {
 			throw new IllegalStateException(e);
 		}
 	}
-	
-	@Parameter(defaultValue = "${project}", required = true, readonly = true)
-	private MavenProject project;
-	
-	@Parameter(defaultValue = "${project.build.directory}", required = true, readonly = true)
-    private File buildDir;
-    
-    @Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
-    private File workDir;
-    
-    @Parameter(required = false, readonly = false)
-    private String classifier;
-    
-    @Parameter(required = false)
-    private List<BundlePart> bundleParts = Collections.emptyList();
-    
-    @Parameter(defaultValue = "MYJVMS", required = false, readonly = false)
-	private String defaultjvmserver;
-    
-    @Component
-	private MavenProjectHelper projectHelper;
-    
-    private static boolean isArtifactBundleable(Artifact a) {
-    	return BUNDLEABLE_TYPES.contains(a.getType());
+
+	@Override
+    String getDefaultJVMServer() {
+    	return defaultjvmserver;
     }
-    
-    private BundlePart getDefaultBundlePart(Artifact a) {
-		getLog().info("Building bundle part for " + a.getId() + "(" + a.getType() + ")");
-		switch (a.getType()) {
-	    	default: throw new RuntimeException("Unsupported bundle part type:" + a.getType());
-	    	case WAR: {
-	    		Warbundle warbundle = new Warbundle();
-	    		warbundle.setJvmserver(defaultjvmserver);
-	    		warbundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
-	    		return warbundle;
-	    	}
-	    	case EAR: {
-	    		Earbundle earbundle = new Earbundle();
-	    		earbundle.setJvmserver(defaultjvmserver);
-	    		earbundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
-	    		return earbundle;
-	    	}
-	    	case JAR: {
-	    		Osgibundle osgibundle = new Osgibundle();
-	    		osgibundle.setJvmserver(defaultjvmserver);
-	    		osgibundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
-	    		return osgibundle;
-	    	}
-    	}
-    }
-    
+
     private Define writeBundlePart(Artifact a) {
     	return bundleParts
     		.stream()
     		.filter(bp -> bp.matches(a))
     		.findFirst()
     		.orElse(getDefaultBundlePart(a))
-    		.writeContent(workDir, a);
+    		.writeBundlePart(workDir, a);
     }
     
     @Override
@@ -166,27 +103,8 @@ public class BuildCICSBundleMojo extends AbstractMojo {
     		throw new MojoExecutionException(e.getMessage(), e);
     	}
     	
-    	try {
-    		ZipArchiver zipArchiver = new ZipArchiver();
-    		zipArchiver.addDirectory(workDir);
-    		File cicsBundle = new File(buildDir, project.getArtifactId() + "-" + project.getVersion() + (classifier != null ? "-" + classifier : "") + ".cics-bundle");
-    		zipArchiver.setDestFile(cicsBundle);
-			zipArchiver.createArchive();
-    	
-	        if (classifier != null) {
-	            projectHelper.attachArtifact(project, "cics-bundle", classifier, cicsBundle);
-	        } else {
-	        	File artifactFile = project.getArtifact().getFile();
-				if (artifactFile != null && artifactFile.isFile()) {
-					//We already attached an artifact to this project in another mojo, don't override it!
-					throw new MojoExecutionException("Set classifier when there's already an artifact attached, to prevent overwriting the main artifact");
-	            } else {            	
-	            	project.getArtifact().setFile(cicsBundle);
-	            }
-	        }
-    	} catch (ArchiverException | IOException e) {
-    		throw new MojoExecutionException("Failed to create cics bundle archive", e);
-    	}
+    	getLog().info("Refreshing "+workDir);
+    	buildContext.refresh(workDir);
     }
 
 	private void writeManifest(List<Define> defines, String id, int major, int minor, int micro, int release) throws MojoExecutionException {
