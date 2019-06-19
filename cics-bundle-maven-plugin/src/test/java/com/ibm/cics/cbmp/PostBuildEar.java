@@ -14,8 +14,10 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.collection.ArrayMatching.arrayContainingInAnyOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -31,6 +33,7 @@ public class PostBuildEar {
 	private static final String META_INF = "META-INF";
 	private static final String EAR_BASE_NAME = "test-ear-0.0.1-SNAPSHOT";
 	private static final String EAR_BUNDLE_PART = EAR_BASE_NAME + ".earbundle";
+	private static final String EAR_BUNDLE = EAR_BASE_NAME + ".ear";
 
 	static void assertOutput(File root) throws Exception {
 		File bundleArchive = new File(root, "test-bundle/target/test-bundle-0.0.1-SNAPSHOT.cics-bundle");
@@ -43,17 +46,13 @@ public class PostBuildEar {
 		unArchiver.extract();
 		
 		String[] files = tempDir.list();
-		assertEquals(3, files.length);
-		assertEquals(EAR_BUNDLE_PART, files[1]);
-		assertEquals(META_INF, files[2]);
+		assertThat(files, arrayContainingInAnyOrder(META_INF, EAR_BUNDLE_PART, EAR_BUNDLE));
 		
 		List<String> wbpLines = FileUtils.readLines(new File(tempDir, EAR_BUNDLE_PART));
 		assertEquals(2, wbpLines.size());
 		assertTrue(wbpLines.get(0).startsWith("<?xml"));
 		assertTrue(wbpLines.get(0).endsWith("?>"));
-		assertEquals("<earbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-ear\"/>", wbpLines.get(1));
-		
-		assertEquals(EAR_BASE_NAME + ".ear", files[0]);
+		assertEquals("<earbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-ear-0.0.1-SNAPSHOT\"/>", wbpLines.get(1));
 		
 		File metaInf = new File(tempDir, META_INF);
 		files = metaInf.list();
