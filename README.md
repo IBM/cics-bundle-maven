@@ -36,7 +36,7 @@ To use the `cics-bundle-maven-plugin`:
     ```
 
 1. Create a new Maven module for the CICS bundle.
-1. Register the plugin to the `pom.xml` of the CICS bundle module (NB it's not currently available in Maven Central so you'll need to download and [build it](#building-the-project):
+1. Register the plugin to the `pom.xml` of the CICS bundle module:
     
     ```xml
     <build>
