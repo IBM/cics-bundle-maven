@@ -22,6 +22,16 @@ public abstract class BundlePart {
 
 	private com.ibm.cics.cbmp.Artifact artifact;
 
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public void setArtifact(com.ibm.cics.cbmp.Artifact artifact) {
 		this.artifact = artifact;	
 	}
@@ -30,9 +40,20 @@ public abstract class BundlePart {
 		return artifact.matches(a);
 	}
 
-	public abstract void collectContent(File workDir, Artifact a) throws MojoExecutionRuntimeException;
+	protected static String getMavenArtifactName(Artifact a) {
+		return a.getArtifactId() + "-" + a.getVersion();
+	}
 
-	public abstract Define writeBundlePart(File workDir, Artifact a) throws MojoExecutionRuntimeException;
+	protected abstract String getBundlePartFileExtension();
+	
+	protected abstract String getType();
 
+	public abstract void collectContent(File workDir, Artifact a, FileChangeListener l) throws MojoExecutionRuntimeException;
 
+	public abstract Define writeBundlePart(File workDir, Artifact a, FileChangeListener l) throws MojoExecutionRuntimeException;
+	
+}
+
+interface FileChangeListener {
+	public void notifyFileChange(File file);
 }

@@ -35,7 +35,7 @@ public class PackageCICSBundleMojo extends AbstractCICSBundleMojo {
 			.filter(bp -> bp.matches(a))
 			.findFirst()
 			.orElse(getDefaultBundlePart(a))
-			.collectContent(workDir, a);
+			.collectContent(workDir, a, f -> buildContext.refresh(f));
 	}
 	
 	@Override

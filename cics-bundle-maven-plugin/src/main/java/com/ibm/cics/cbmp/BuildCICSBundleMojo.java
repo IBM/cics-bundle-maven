@@ -71,7 +71,7 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
     		.filter(bp -> bp.matches(a))
     		.findFirst()
     		.orElse(getDefaultBundlePart(a))
-    		.writeBundlePart(workDir, a);
+    		.writeBundlePart(workDir, a, f -> buildContext.refresh(f));
     }
     
     @Override
