@@ -26,7 +26,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 
-@Mojo(name = "package", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
+@Mojo(name = "package", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PACKAGE)
 public class PackageCICSBundleMojo extends AbstractCICSBundleMojo {	
 	
 	private void copyContent(Artifact a) {
