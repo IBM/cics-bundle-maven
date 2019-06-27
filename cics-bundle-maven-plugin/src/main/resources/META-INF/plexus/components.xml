@@ -28,6 +28,9 @@
               <compile>
                 com.ibm.cics:cics-bundle-maven-plugin:build
               </compile>
+              <package>
+                com.ibm.cics:cics-bundle-maven-plugin:package
+              </package>
             </phases>
           </lifecycle>
         </lifecycles>
