@@ -47,7 +47,7 @@ public abstract class JavaBasedBundlePart extends BundlePart {
 		File targetFile = new File(workDir, name + "." + a.getType());
 		try {
 			FileUtils.copyFile(a.getFile(), targetFile);
-			l.notifyFileChange(targetFile);
+			if (l != null) l.notifyFileChange(targetFile);
 		} catch (IOException e) {
 			throw new MojoExecutionRuntimeException("Error copying "+a.getFile(), e);
 		}
@@ -78,10 +78,9 @@ public abstract class JavaBasedBundlePart extends BundlePart {
 			throw new MojoExecutionRuntimeException("Error writing define", e);
 		}
 		
-		l.notifyFileChange(define);
+		if (l!= null) l.notifyFileChange(define);
 		return new Define(name, getType(), definePath);
 	}
-
 	
 	public static <T> Collector<T, ?, T> toSingleton() {
 	    return Collectors.collectingAndThen(

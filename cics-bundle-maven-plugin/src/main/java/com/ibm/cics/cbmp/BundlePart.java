@@ -54,6 +54,7 @@ public abstract class BundlePart {
 	
 }
 
+@FunctionalInterface
 interface FileChangeListener {
 	public void notifyFileChange(File file);
 }
