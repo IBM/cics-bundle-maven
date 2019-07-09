@@ -38,18 +38,7 @@ public class BundleDeployMojo extends AbstractMojo {
 	
     @Component
     private SettingsDecrypter settingsDecrypter;
-    
-    /**
-     * For unit test to pass through the parameters
-     */
-    public BundleDeployMojo(Settings settings, String bundleName, String csdGroup, String serverId, String bundleFilePath, SettingsDecrypter settingsDecrypter) {
-		this.settings = settings;
-		this.bundleName = bundleName;
-		this.csdGroup = csdGroup;
-		this.serverId = serverId;
-		this.bundleFilePath = bundleFilePath;
-		this.settingsDecrypter = settingsDecrypter;
-	}
+
 
 	@Override
 	public void execute() throws MojoExecutionException {
@@ -58,7 +47,7 @@ public class BundleDeployMojo extends AbstractMojo {
 		if (encryptedServer != null) {
 			server = settingsDecrypter.decrypt(new DefaultSettingsDecryptionRequest(encryptedServer)).getServer();
 			if (server == null) {
-				throw new MojoExecutionException("Server '" + serverId + "' is null");
+				throw new MojoExecutionException("Server ID is null");
 			}
 		} else {
 			throw new MojoExecutionException("Server '" + serverId + "' does not exist");

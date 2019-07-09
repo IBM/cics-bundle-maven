@@ -4,8 +4,8 @@ public class AuthenticationInfo {
 	
 	private String username;
 	private String password;
-	private String privateKey; //TODO do we need this?
-	private String passphrase; //TODO do we need this?
+	private String privateKey;
+	private String passphrase;
 	
 	public void setUsername(String username) {
 		this.username = username;

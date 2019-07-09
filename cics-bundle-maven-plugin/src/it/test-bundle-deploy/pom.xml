@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>com.ibm.cics</groupId>
+  <artifactId>test-bundle-deploy</artifactId>
+  <name>Example CICS bundle</name>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <build>
+    <plugins>
+      <!-- Test the build succeeds when calling the endpoint with a 200 response -->
+	  <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>deploy</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <configuration>
+              <settingsFile>src/it/settings.xml</settingsFile>
+              <serverId>serverId</serverId>
+              <bundleName>bundle</bundleName>
+              <csdGroup>BAR</csdGroup>
+              <bundleFilePath>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle</bundleFilePath>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>

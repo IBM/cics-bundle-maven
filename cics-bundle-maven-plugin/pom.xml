@@ -60,6 +60,12 @@
       <version>2.1.1</version>
 	</dependency>
 	
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20180813</version>
+	</dependency>
+
     <!-- dependencies to annotations -->
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
@@ -87,6 +93,12 @@
       <version>1.10.19</version>
       <scope>test</scope>
     </dependency>
+	<dependency>
+	    <groupId>com.github.tomakehurst</groupId>
+	    <artifactId>wiremock-jre8</artifactId>
+	    <version>2.23.2</version>
+	    <scope>test</scope>
+	</dependency>
     
   </dependencies>
 
@@ -122,7 +134,6 @@
           <streamLogs>true</streamLogs>
           <showErrors>true</showErrors>
           <addTestClassPath>true</addTestClassPath>
-          <postBuildHookScript>postbuild.bsh</postBuildHookScript>
           <goals>install</goals>
           <mergeUserSettings>true</mergeUserSettings>
           <!--  mavenOpts>-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y</mavenOpts -->
