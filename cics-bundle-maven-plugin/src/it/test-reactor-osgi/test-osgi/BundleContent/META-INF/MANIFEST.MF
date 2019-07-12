@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 1
-Bundle-Name: OSGi Test Bundle
-Bundle-SymbolicName: test-reactor-osgi
-Bundle-Version: 1.0.0
-Bundle-Vendor: IBM
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-CICS-MainClass: main.java.test-osgi.TestEndpoint

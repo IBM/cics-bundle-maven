@@ -22,6 +22,7 @@
   
   <modules>
     <module>test-osgi</module>
+    <module>test-tycho</module>
     <module>test-bundle</module>
   </modules>
   
