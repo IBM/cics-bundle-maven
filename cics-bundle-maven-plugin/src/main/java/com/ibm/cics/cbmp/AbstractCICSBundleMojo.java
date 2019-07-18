@@ -40,6 +40,9 @@ public abstract class AbstractCICSBundleMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project}", required = true, readonly = true)
 	protected MavenProject project;
 
+	@Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
+	protected File baseDir;
+	
 	@Parameter(defaultValue = "${project.build.directory}", required = true, readonly = true)
 	protected File buildDir;
 

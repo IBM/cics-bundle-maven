@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<cicsdefinitionurimap xmlns="http://www.ibm.com/xmlns/prod/CICS/smw2int" 
+		hfsfile="/u/niced/blah" 
+		host="winmvs28.hursley.ibm.com" 
+		mediatype="text/html" 
+		name="mymap" 
+		path="my/path/" 
+		usage="SERVER" />

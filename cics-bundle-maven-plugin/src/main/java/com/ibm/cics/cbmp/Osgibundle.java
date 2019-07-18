@@ -1,5 +1,6 @@
 package com.ibm.cics.cbmp;
 
+import com.ibm.cics.bundlegen.BundleConstants;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
