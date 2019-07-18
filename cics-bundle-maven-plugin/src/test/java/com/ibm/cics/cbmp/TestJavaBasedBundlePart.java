@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,7 +52,7 @@ public abstract class TestJavaBasedBundlePart {
 	
 	@Test
 	public void name() {
-		Earbundle b = new Earbundle();
+		Earbundle b = new Earbundle(new SystemStreamLog());
 		assertNull(b.getName());
 		b.setName("hello");
 		assertEquals("hello", b.getName());
@@ -71,29 +72,27 @@ public abstract class TestJavaBasedBundlePart {
 		b.setJvmserver("myjvms");
 		Artifact a = mock(Artifact.class);
 		b.setArtifact(a);
-		File tempSourceFile = File.createTempFile("endp", "tmp");
-		tempSourceFile.deleteOnExit();
-		FileWriter writer = new FileWriter(tempSourceFile);
-		writer.write(getRandomLengthString());
-		writer.close();
 		
 		File workDir = createTempDir();
 		
 		org.apache.maven.artifact.Artifact mavenArtifact = mockMavenArtifact("myname", "1.0.0-SNAPSHOT", "type");
-		when(mavenArtifact.getFile()).thenReturn(tempSourceFile);
 
 		// call and verify the callback happens
 		final boolean[] happened = { false };
-		b.collectContent(workDir, mavenArtifact, f -> { happened[0] = true; assertTrue(f.equals(new File(workDir, "myname.type"))); });
+		b.collectContent(workDir, mavenArtifact, f -> { happened[0] = true; assertEquals(expectedContentFile(workDir), f); });
 		assertTrue(happened[0]);
 		
-		assertEquals(tempSourceFile.length(), new File(workDir, "myname.type").length());
+		assertEquals(mavenArtifact.getFile().length(), expectedContentFile(workDir).length());
 		
 		FileUtils.deleteDirectory(workDir);
 	}
+	
+	protected File expectedContentFile(File workDir) {
+		return new File(workDir, "myname.type");
+	}
 
 	@Test
-	public void collectContentException() {
+	public void collectContentException() throws IOException {
 		b.setName("myname");
 		b.setJvmserver("myjvms");
 		Artifact a = mock(Artifact.class);
@@ -111,17 +110,25 @@ public abstract class TestJavaBasedBundlePart {
 
 	}
 	
-	protected static org.apache.maven.artifact.Artifact mockMavenArtifact(String name, String version, String type) {
+	protected org.apache.maven.artifact.Artifact mockMavenArtifact(String name, String version, String type) throws IOException {
 		org.apache.maven.artifact.Artifact mavenArtifact = mock(org.apache.maven.artifact.Artifact.class);
 		when(mavenArtifact.getArtifactId()).thenReturn(name);
 		when(mavenArtifact.getVersion()).thenReturn(version);
 		when(mavenArtifact.getType()).thenReturn(type);
+		
+
+		File tempSourceFile = File.createTempFile("endp", "tmp");
+		tempSourceFile.deleteOnExit();
+		when(mavenArtifact.getFile()).thenReturn(tempSourceFile);
+		FileWriter writer = new FileWriter(tempSourceFile);
+		writer.write(getRandomLengthString());
+		writer.close();
 
 		return mavenArtifact;
 	}
 	
 	@Test
-	public void writeBundlePartNullJvmServer() {
+	public void writeBundlePartNullJvmServer() throws IOException {
 		org.apache.maven.artifact.Artifact mavenArtifact = mockMavenArtifact("myname", "1.0.0-SNAPSHOT", "type");
 		try {
 			b.writeBundlePart(null, mavenArtifact, null);
@@ -132,7 +139,7 @@ public abstract class TestJavaBasedBundlePart {
 	}
 	
 	@Test
-	public void writeBundlePartBlankJvmServer() {
+	public void writeBundlePartBlankJvmServer() throws IOException {
 		org.apache.maven.artifact.Artifact mavenArtifact = mockMavenArtifact("myname", "1.0.0-SNAPSHOT", "type");
 		b.setJvmserver("");
 		try {
@@ -151,12 +158,20 @@ public abstract class TestJavaBasedBundlePart {
 		
 		b.writeBundlePart(workDir, mavenArtifact, null);
 		
-		File bundlePartFile = new File(workDir, "myname-1.0.0-SNAPSHOT."+b.getBundlePartFileExtension());
+		File bundlePartFile = getBundlePartFile(workDir);
 		String contents = new String(Files.readAllBytes(bundlePartFile.toPath()));
 
-		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<"+b.getBundlePartFileExtension()+" jvmserver=\"myjvms\" symbolicname=\"myname-1.0.0-SNAPSHOT\"/>\n",contents);
+		assertBundlePartContents(contents);
 
 		FileUtils.deleteDirectory(workDir);
+	}
+	
+	protected File getBundlePartFile(File workDir) {
+		return new File(workDir, "myname-1.0.0-SNAPSHOT."+b.getBundlePartFileExtension());
+	}
+
+	protected void assertBundlePartContents(String contents) {
+		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<"+b.getBundlePartFileExtension()+" jvmserver=\"myjvms\" symbolicname=\"myname-1.0.0-SNAPSHOT\"/>\n",contents);
 	}
 	
 	public static String getRandomLengthString() {

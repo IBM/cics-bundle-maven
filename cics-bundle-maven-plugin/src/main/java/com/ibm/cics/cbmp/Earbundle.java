@@ -1,5 +1,7 @@
 package com.ibm.cics.cbmp;
 
+import org.apache.maven.plugin.logging.Log;
+
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -17,6 +19,10 @@ package com.ibm.cics.cbmp;
 public class Earbundle extends JavaBasedBundlePart {
 	
 	private static final String TYPE = BundleConstants.NS + "/EARBUNDLE";
+	
+	public Earbundle(Log log) {
+		super(log);
+	}
 	
 	@Override
 	protected String getBundlePartFileExtension() {

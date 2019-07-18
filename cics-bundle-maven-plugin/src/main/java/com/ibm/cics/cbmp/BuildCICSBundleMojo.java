@@ -15,6 +15,7 @@ package com.ibm.cics.cbmp;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +34,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -77,7 +79,22 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	getLog().info("Running CICS Bundle build");
-    	if (workDir.exists()) workDir.delete();
+    	
+    	getLog().debug(buildContext.isIncremental() ? "Build is incremental" : "Build is full");
+    	
+    	if (!shouldBuild()) {
+    		getLog().debug("No changes detected. Will not continue build.");
+    		return;
+    	}
+    	
+    	if (workDir.exists()) {
+    		getLog().debug("Deleting " + workDir);
+    		try {
+				FileUtils.deleteDirectory(workDir);
+			} catch (IOException e) {
+				throw new MojoExecutionException("Unable to delete CICS bundle output directory " + workDir, e);
+			}
+    	}
     	
     	workDir.mkdirs();
     	
@@ -106,6 +123,12 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
     	getLog().info("Refreshing "+workDir);
     	buildContext.refresh(workDir);
     }
+
+	private boolean shouldBuild() {
+		return !buildContext.isIncremental() || 
+				// Expand this list of locations as we become interested in them
+				buildContext.hasDelta("pom.xml");
+	}
 
 	private void writeManifest(List<Define> defines, String id, int major, int minor, int micro, int release) throws MojoExecutionException {
 		Document d = DOCUMENT_BUILDER.newDocument();

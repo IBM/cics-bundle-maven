@@ -73,19 +73,19 @@ public abstract class AbstractCICSBundleMojo extends AbstractMojo {
 			default:
 				throw new RuntimeException("Unsupported bundle part type:" + a.getType());
 			case WAR: {
-				Warbundle warbundle = new Warbundle();
+				Warbundle warbundle = new Warbundle(getLog());
 				warbundle.setJvmserver(getDefaultJVMServer());
 				warbundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
 				return warbundle;
 			}
 			case EAR: {
-				Earbundle earbundle = new Earbundle();
+				Earbundle earbundle = new Earbundle(getLog());
 				earbundle.setJvmserver(getDefaultJVMServer());
 				earbundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
 				return earbundle;
 			}
 			case JAR: {
-				Osgibundle osgibundle = new Osgibundle();
+				Osgibundle osgibundle = new Osgibundle(getLog());
 				osgibundle.setJvmserver(getDefaultJVMServer());
 				osgibundle.setArtifact(new com.ibm.cics.cbmp.Artifact(a));
 				return osgibundle;

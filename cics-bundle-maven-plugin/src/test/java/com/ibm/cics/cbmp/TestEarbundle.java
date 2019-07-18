@@ -1,5 +1,7 @@
 package com.ibm.cics.cbmp;
 
+import org.apache.maven.plugin.logging.SystemStreamLog;
+
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -18,7 +20,7 @@ public class TestEarbundle extends TestJavaBasedBundlePart {
 
 	@Override
 	protected JavaBasedBundlePart getBundlePart() {
-		return new Warbundle();
+		return new Earbundle(new SystemStreamLog());
 	}
 
 }
