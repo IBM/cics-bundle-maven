@@ -26,7 +26,7 @@
             <id>default</id>
             <phases>
               <compile>
-                com.ibm.cics:cics-bundle-maven-plugin:build,
+                com.ibm.cics:cics-bundle-maven-plugin:build
               </compile>
               <package>
                 com.ibm.cics:cics-bundle-maven-plugin:package

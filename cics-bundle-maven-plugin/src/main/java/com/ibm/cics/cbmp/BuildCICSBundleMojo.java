@@ -120,7 +120,7 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 	    		v.getBuildNumber()
     		);
 
-    	getLog().info("Refreshing "+workDir);
+    	getLog().info("Refreshing " + workDir);
     	buildContext.refresh(workDir);
     }
 
@@ -134,7 +134,7 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 		List<Define> defines = new ArrayList<Define>();
 		// TODO can we replace this with a better symbolic so the user can redefine their resources dir location?
 		File bundlePartSource = new File(baseDir, "src/main/resources");
-		getLog().info("Gathering bundle parts from "+bundlePartSource);
+		getLog().info("Gathering bundle parts from " + bundlePartSource);
 		if(bundlePartSource.exists() && bundlePartSource.isDirectory()) {
 			Stream.of(bundlePartSource.listFiles())
 			.filter(file -> !file.isDirectory())
@@ -149,7 +149,7 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 	
 	private void copyBundlePartFile(File f, DefineListener defineListener) {
 		try {
-			getLog().info("Copying "+f+" to "+workDir);
+			getLog().info("Copying " + f + " to " + workDir);
 			String fileName = f.getName();
 			// copy over all files in the origin directory
 			FileUtils.copyFileToDirectory(f, workDir);
@@ -158,22 +158,22 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 			Optional<Define> define = DefineFactory.createDefine(f, msg -> getLog().info(msg));
 			if(define.isPresent()) defineListener.addDefine(define.get());
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to copy bundle part "+f+" to "+workDir);
+			throw new RuntimeException("Failed to copy bundle part " + f + " to " + workDir);
 		}
 	}
 
 	private List<Define> writeJavaDefines() throws MojoExecutionException {
 		try {
-	    	List<Define> defines = project
+			List<Define> defines = project
 				.getArtifacts()
 				.stream()
 				.filter(BuildCICSBundleMojo::isArtifactBundleable)
 				.map(this::writeBundlePart)
 				.collect(Collectors.toList());
-	    	return defines;
-    	} catch (MojoExecutionRuntimeException e) {
-    		throw new MojoExecutionException(e.getMessage(), e);
-    	}
+			return defines;
+		} catch (MojoExecutionRuntimeException e) {
+			throw new MojoExecutionException(e.getMessage(), e);
+		}
 	}
 	
 	private void writeManifest(List<Define> defines, String id, int major, int minor, int micro, int release) throws MojoExecutionException {
