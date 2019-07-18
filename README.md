@@ -89,12 +89,26 @@ To use the `cics-bundle-maven-plugin`:
     ```
     Now if you build the CICS bundle it will pull in the dependency, add it into the CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is ready to be stored in an artifact repository or deployed to CICS.
 
+1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your Maven project's resources directory, for instance `src/main/resources`. Files in your Maven project's resources directory will be included within the output CICS bundle, and supported types will have a define added to the CICS bundle's cics.xml.
+
 ## Supported bundlepart types
 
 The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts:
  - EAR
  - OSGi bundle
  - WAR
+ - EPADAPTER
+ - EPADAPTERSET
+ - EVENTBINDING
+ - FILE
+ - LIBRARY
+ - PACKAGESET
+ - PIPELINE
+ - POLICY
+ - PROGRAM
+ - TCPIPSERVICE
+ - TRANSACTION
+ - URIMAP 
 
 ## Using `cics-bundle-reactor-archetype`
 

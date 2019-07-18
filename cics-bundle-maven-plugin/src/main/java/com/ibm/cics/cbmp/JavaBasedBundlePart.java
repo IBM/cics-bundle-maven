@@ -29,6 +29,8 @@ import org.apache.maven.plugin.logging.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.ibm.cics.bundlegen.Define;
+
 public abstract class JavaBasedBundlePart extends BundlePart {
 
 	private String jvmserver;

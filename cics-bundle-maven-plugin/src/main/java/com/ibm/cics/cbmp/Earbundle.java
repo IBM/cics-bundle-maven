@@ -1,6 +1,7 @@
 package com.ibm.cics.cbmp;
 
 import org.apache.maven.plugin.logging.Log;
+import com.ibm.cics.bundlegen.BundleConstants;
 
 /*-
  * #%L

@@ -19,8 +19,11 @@ import java.io.IOException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,6 +47,10 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.mojo.buildhelper.versioning.VersionInformation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.ibm.cics.bundlegen.BundleConstants;
+import com.ibm.cics.bundlegen.Define;
+import com.ibm.cics.bundlegen.DefineFactory;
 
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
 public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
@@ -98,28 +105,21 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
     	
     	workDir.mkdirs();
     	
-    	try {
-	    	List<Define> defines = project
-				.getArtifacts()
-				.stream()
-				.filter(BuildCICSBundleMojo::isArtifactBundleable)
-				.map(this::writeBundlePart)
-				.collect(Collectors.toList());
-	    	
-	    	VersionInformation v = new VersionInformation(project.getVersion());
-	    	
-	    	writeManifest(
+    	// TODO look at passing in a listener to populate the list so the 
+    	List<Define> defines = copyBundlePartsFromResources();
+    	List<Define> javaDefines = writeJavaDefines();
+    	defines.addAll(javaDefines);
+    	
+    	VersionInformation v = new VersionInformation(project.getVersion());
+    	writeManifest(
 	    		defines,
 	    		project.getArtifactId(),
 	    		v.getMajor(),
 	    		v.getMinor(),
 	    		v.getPatch(),
 	    		v.getBuildNumber()
-	    	);
-    	} catch (MojoExecutionRuntimeException e) {
-    		throw new MojoExecutionException(e.getMessage(), e);
-    	}
-    	
+    		);
+
     	getLog().info("Refreshing "+workDir);
     	buildContext.refresh(workDir);
     }
@@ -130,6 +130,52 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 				buildContext.hasDelta("pom.xml");
 	}
 
+	private List<Define> copyBundlePartsFromResources() {
+		List<Define> defines = new ArrayList<Define>();
+		// TODO can we replace this with a better symbolic so the user can redefine their resources dir location?
+		File bundlePartSource = new File(baseDir, "src/main/resources");
+		getLog().info("Gathering bundle parts from "+bundlePartSource);
+		if(bundlePartSource.exists() && bundlePartSource.isDirectory()) {
+			Stream.of(bundlePartSource.listFiles())
+			.filter(file -> !file.isDirectory())
+			.forEach(file -> copyBundlePartFile(file, d -> defines.add(d)));
+		}
+		return defines;
+	}
+	
+	interface DefineListener {
+		void addDefine(Define define);
+	}
+	
+	private void copyBundlePartFile(File f, DefineListener defineListener) {
+		try {
+			getLog().info("Copying "+f+" to "+workDir);
+			String fileName = f.getName();
+			// copy over all files in the origin directory
+			FileUtils.copyFileToDirectory(f, workDir);
+			File targetPath = new File(workDir, fileName);
+			buildContext.refresh(targetPath);
+			Optional<Define> define = DefineFactory.createDefine(f, msg -> getLog().info(msg));
+			if(define.isPresent()) defineListener.addDefine(define.get());
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to copy bundle part "+f+" to "+workDir);
+		}
+	}
+
+	private List<Define> writeJavaDefines() throws MojoExecutionException {
+		try {
+	    	List<Define> defines = project
+				.getArtifacts()
+				.stream()
+				.filter(BuildCICSBundleMojo::isArtifactBundleable)
+				.map(this::writeBundlePart)
+				.collect(Collectors.toList());
+	    	return defines;
+    	} catch (MojoExecutionRuntimeException e) {
+    		throw new MojoExecutionException(e.getMessage(), e);
+    	}
+	}
+	
 	private void writeManifest(List<Define> defines, String id, int major, int minor, int micro, int release) throws MojoExecutionException {
 		Document d = DOCUMENT_BUILDER.newDocument();
 		Element root = d.createElementNS(BundleConstants.NS, "manifest");

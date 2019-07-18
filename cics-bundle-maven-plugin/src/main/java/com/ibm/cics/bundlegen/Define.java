@@ -1,4 +1,4 @@
-package com.ibm.cics.cbmp;
+package com.ibm.cics.bundlegen;
 
 /*-
  * #%L
