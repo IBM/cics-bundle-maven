@@ -33,6 +33,7 @@ public class PostBuildResourcedef {
 	private static final String META_INF = "META-INF";
 	private static final String EVBIND_BUNDLEPART = "EventBinding.evbind";
 	private static final String URIMAP_BUNDLEPART = "mymap.urimap";
+	private static final String PROGRAM_BUNDLEPART = "PROG1.program";
 	private static final String NOEXTENSION_FILE = "noextension";
 
 	static void assertOutput(File root) throws Exception {
@@ -46,7 +47,7 @@ public class PostBuildResourcedef {
 		unArchiver.extract();
 		
 		String[] files = tempDir.list();
-		assertThat(files, arrayContainingInAnyOrder(META_INF, EVBIND_BUNDLEPART, URIMAP_BUNDLEPART, NOEXTENSION_FILE));
+		assertThat(files, arrayContainingInAnyOrder(META_INF, EVBIND_BUNDLEPART, URIMAP_BUNDLEPART, PROGRAM_BUNDLEPART, NOEXTENSION_FILE));
 		
 		List<String> wbpLines = FileUtils.readLines(new File(tempDir, EVBIND_BUNDLEPART));
 		assertEquals(6, wbpLines.size());
@@ -61,16 +62,17 @@ public class PostBuildResourcedef {
 		
 		List<String> cxLines = FileUtils.readLines(new File(metaInf, CICS_XML));
 		System.out.println(cxLines);
-		assertEquals(8, cxLines.size());
+		assertEquals(9, cxLines.size());
 		assertTrue(cxLines.get(0).startsWith("<?xml"));
 		assertTrue(cxLines.get(0).endsWith("?>"));
 		assertEquals("<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\" bundleMajorVer=\"0\" bundleMicroVer=\"1\" bundleMinorVer=\"0\" bundleRelease=\"0\" bundleVersion=\"1\" id=\"test-bundle\">", cxLines.get(1));
 		assertEquals("  <meta_directives>", cxLines.get(2));
 		assertTrue(cxLines.get(3).matches("    <timestamp>\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d.\\d\\d\\dZ</timestamp>"));
 		assertEquals("  </meta_directives>", cxLines.get(4));
-		assertEquals("  <define name=\"EventBinding\" path=\"EventBinding.evbind\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/EVENTBINDING\"/>", cxLines.get(5));
-		assertEquals("  <define name=\"mymap\" path=\"mymap.urimap\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/URIMAP\"/>", cxLines.get(6));
-		assertEquals("</manifest>", cxLines.get(7));
+		assertEquals("  <define name=\"PROG1\" path=\"PROG1.program\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/PROGRAM\"/>", cxLines.get(5));
+		assertEquals("  <define name=\"EventBinding\" path=\"EventBinding.evbind\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/EVENTBINDING\"/>", cxLines.get(6));
+		assertEquals("  <define name=\"mymap\" path=\"mymap.urimap\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/URIMAP\"/>", cxLines.get(7));
+		assertEquals("</manifest>", cxLines.get(8));
 	}
 
 

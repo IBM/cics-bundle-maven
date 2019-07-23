@@ -27,20 +27,20 @@ public class DefineFactory {
 	}
 	
 	private static Map<String, String> fileExtensionToType = Stream.of(new String[][] {
-		  { "pipeline", "PIPELINE" }, 
-		  { "packageset", "PACKAGESET" }, 
-		  { "epadapter", "EPADAPTER" }, 
-		  { "epadapterset", "EPADAPTERSET" }, 
-		  { "file", "FILE" }, 
-		  { "library", "LIBRARY" }, 
-		  { "policy", "POLICY" }, 
-		  { "program", "PROGRAM" }, 
-		  { "tcpipservice", "TCPIPSERVICE" }, 
-		  { "transaction", "TRANSACTION" }, 
-		  { "urimap", "URIMAP" }, 
-		  { "evbind", "EVENTBINDING" }, 
+		  { "pipeline", uri("PIPELINE") }, 
+		  { "packageset", uri("PACKAGESET") }, 
+		  { "epadapter", uri("EPADAPTER") }, 
+		  { "epadapterset", uri("EPADAPTERSET") }, 
+		  { "file", uri("FILE") }, 
+		  { "library", uri("LIBRARY") }, 
+		  { "policy", uri("POLICY") }, 
+		  { "program", uri("PROGRAM") }, 
+		  { "tcpipservice", uri("TCPIPSERVICE") }, 
+		  { "transaction", uri("TRANSACTION") }, 
+		  { "urimap", uri("URIMAP") }, 
+		  { "evbind", uri("EVENTBINDING") }, 
 		}).collect(Collectors.toMap(data -> data[0], data -> data[1]));
-
+	
 	public static Optional<Define> createDefine(File file, Log log) {
 		Optional<String> type = getBundlePartTypeUri(file, log);
 		String fileName = file.getName();
@@ -59,18 +59,22 @@ public class DefineFactory {
 		String fileName = f.getName();
 		int dot = fileName.lastIndexOf(".");
 		if (dot > 0) {
-			String extension = fileName.substring(dot+1).toLowerCase();
+			String extension = fileName.substring(dot + 1).toLowerCase();
 			boolean contained = fileExtensionToType.containsKey(extension);
 			if(contained) {
-				return Optional.of(BundleConstants.NS+"/"+fileExtensionToType.get(extension));
+				return Optional.of(fileExtensionToType.get(extension));
 			} else {
 				// likely an unsupported type or some other arbitrary file
-				log.log("File "+fileName+" not being treated as a bundle part.");
+				log.log("File " + fileName + " not being treated as a bundle part.");
 				return Optional.empty();
 			}
 		} else {
 			return Optional.empty();
 		}
+	}
+	
+	public static String uri(String typeSuffix) {
+		return BundleConstants.NS + "/" + typeSuffix;
 	}
 	
 }

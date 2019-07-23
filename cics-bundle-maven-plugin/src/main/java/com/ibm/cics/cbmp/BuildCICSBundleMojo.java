@@ -20,9 +20,9 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -49,12 +49,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.ibm.cics.bundlegen.BundleConstants;
+import com.ibm.cics.bundlegen.BundlepartTypeComparator;
 import com.ibm.cics.bundlegen.Define;
 import com.ibm.cics.bundlegen.DefineFactory;
 
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
 public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
     
+	private Comparator<Define> defineComparator = Comparator
+			.comparing(Define::getType, new BundlepartTypeComparator()) 
+			.thenComparing(Define::getType) // Text-based comparison if no inherent dependency
+			.thenComparing(Define::getName);
+	
 	static final DocumentBuilder DOCUMENT_BUILDER;
 	static final Transformer TRANSFORMER;
 
@@ -105,10 +111,9 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
     	
     	workDir.mkdirs();
     	
-    	// TODO look at passing in a listener to populate the list so the 
-    	List<Define> defines = copyBundlePartsFromResources();
-    	List<Define> javaDefines = writeJavaDefines();
-    	defines.addAll(javaDefines);
+    	List<Define> defines = new ArrayList<Define>();
+		copyBundlePartsFromResources(d -> defines.add(d));
+		writeJavaBundlePartFiles(d -> defines.add(d));
     	
     	VersionInformation v = new VersionInformation(project.getVersion());
     	writeManifest(
@@ -130,17 +135,15 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 				buildContext.hasDelta("pom.xml");
 	}
 
-	private List<Define> copyBundlePartsFromResources() {
-		List<Define> defines = new ArrayList<Define>();
+	private void copyBundlePartsFromResources(DefineListener defineListener) {
 		// TODO can we replace this with a better symbolic so the user can redefine their resources dir location?
 		File bundlePartSource = new File(baseDir, "src/main/resources");
 		getLog().info("Gathering bundle parts from " + bundlePartSource);
 		if(bundlePartSource.exists() && bundlePartSource.isDirectory()) {
 			Stream.of(bundlePartSource.listFiles())
 			.filter(file -> !file.isDirectory())
-			.forEach(file -> copyBundlePartFile(file, d -> defines.add(d)));
+			.forEach(file -> copyBundlePartFile(file, defineListener));
 		}
-		return defines;
 	}
 	
 	interface DefineListener {
@@ -162,15 +165,14 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 		}
 	}
 
-	private List<Define> writeJavaDefines() throws MojoExecutionException {
+	private void writeJavaBundlePartFiles(DefineListener defineListener) throws MojoExecutionException {
 		try {
-			List<Define> defines = project
+			project
 				.getArtifacts()
 				.stream()
 				.filter(BuildCICSBundleMojo::isArtifactBundleable)
 				.map(this::writeBundlePart)
-				.collect(Collectors.toList());
-			return defines;
+				.forEach(defineListener::addDefine);
 		} catch (MojoExecutionRuntimeException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
 		}
@@ -196,6 +198,8 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 		Element timestamp = d.createElementNS(BundleConstants.NS, "timestamp");
 		metaDirectives.appendChild(timestamp);
 		timestamp.setTextContent(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+		
+		defines.sort(defineComparator);
 		
 		for (Define define : defines) {
 			Element defineElement = d.createElementNS(BundleConstants.NS, "define");
