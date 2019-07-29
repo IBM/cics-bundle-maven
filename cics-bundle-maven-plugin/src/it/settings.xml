@@ -73,7 +73,7 @@ under the License.
       <username>ituser</username>
       <password>itpassword</password>
       <configuration>
-        <url>http://localhost:@wiremockPort@/deploy</url>
+        <url>http://localhost:@wiremockPort@</url>
         <cicsplexName>cicsplex</cicsplexName>
         <regionName>region</regionName>
       </configuration>
@@ -83,7 +83,7 @@ under the License.
       <username>ituser</username>
       <password>itpassword</password>
       <configuration>
-        <url>http://invalid:8080/deploy</url>
+        <url>http://invalid:8080</url>
         <cicsplexName>cicsplex</cicsplexName>
         <regionName>region</regionName>
       </configuration>

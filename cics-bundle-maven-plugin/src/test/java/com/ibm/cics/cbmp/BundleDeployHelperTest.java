@@ -42,14 +42,16 @@ public class BundleDeployHelperTest {
 	@Test
 	public void testBundleDeployHelper_response200() throws Exception {
 		stubFor(post(urlEqualTo("/deploy"))
-				.willReturn(aResponse()
-					.withStatus(200)
-					.withHeader("Content-Type", "text/plain")
-					.withBody("Some content")));
+			.willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "text/plain")
+				.withBody("Some content")
+			)
+		);
 
 		File bundleArchive = new File(bundleFilePath);
 
-		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl() + "/deploy"), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
+		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl()), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
 	}
 	
 	@Test
@@ -67,7 +69,7 @@ public class BundleDeployHelperTest {
 		expectedException.expect(BundleDeployException.class);
 		expectedException.expectMessage("Bundle does not exist: 'invalid path'");
 		
-		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl() + "/deploy"), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
+		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl()), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
 	}
 	
 	@Test
@@ -85,7 +87,7 @@ public class BundleDeployHelperTest {
 		expectedException.expect(BundleDeployException.class);
 		expectedException.expectMessage("Stage: Validate bundle definition, Cause: Derived bundledir \"" + bundleFilePath + "\" didn't match the target BUNDDEF's bundle dir \"" + bundleFilePath + "\"");
 		
-		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl() + "/deploy"), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
+		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl()), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
 	}
 	
 	@Test
@@ -103,6 +105,105 @@ public class BundleDeployHelperTest {
 		expectedException.expect(BundleDeployException.class);
 		expectedException.expectMessage("Http response: HTTP/1.1 401 Unauthorized");
 
-		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl() + "/deploy"), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
+		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl()), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
+	}
+	
+	@Test
+	public void noPath() throws Exception {
+		stubFor(post(urlEqualTo("/deploy"))
+			.willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "text/plain")
+				.withBody("Some content")
+			)
+		);
+		
+		File bundleArchive = new File(bundleFilePath);
+		
+		BundleDeployHelper.deployBundle(
+			new URI(wireMockRule.baseUrl()),
+			bundleArchive,
+			"bundle",
+			"csdgroup",
+			"cicsplex",
+			"region",
+			"username",
+			"password"
+		);
+	}
+	
+	@Test
+	public void noPathSlash() throws Exception {
+		stubFor(post(urlEqualTo("/deploy"))
+			.willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "text/plain")
+				.withBody("Some content")
+			)
+		);
+		
+		File bundleArchive = new File(bundleFilePath);
+		
+		URI endpointURL = new URI(wireMockRule.baseUrl() + "/");
+		BundleDeployHelper.deployBundle(
+			endpointURL,
+			bundleArchive,
+			"bundle",
+			"csdgroup",
+			"cicsplex",
+			"region",
+			"username",
+			"password"
+		);
+	}
+	
+	@Test
+	public void pathNoSlash() throws Exception {
+		stubFor(post(urlEqualTo("/foo/deploy"))
+			.willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "text/plain")
+				.withBody("Some content")
+			)
+		);
+		
+		File bundleArchive = new File(bundleFilePath);
+		
+		URI endpointURL = new URI(wireMockRule.baseUrl() + "/foo");
+		BundleDeployHelper.deployBundle(
+			endpointURL,
+			bundleArchive,
+			"bundle",
+			"csdgroup",
+			"cicsplex",
+			"region",
+			"username",
+			"password"
+		);
+	}
+	
+	@Test
+	public void pathEndsWithSlash() throws Exception {
+		stubFor(post(urlEqualTo("/foo/deploy"))
+			.willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "text/plain")
+				.withBody("Some content")
+			)
+		);
+		
+		File bundleArchive = new File(bundleFilePath);
+		
+		URI endpointURL = new URI(wireMockRule.baseUrl() + "/foo/");
+		BundleDeployHelper.deployBundle(
+			endpointURL,
+			bundleArchive,
+			"bundle",
+			"csdgroup",
+			"cicsplex",
+			"region",
+			"username",
+			"password"
+		);
 	}
 }
