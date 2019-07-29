@@ -105,7 +105,6 @@ The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts
  - FILE
  - LIBRARY
  - PACKAGESET
- - PIPELINE
  - POLICY
  - PROGRAM
  - TCPIPSERVICE

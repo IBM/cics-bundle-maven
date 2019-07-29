@@ -27,7 +27,6 @@ public class DefineFactory {
 	}
 	
 	private static Map<String, String> fileExtensionToType = Stream.of(new String[][] {
-		  { "pipeline", uri("PIPELINE") }, 
 		  { "packageset", uri("PACKAGESET") }, 
 		  { "epadapter", uri("EPADAPTER") }, 
 		  { "epadapterset", uri("EPADAPTERSET") }, 
