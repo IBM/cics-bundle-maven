@@ -67,27 +67,26 @@ under the License.
     </profile>
   </profiles>
   
-  	<servers>
-		<server>
-			<id>serverId</id>
-			<username>ituser</username>
-			<password>itpassword</password>
-			<configuration>
-				<url>http://localhost:8080/deploy</url>
-				<cicsplexName>cicsplex</cicsplexName>
-				<regionName>region</regionName>
-			</configuration>
-		</server>
-		<server>
-			<id>invalidURL</id>
-			<username>ituser</username>
-			<password>itpassword</password>
-			<configuration>
-				<url>http://invalid:8080/deploy</url>
-				<cicsplexName>cicsplex</cicsplexName>
-				<regionName>region</regionName>
-			</configuration>
-		</server>
-	</servers>
-	
+  <servers>
+    <server>
+      <id>serverId</id>
+      <username>ituser</username>
+      <password>itpassword</password>
+      <configuration>
+        <url>http://localhost:@wiremockPort@/deploy</url>
+        <cicsplexName>cicsplex</cicsplexName>
+        <regionName>region</regionName>
+      </configuration>
+    </server>
+    <server>
+      <id>invalidURL</id>
+      <username>ituser</username>
+      <password>itpassword</password>
+      <configuration>
+        <url>http://invalid:8080/deploy</url>
+        <cicsplexName>cicsplex</cicsplexName>
+        <regionName>region</regionName>
+      </configuration>
+    </server>
+  </servers>	
 </settings>

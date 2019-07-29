@@ -122,6 +122,24 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>reserve-network-port</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <portNames>
+                <portName>wiremockPort</portName>
+              </portNames>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
         <version>3.2.0</version>
@@ -136,6 +154,9 @@
           <addTestClassPath>true</addTestClassPath>
           <goals>install</goals>
           <mergeUserSettings>true</mergeUserSettings>
+          <scriptVariables>
+            <wiremockPort>${wiremockPort}</wiremockPort>
+          </scriptVariables>
           <!--  mavenOpts>-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y</mavenOpts -->
         </configuration>
         <executions>

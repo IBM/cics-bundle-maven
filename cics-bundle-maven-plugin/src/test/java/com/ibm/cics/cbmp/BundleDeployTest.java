@@ -12,12 +12,13 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 public class BundleDeployTest {
 	
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(8080);
+	public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.options().dynamicPort());
 	
 	private static String bundleFilePath = "src/test/resources/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle";
 
