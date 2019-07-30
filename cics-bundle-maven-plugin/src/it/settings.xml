@@ -79,6 +79,32 @@ under the License.
       </configuration>
     </server>
     <server>
+      <id>noCICSplex</id>
+      <username>ituser</username>
+      <password>itpassword</password>
+      <configuration>
+        <url>http://localhost:@wiremockPort@</url>
+        <regionName>region</regionName>
+      </configuration>
+    </server>
+    <server>
+      <id>noRegion</id>
+      <username>ituser</username>
+      <password>itpassword</password>
+      <configuration>
+        <url>http://localhost:@wiremockPort@</url>
+        <cicsplexName>cicsplex</cicsplexName>
+      </configuration>
+    </server>
+    <server>
+      <id>neither</id>
+      <username>ituser</username>
+      <password>itpassword</password>
+      <configuration>
+        <url>http://localhost:@wiremockPort@</url>
+      </configuration>
+    </server>
+    <server>
       <id>invalidURL</id>
       <username>ituser</username>
       <password>itpassword</password>

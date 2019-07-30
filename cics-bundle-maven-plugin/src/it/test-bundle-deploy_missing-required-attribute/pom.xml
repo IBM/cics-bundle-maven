@@ -35,7 +35,6 @@
               <goal>deploy</goal>
             </goals>
             <configuration>
-              <settingsFile>src/it/settings.xml</settingsFile>
               <serverId>serverId</serverId>
               <csdGroup>BAR</csdGroup>
               <bundleFilePath>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle</bundleFilePath>
