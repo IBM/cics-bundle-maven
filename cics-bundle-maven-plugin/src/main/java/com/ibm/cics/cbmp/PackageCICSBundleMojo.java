@@ -29,6 +29,8 @@ import org.codehaus.plexus.archiver.zip.ZipArchiver;
 @Mojo(name = "package", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PACKAGE)
 public class PackageCICSBundleMojo extends AbstractCICSBundleMojo {	
 	
+	private static final String CICS_BUNDLE_EXTENSION = "zip";
+
 	private void copyContent(Artifact a) {
 		bundleParts
 			.stream()
@@ -43,28 +45,27 @@ public class PackageCICSBundleMojo extends AbstractCICSBundleMojo {
 		getLog().info("Running CICS Bundle package");
 
 		project
-		.getArtifacts()
-		.stream()
-		.filter(BuildCICSBundleMojo::isArtifactBundleable)
-		.forEach(this::copyContent);
-		
+			.getArtifacts()
+			.stream()
+			.filter(BuildCICSBundleMojo::isArtifactBundleable)
+			.forEach(this::copyContent);
 
 		File cicsBundle = null;
 		try {
 			ZipArchiver zipArchiver = new ZipArchiver();
 			zipArchiver.addDirectory(workDir);
-			cicsBundle = new File(buildDir, project.getArtifactId() + "-" + project.getVersion() + (classifier != null ? "-" + classifier : "") + ".cics-bundle");
+			cicsBundle = new File(buildDir, project.getArtifactId() + "-" + project.getVersion() + (classifier != null ? "-" + classifier : "") + "." + CICS_BUNDLE_EXTENSION);
 			zipArchiver.setDestFile(cicsBundle);
 			zipArchiver.createArchive();
 		
 			if (classifier != null) {
-				projectHelper.attachArtifact(project, "cics-bundle", classifier, cicsBundle);
+				projectHelper.attachArtifact(project, CICS_BUNDLE_EXTENSION, classifier, cicsBundle);
 			} else {
 				File artifactFile = project.getArtifact().getFile();
 				if (artifactFile != null && artifactFile.isFile()) {
 					//We already attached an artifact to this project in another mojo, don't override it!
 					throw new MojoExecutionException("Set classifier when there's already an artifact attached, to prevent overwriting the main artifact");
-				} else {				
+				} else {
 					project.getArtifact().setFile(cicsBundle);
 				}
 			}
