@@ -12,29 +12,6 @@ The `cics-bundle-maven-plugin` contributes a new packaging type called `cics-bun
 
 To use the `cics-bundle-maven-plugin`:
 
-1. Currently there are no release builds.  Snapshot builds are published to the Sonatype OSS Maven snapshots repository.  To try a snapshot build, you will need to add the following plugin repository to your `pom.xml`:
-    
-    ```xml
-    <project>
-      ...
-      <pluginRepositories>
-        <!-- Configure Sonatype OSS Maven snapshots repository -->
-        <pluginRepository>
-          <id>sonatype-nexus-snapshots</id>
-          <name>Sonatype Nexus Snapshots</name>
-          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
-        </pluginRepository>
-      </pluginRepositories>
-      ...
-    </project>
-    ```
-
 1. Create a new Maven module for the CICS bundle.
 1. Register the plugin to the `pom.xml` of the CICS bundle module:
     
@@ -114,6 +91,31 @@ The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts
 ## Using `cics-bundle-reactor-archetype`
 
 Maven archetypes provide templates for how a module could, or should, be structured. By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi-module build) module, containing a CICS bundle module and a dynamic Web (WAR) module. The CICS bundle is preconfigured to depend on the WAR module. Building the reactor module builds both the children, so you end up with a CICS bundle that contains the built WAR file.
+
+## Using nightly/snapshot builds
+
+Snapshot builds are published to the Sonatype OSS Maven snapshots repository.  To try a snapshot build, you will need to add the following plugin repository to your `pom.xml`:
+    
+    ```xml
+    <project>
+      ...
+      <pluginRepositories>
+        <!-- Configure Sonatype OSS Maven snapshots repository -->
+        <pluginRepository>
+          <id>sonatype-nexus-snapshots</id>
+          <name>Sonatype Nexus Snapshots</name>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+      ...
+    </project>
+    ```
 
 ## Building the project
 
