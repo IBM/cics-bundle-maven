@@ -1,0 +1,49 @@
+<!--
+  #%L
+  CICS Bundle Maven Plugin
+  %%
+  Copyright (C) 2019 IBM Corp.
+  %%
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+  #L%
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>com.ibm.cics</groupId>
+  <artifactId>test-bundle-deploy</artifactId>
+  <name>Example CICS bundle</name>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <!-- Test that the build fails correctly when a required field is not specified -->  
+  <build>
+    <plugins>
+	  <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>deploy</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <configuration>
+              <settingsFile>src/it/settings.xml</settingsFile>
+              <serverId>serverId</serverId>
+              <csdGroup>BAR</csdGroup>
+              <bundleFilePath>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle</bundleFilePath>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
