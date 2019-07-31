@@ -23,9 +23,9 @@
   <build>
     <plugins>
 	  <plugin>
-        <groupId>${project.groupId}</groupId>
+        <groupId>@project.groupId@</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
-        <version>${project.version}</version>
+        <version>@project.version@</version>
         <extensions>true</extensions>
         <executions>
           <execution>
