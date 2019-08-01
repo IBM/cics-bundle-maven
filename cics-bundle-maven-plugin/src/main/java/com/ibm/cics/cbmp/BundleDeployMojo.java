@@ -49,6 +49,12 @@ public class BundleDeployMojo extends AbstractMojo {
 	
 	@Parameter(required = true)
 	private String serverId;
+	
+	@Parameter
+	private String cicsplexName;
+	
+	@Parameter
+	private String regionName;
 
 	@Parameter(required = true)
 	private String bundleFilePath;
@@ -73,8 +79,23 @@ public class BundleDeployMojo extends AbstractMojo {
 		AuthenticationInfo authenticationInfo = getAuthenticationInfo(server);
 		ServerConfig serverConfig = getServerConfig(server);
 		
+		String cicsplexNameResolved = cicsplexName != null ? cicsplexName : serverConfig.getCicsplexName();
+		if (cicsplexNameResolved == null || cicsplexNameResolved.isEmpty()) throw new MojoExecutionException("cicsplexName must be specified either in plugin configuration or server configuration");
+		
+		String regionNameResolved = regionName != null ? regionName : serverConfig.getRegionName();
+		if (regionNameResolved == null || regionNameResolved.isEmpty()) throw new MojoExecutionException("regionName must be specified either in plugin configuration or server configuration");
+		
 		try {
-			BundleDeployHelper.deployBundle(serverConfig.getEndpointUrl(), new File(bundleFilePath), bundleName, csdGroup, serverConfig.getCicsplexName(), serverConfig.getRegionName(), authenticationInfo.getUsername(), authenticationInfo.getPassword());
+			BundleDeployHelper.deployBundle(
+				serverConfig.getEndpointUrl(),
+				new File(bundleFilePath),
+				bundleName,
+				csdGroup,
+				cicsplexNameResolved,
+				regionNameResolved,
+				authenticationInfo.getUsername(),
+				authenticationInfo.getPassword()
+			);
 		} catch (BundleDeployException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
 		} catch (IOException e) {
@@ -94,6 +115,11 @@ public class BundleDeployMojo extends AbstractMojo {
     private ServerConfig getServerConfig(Server server) throws MojoExecutionException {
 		ServerConfig serverConfig = new ServerConfig();
 		Object configuration = server.getConfiguration();
+		
+		if (configuration == null) {
+			throw new MojoExecutionException("Server didn't specify any configuration.  URL is mandatory");
+		}
+		
 		if (configuration instanceof Xpp3Dom) {
 			Xpp3Dom c = (Xpp3Dom) configuration;
 			
@@ -111,15 +137,11 @@ public class BundleDeployMojo extends AbstractMojo {
 			Xpp3Dom cicsplexName = c.getChild("cicsplexName");
 			if (cicsplexName != null) {
 				serverConfig.setCicsplexName(cicsplexName.getValue());
-			} else {
-				throw new MojoExecutionException("No CICSplex name set");
 			}
 			
 			Xpp3Dom regionName = c.getChild("regionName");
 			if (regionName != null) {
 				serverConfig.setRegionName(regionName.getValue());
-			} else {
-				throw new MojoExecutionException("No region name set");
 			}
 		} else {
 			throw new MojoExecutionException("Unknown server configuration format: " + configuration.getClass());

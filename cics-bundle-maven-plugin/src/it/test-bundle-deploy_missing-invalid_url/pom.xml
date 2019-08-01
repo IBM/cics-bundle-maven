@@ -35,7 +35,6 @@
               <goal>deploy</goal>
             </goals>
             <configuration>
-              <settingsFile>src/it/settings.xml</settingsFile>
               <serverId>invalidURL</serverId>
               <bundleName>bundle</bundleName>
               <csdGroup>BAR</csdGroup>
