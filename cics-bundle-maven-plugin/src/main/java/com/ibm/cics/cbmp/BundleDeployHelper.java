@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,32 @@ public class BundleDeployHelper {
 		mpeb.addPart("cicsplexName", new StringBody(cicsplexName, ContentType.TEXT_PLAIN));
 		mpeb.addPart("regionName", new StringBody(regionName, ContentType.TEXT_PLAIN));
 		
-		HttpPost httpPost = new HttpPost(endpointURL);
+		
+		String path = endpointURL.getPath();
+		if (path == null) {
+			path = "";
+		} else if (!path.endsWith("/")) {
+			path = path + "/";
+		}
+		
+		path = path + "deploy";
+		
+		URI target;
+		try {
+			target = new URI(
+				endpointURL.getScheme(),
+				endpointURL.getUserInfo(),
+				endpointURL.getHost(),
+				endpointURL.getPort(),
+				path,
+				endpointURL.getQuery(),
+				endpointURL.getFragment()
+			);
+		} catch (URISyntaxException e) {
+			throw new IOException(e);
+		}
+		
+		HttpPost httpPost = new HttpPost(target);
 		HttpEntity httpEntity = mpeb.build();
 		httpPost.setEntity(httpEntity);
 		
