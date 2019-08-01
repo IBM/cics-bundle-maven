@@ -15,13 +15,13 @@
   <modelVersion>4.0.0</modelVersion>
  
   <groupId>com.ibm.cics</groupId>
-  <artifactId>test-bundle-deploy</artifactId>
+  <artifactId>test-bundle-deploy-noRegion</artifactId>
   <name>Example CICS bundle</name>
   <version>0.0.1-SNAPSHOT</version>
-
+  
   <build>
     <plugins>
-    <!-- Test that the build fails correctly when there's no server ID specified -->
+    <!-- Test the build succeeds when calling the endpoint with a 200 response -->
 	  <plugin>
         <groupId>@project.groupId@</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
@@ -35,8 +35,9 @@
               <goal>deploy</goal>
             </goals>
             <configuration>
-              <serverId>INVALID</serverId>
+              <serverId>serverId</serverId>
               <bundleName>bundle</bundleName>
+              <regionName>region</regionName>
               <csdGroup>BAR</csdGroup>
               <bundleFilePath>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle</bundleFilePath>
             </configuration>
