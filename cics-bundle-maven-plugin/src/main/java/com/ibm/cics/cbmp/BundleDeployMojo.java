@@ -42,22 +42,22 @@ public class BundleDeployMojo extends AbstractMojo {
 	protected Settings settings;
 	
 	@Parameter(required = true)
-	private String bundleName;
+	private String bunddef;
 	
 	@Parameter(required = true)
-	private String csdGroup;
+	private String csdgroup;
 	
 	@Parameter(required = true)
 	private String serverId;
 	
 	@Parameter
-	private String cicsplexName;
+	private String cicsplex;
 	
 	@Parameter
-	private String regionName;
+	private String region;
 
 	@Parameter(required = true)
-	private String bundleFilePath;
+	private String bundle;
 	
 	@Component
 	private SettingsDecrypter settingsDecrypter;
@@ -79,20 +79,20 @@ public class BundleDeployMojo extends AbstractMojo {
 		AuthenticationInfo authenticationInfo = getAuthenticationInfo(server);
 		ServerConfig serverConfig = getServerConfig(server);
 		
-		String cicsplexNameResolved = cicsplexName != null ? cicsplexName : serverConfig.getCicsplexName();
-		if (cicsplexNameResolved == null || cicsplexNameResolved.isEmpty()) throw new MojoExecutionException("cicsplexName must be specified either in plugin configuration or server configuration");
+		String cicsplexResolved = cicsplex != null ? cicsplex : serverConfig.getCicsplex();
+		if (cicsplexResolved == null || cicsplexResolved.isEmpty()) throw new MojoExecutionException("cicsplex must be specified either in plugin configuration or server configuration");
 		
-		String regionNameResolved = regionName != null ? regionName : serverConfig.getRegionName();
-		if (regionNameResolved == null || regionNameResolved.isEmpty()) throw new MojoExecutionException("regionName must be specified either in plugin configuration or server configuration");
+		String regionResolved = region != null ? region : serverConfig.getRegion();
+		if (regionResolved == null || regionResolved.isEmpty()) throw new MojoExecutionException("region must be specified either in plugin configuration or server configuration");
 		
 		try {
 			BundleDeployHelper.deployBundle(
 				serverConfig.getEndpointUrl(),
-				new File(bundleFilePath),
-				bundleName,
-				csdGroup,
-				cicsplexNameResolved,
-				regionNameResolved,
+				new File(bundle),
+				bunddef,
+				csdgroup,
+				cicsplexResolved,
+				regionResolved,
 				authenticationInfo.getUsername(),
 				authenticationInfo.getPassword()
 			);
@@ -134,14 +134,14 @@ public class BundleDeployMojo extends AbstractMojo {
 				throw new MojoExecutionException("No endpoint URL set");
 			}
 			
-			Xpp3Dom cicsplexName = c.getChild("cicsplexName");
-			if (cicsplexName != null) {
-				serverConfig.setCicsplexName(cicsplexName.getValue());
+			Xpp3Dom cicsplex = c.getChild("cicsplex");
+			if (cicsplex != null) {
+				serverConfig.setCicsplex(cicsplex.getValue());
 			}
 			
-			Xpp3Dom regionName = c.getChild("regionName");
-			if (regionName != null) {
-				serverConfig.setRegionName(regionName.getValue());
+			Xpp3Dom region = c.getChild("region");
+			if (region != null) {
+				serverConfig.setRegion(region.getValue());
 			}
 		} else {
 			throw new MojoExecutionException("Unknown server configuration format: " + configuration.getClass());

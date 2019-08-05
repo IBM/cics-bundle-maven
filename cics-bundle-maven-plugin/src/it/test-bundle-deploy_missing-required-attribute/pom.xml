@@ -36,8 +36,8 @@
             </goals>
             <configuration>
               <serverId>serverId</serverId>
-              <csdGroup>BAR</csdGroup>
-              <bundleFilePath>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle</bundleFilePath>
+              <csdgroup>BAR</csdgroup>
+              <bundle>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.zip</bundle>
             </configuration>
           </execution>
         </executions>

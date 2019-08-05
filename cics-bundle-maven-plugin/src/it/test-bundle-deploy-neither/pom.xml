@@ -36,11 +36,11 @@
             </goals>
             <configuration>
               <serverId>serverId</serverId>
-              <bundleName>bundle</bundleName>
-              <cicsplexName>cicsplex</cicsplexName>
-              <regionName>region</regionName>
-              <csdGroup>BAR</csdGroup>
-              <bundleFilePath>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle</bundleFilePath>
+              <bunddef>bundle</bunddef>
+              <cicsplex>cicsplex</cicsplex>
+              <region>region</region>
+              <csdgroup>BAR</csdgroup>
+              <bundle>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.zip</bundle>
             </configuration>
           </execution>
         </executions>

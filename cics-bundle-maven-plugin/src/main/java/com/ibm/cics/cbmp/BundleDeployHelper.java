@@ -40,13 +40,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BundleDeployHelper {
 	
-	public static void deployBundle(URI endpointURL, File bundleArchive, String bundleName, String csdGroup, String cicsplexName, String regionName, String username, String password) throws BundleDeployException, IOException {
+	public static void deployBundle(URI endpointURL, File bundle, String bunddef, String csdgroup, String cicsplex, String region, String username, String password) throws BundleDeployException, IOException {
 		MultipartEntityBuilder mpeb = MultipartEntityBuilder.create();
-		mpeb.addPart("bundleArchive", new FileBody(bundleArchive, ContentType.create("application/cics-bundle")));
-		mpeb.addPart("bundleName", new StringBody(bundleName, ContentType.TEXT_PLAIN));
-		mpeb.addPart("csdGroup", new StringBody(csdGroup, ContentType.TEXT_PLAIN));
-		mpeb.addPart("cicsplexName", new StringBody(cicsplexName, ContentType.TEXT_PLAIN));
-		mpeb.addPart("regionName", new StringBody(regionName, ContentType.TEXT_PLAIN));
+		mpeb.addPart("bundle", new FileBody(bundle, ContentType.create("application/zip")));
+		mpeb.addPart("bunddef", new StringBody(bunddef, ContentType.TEXT_PLAIN));
+		mpeb.addPart("csdgroup", new StringBody(csdgroup, ContentType.TEXT_PLAIN));
+		mpeb.addPart("cicsplex", new StringBody(cicsplex, ContentType.TEXT_PLAIN));
+		mpeb.addPart("region", new StringBody(region, ContentType.TEXT_PLAIN));
 		
 		
 		String path = endpointURL.getPath();
@@ -82,8 +82,8 @@ public class BundleDeployHelper {
 		String encoding = Base64.getEncoder().encodeToString(credentials.getBytes());
 		httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoding);
 		
-		if (!bundleArchive.exists()) {
-			throw new BundleDeployException("Bundle does not exist: '" + bundleArchive + "'");
+		if (!bundle.exists()) {
+			throw new BundleDeployException("Bundle does not exist: '" + bundle + "'");
 		}
 		
 		HttpResponse response = httpClient.execute(httpPost);

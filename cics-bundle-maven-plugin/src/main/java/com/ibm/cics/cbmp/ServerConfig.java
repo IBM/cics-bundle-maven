@@ -18,28 +18,28 @@ import java.net.URI;
 
 public class ServerConfig {
 	
-	private String cicsplexName;
-	private String regionName;
+	private String cicsplex;
+	private String region;
 	private URI endpointUrl;
 	
-	public void setCicsplexName(String cicsplexName) {
-		this.cicsplexName = cicsplexName;
+	public void setCicsplex(String cicsplex) {
+		this.cicsplex = cicsplex;
 	}
 	
-	public void setRegionName(String regionName) {
-		this.regionName = regionName;
+	public void setRegion(String region) {
+		this.region = region;
 	}
 	
 	public void setEndpointUrl(URI endpointUrl) {
 		this.endpointUrl = endpointUrl;
 	}
 
-	public String getCicsplexName() {
-		return cicsplexName;
+	public String getCicsplex() {
+		return cicsplex;
 	}
 	
-	public String getRegionName() {
-		return regionName;
+	public String getRegion() {
+		return region;
 	}
 	
 	public URI getEndpointUrl() {
