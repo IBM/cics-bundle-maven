@@ -37,7 +37,7 @@ public class BundleDeployHelperTest {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 	
-	private static String bundleFilePath = "src/test/resources/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle";
+	private static String bundleFilePath = "src/test/resources/test-app-bundle-0.0.1-SNAPSHOT.zip";
 
 	@Test
 	public void testBundleDeployHelper_response200() throws Exception {

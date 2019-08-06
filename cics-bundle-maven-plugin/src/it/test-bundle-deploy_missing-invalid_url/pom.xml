@@ -36,9 +36,9 @@
             </goals>
             <configuration>
               <serverId>invalidURL</serverId>
-              <bundleName>bundle</bundleName>
-              <csdGroup>BAR</csdGroup>
-              <bundleFilePath>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.cics-bundle</bundleFilePath>
+              <bunddef>bundle</bunddef>
+              <csdgroup>BAR</csdgroup>
+              <bundle>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.zip</bundle>
             </configuration>
           </execution>
         </executions>

@@ -74,8 +74,8 @@ under the License.
       <password>itpassword</password>
       <configuration>
         <url>http://localhost:@wiremockPort@</url>
-        <cicsplexName>cicsplex</cicsplexName>
-        <regionName>region</regionName>
+        <cicsplex>cicsplex</cicsplex>
+        <region>region</region>
       </configuration>
     </server>
     <server>
@@ -84,7 +84,7 @@ under the License.
       <password>itpassword</password>
       <configuration>
         <url>http://localhost:@wiremockPort@</url>
-        <regionName>region</regionName>
+        <region>region</region>
       </configuration>
     </server>
     <server>
@@ -93,7 +93,7 @@ under the License.
       <password>itpassword</password>
       <configuration>
         <url>http://localhost:@wiremockPort@</url>
-        <cicsplexName>cicsplex</cicsplexName>
+        <cicsplex>cicsplex</cicsplex>
       </configuration>
     </server>
     <server>
@@ -110,8 +110,8 @@ under the License.
       <password>itpassword</password>
       <configuration>
         <url>http://invalid:8080</url>
-        <cicsplexName>cicsplex</cicsplexName>
-        <regionName>region</regionName>
+        <cicsplex>cicsplex</cicsplex>
+        <region>region</region>
       </configuration>
     </server>
   </servers>	

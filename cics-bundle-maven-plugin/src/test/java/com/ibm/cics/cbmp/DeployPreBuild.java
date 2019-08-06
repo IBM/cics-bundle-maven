@@ -50,23 +50,23 @@ public class DeployPreBuild {
 				post(urlEqualTo("/deploy"))
 					.withMultipartRequestBody(
 						aMultipart()
-							.withName("cicsplexName")
+							.withName("cicsplex")
 							.withBody(equalTo("cicsplex")))
 					.withMultipartRequestBody(
 						aMultipart()
-							.withName("regionName")
+							.withName("region")
 							.withBody(equalTo("region")))
 					.withMultipartRequestBody(
 							aMultipart()
-								.withName("bundleName")
+								.withName("bunddef")
 								.withBody(equalTo("bundle")))
 					.withMultipartRequestBody(
 							aMultipart()
-								.withName("csdGroup")
+								.withName("csdgroup")
 								.withBody(equalTo("BAR")))
 					.withMultipartRequestBody(
 							aMultipart()
-								.withName("bundleArchive")
+								.withName("bundle")
 								.withBody(WireMock.binaryEqualTo(bundleBinary))) 
 					.willReturn(
 						aResponse()
@@ -80,7 +80,7 @@ public class DeployPreBuild {
 	
 	private static byte[] getBundleBinary() {
 		try {
-			InputStream fileInputStream = DeployPreBuild.class.getClassLoader().getResourceAsStream("test-app-bundle-0.0.1-SNAPSHOT.cics-bundle");
+			InputStream fileInputStream = DeployPreBuild.class.getClassLoader().getResourceAsStream("test-app-bundle-0.0.1-SNAPSHOT.zip");
 			byte[] byteArray = ByteStreams.toByteArray(fileInputStream);
 			fileInputStream.close();
 			return byteArray;
