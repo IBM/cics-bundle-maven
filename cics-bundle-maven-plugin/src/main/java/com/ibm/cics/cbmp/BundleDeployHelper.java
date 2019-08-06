@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.core.HttpHeaders;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -86,10 +87,19 @@ public class BundleDeployHelper {
 			throw new BundleDeployException("Bundle does not exist: '" + bundle + "'");
 		}
 		
+		
+		
 		HttpResponse response = httpClient.execute(httpPost);
 		StatusLine responseStatus = response.getStatusLine();
+		Header[] contentTypeHeaders = response.getHeaders("Content-Type");
+		String contentType;
+		if (contentTypeHeaders.length != 1) {
+			contentType = null;
+		} else {
+			contentType = contentTypeHeaders[0].getValue();
+		}
+		
 		if (responseStatus.getStatusCode() != 200) {
-			String contentType = response.getHeaders("Content-Type")[0].getValue();
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			String responseContent = bufferedReader.lines().collect(Collectors.joining());
 			if (contentType == null) {
