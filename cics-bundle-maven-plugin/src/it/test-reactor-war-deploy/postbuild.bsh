@@ -1,0 +1,2 @@
+com.ibm.cics.cbmp.PostBuildWar.assertOutput(basedir);
+context.get("wireMockServer").shutdownServer();
