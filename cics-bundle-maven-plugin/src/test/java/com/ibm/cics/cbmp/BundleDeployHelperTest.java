@@ -109,6 +109,23 @@ public class BundleDeployHelperTest {
 	}
 	
 	@Test
+	public void testBundleDeployHelper_unauthenticated401_noContentType() throws Exception {
+		stubFor(post(urlEqualTo("/deploy"))
+			.willReturn(aResponse()
+				.withStatus(401)
+				.withBody("Http response: HTTP/1.1 401 Unauthorized")
+			)
+		);
+
+		File bundleArchive = new File(bundleFilePath);
+		
+		expectedException.expect(BundleDeployException.class);
+		expectedException.expectMessage("Http response: HTTP/1.1 401 Unauthorized");
+
+		BundleDeployHelper.deployBundle(new URI(wireMockRule.baseUrl()), bundleArchive, "bundle", "csdgroup", "cicsplex", "region", "username", "password");
+	}
+	
+	@Test
 	public void noPath() throws Exception {
 		stubFor(post(urlEqualTo("/deploy"))
 			.willReturn(aResponse()
