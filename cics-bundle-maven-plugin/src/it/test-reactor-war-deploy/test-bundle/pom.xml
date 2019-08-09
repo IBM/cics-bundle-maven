@@ -33,7 +33,7 @@
   
   <build>
     <plugins>
-	  <plugin>
+      <plugin>
         <groupId>com.ibm.cics</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
         <version>@pom.version@</version>
