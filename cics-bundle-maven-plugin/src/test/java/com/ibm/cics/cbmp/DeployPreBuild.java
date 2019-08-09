@@ -78,6 +78,53 @@ public class DeployPreBuild {
 		return wireMockServer;
 	}
 	
+	/*
+	 * Used by test-reactor-war-deploy which builds the bundle and then tests deploying it, so we can't check for a specific binary for the bundle
+	 */
+	static WireMockServer setupWiremockWithoutBinary(int port) {
+		ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+		
+		try {
+			Thread.currentThread().setContextClassLoader(WireMock.class.getClassLoader());
+			wireMockServer = new WireMockServer(WireMockConfiguration.options().port(port));
+		} finally {
+			Thread.currentThread().setContextClassLoader(ccl);
+		}
+		
+		wireMockServer.start();
+		
+		wireMockServer
+			.stubFor(
+				post(urlEqualTo("/deploy"))
+					.withMultipartRequestBody(
+						aMultipart()
+							.withName("cicsplex")
+							.withBody(equalTo("cicsplex")))
+					.withMultipartRequestBody(
+						aMultipart()
+							.withName("region")
+							.withBody(equalTo("region")))
+					.withMultipartRequestBody(
+							aMultipart()
+								.withName("bunddef")
+								.withBody(equalTo("bundle")))
+					.withMultipartRequestBody(
+							aMultipart()
+								.withName("csdgroup")
+								.withBody(equalTo("BAR")))
+					.withMultipartRequestBody(
+							aMultipart()
+								.withName("bundle"))
+					.willReturn(
+						aResponse()
+							.withStatus(200)
+							.withHeader("Content-Type", "text/plain")
+							.withBody("Some content")
+					)
+			);
+		return wireMockServer;
+	}
+	
 	private static byte[] getBundleBinary() {
 		try {
 			InputStream fileInputStream = DeployPreBuild.class.getClassLoader().getResourceAsStream("test-app-bundle-0.0.1-SNAPSHOT.zip");

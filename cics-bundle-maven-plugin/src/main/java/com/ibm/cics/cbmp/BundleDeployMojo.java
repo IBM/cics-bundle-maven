@@ -26,6 +26,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
@@ -56,11 +57,14 @@ public class BundleDeployMojo extends AbstractMojo {
 	@Parameter
 	private String region;
 
-	@Parameter(required = true)
+	@Parameter
 	private String bundle;
 	
-	@Component
-	private SettingsDecrypter settingsDecrypter;
+    @Parameter(property = "project", readonly = true)
+    private MavenProject project;
+
+    @Component
+    private SettingsDecrypter settingsDecrypter;
 
 
 	@Override
@@ -88,7 +92,7 @@ public class BundleDeployMojo extends AbstractMojo {
 		try {
 			BundleDeployHelper.deployBundle(
 				serverConfig.getEndpointUrl(),
-				new File(bundle),
+				getBundle(),
 				bunddef,
 				csdgroup,
 				cicsplexResolved,
@@ -147,6 +151,27 @@ public class BundleDeployMojo extends AbstractMojo {
 			throw new MojoExecutionException("Unknown server configuration format: " + configuration.getClass());
 		}
 		return serverConfig;
+    }
+    
+    private File getBundle() throws MojoExecutionException {
+		if (bundle != null) {
+			return new File(bundle);
+		} else {
+			if (project != null && project.getArtifact() != null) {
+				if ("cics-bundle".equals(project.getPackaging())) {
+					File file = project.getArtifact().getFile();
+					if (file != null) {
+						return file;
+					} else {
+						throw new MojoExecutionException("CICS bundle not found");
+					}
+		        } else {
+		        		throw new MojoExecutionException("Unsupported packaging type: " + project.getPackaging());
+		        }
+			} else {
+				throw new MojoExecutionException("Project artifact not found");
+			}
+		}
     }
 
 }
