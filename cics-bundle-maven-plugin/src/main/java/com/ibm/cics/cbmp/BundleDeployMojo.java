@@ -33,8 +33,8 @@ import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
-import com.ibm.cics.deploy.BundleDeployException;
-import com.ibm.cics.deploy.BundleDeployHelper;
+import com.ibm.cics.bundle.deploy.BundleDeployException;
+import com.ibm.cics.bundle.deploy.BundleDeployHelper;
 
 @Mojo(name = "deploy", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.VERIFY)
 public class BundleDeployMojo extends AbstractMojo {
