@@ -3,10 +3,80 @@
 A collection of Maven plugins and utilities that can be used to build CICS bundles, ready to be installed into CICS TS.
 
 This project contains:
- - `cics-bundle-maven-plugin`, a Maven plugin that builds CICS bundles, including Java-based dependencies.
- - `cics-bundle-reactor-archetype`, a Maven archetype that shows how a simple reactor build can pull together a CICS bundle and a Java project.
+ - `cics-bundle-maven-plugin`, a Maven plugin that builds CICS bundles, in which you can include [any supported bundlepart](supported-bundlepart-types).
+ - `cics-bundle-reactor-archetype`, a Maven archetype that provides a simple reactor module that contains a CICS bundle and a Dynamic Web Project (WAR).
 
-## Using `cics-bundle-maven-plugin`
+## Supported bundlepart types
+The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts:
+ - EAR
+ - OSGi bundle
+ - WAR
+ - EPADAPTER
+ - EPADAPTERSET
+ - EVENTBINDING
+ - FILE
+ - LIBRARY
+ - PACKAGESET
+ - POLICY
+ - PROGRAM
+ - TCPIPSERVICE
+ - TRANSACTION
+ - URIMAP
+
+## Prerequisites
+ To use the plugins, make sure that:
+ * Maven is installed into your environment, or
+ * You use a Java IDE that supports Maven, e.g. Eclipse, IntelliJ, VS Code...
+
+## Create a CICS bundle using the template in 5 minutes
+
+ Maven archetypes provide templates for how a module could, or should, be structured. By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi-module build) module, containing a CICS bundle module and a dynamic Web (WAR) module. The CICS bundle is preconfigured to depend on the WAR module. Building the reactor module builds both the children, so you end up with a CICS bundle that contains the built WAR file.
+
+1. Create a Maven module by referring to the [`com.ibm.cics:cics-bundle-reactor-archetype`](https://search.maven.org/artifact/com.ibm.cics/cics-bundle-reactor-archetype/0.0.1/maven-archetype) artifact:  
+![On command line](images/cmd.png) On command line:  
+```
+mvn archetype:generate -DarchetypeGroupId=com.ibm.cics -DarchetypeArtifactId=cics-bundle-reactor-archetype -DarchetypeVersion=0.0.2-SNAPSHOT -DgroupId=<my-groupid> -DartifactId=<my-artifactId>
+```
+![In Eclipse](images/eclipse.png) If you're using Eclipse:  
+  1. Click **File > New > Maven Project**.
+  2. Click **Add archetype** in the New Maven Project dialog and specify the following information:
+      ```
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>cics-bundle-reactor-archetype</artifactId>
+      <version>0.0.2-SNAPSHOT</version>
+     ```
+    Then hit **OK**.
+   3. From the search result list, select the desired artifact and hit **Next**. 
+   4. Specify information about your own project, including the group ID and artifact ID. Then hit **Finish**.
+2. Specify the JVM server that the application will be installed into by default in the `pom.xml` file of the bundle module:
+  ```xml
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+        <extensions>true</extensions>
+        <configuration>
+          <defaultjvmserver>JVMSRV1</defaultjvmserver>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  ```
+3. Build the bundle and install it into your local repository.  
+  ![On command line](images/cmd.png) On command line, switch to the parent module and run:
+  ```
+  mvn install
+  ```
+  ![In Eclipse](images/eclipse.png) In Eclipse, in the `pom.xml` editor of the parent module, right-click and select **Run As > Maven install**.  
+
+**Result:** Both the CICS bundle and the WAR file on which it depends are built. The generated CICS bundle takes its bundle ID from the Maven module's artifactId and its version from the Maven module's version. Its manifest file is also generated during the build.
+
+
+**What's next:** You can store the built bundle in an artifact repository or deploy it to CICS.
+
+## Create a CICS bundle using `cics-bundle-maven-plugin`
 
 The `cics-bundle-maven-plugin` contributes a new packaging type called `cics-bundle`. This is bound to a new `build` goal that will use the information in the `pom.xml` and dependencies to create a CICS bundle, ready to be stored in an artifact repository or installed into CICS.
 
@@ -14,7 +84,7 @@ To use the `cics-bundle-maven-plugin`:
 
 1. Create a new Maven module for the CICS bundle.
 1. Register the plugin to the `pom.xml` of the CICS bundle module:
-    
+
     ```xml
     <build>
       <plugins>
@@ -28,15 +98,15 @@ To use the `cics-bundle-maven-plugin`:
     </build>
     ```
 1. Change the packaging type of the CICS bundle module to the new CICS bundle type:
-    
+
     ```xml
     <packaging>cics-bundle</packaging>
     ```
-    
+
     If at this point you build the CICS bundle module, it will create a valid CICS bundle! However, it doesn't do much, because it doesn't define any bundle parts.
 
 1. In the CICS bundle module, define a dependency on another module for a Java project that [can be included](#supported-bundlepart-types) into CICS, such as an OSGi bundle, WAR, or EAR.
-    
+
     ```xml
     <dependencies>
       <dependency>
@@ -48,7 +118,7 @@ To use the `cics-bundle-maven-plugin`:
     </dependencies>
     ```
 1. The plugin requires very little configuration. However, an important property for Java bundleparts is the name of the JVM server that the application will be installed into. To define this, alter how you registered the plugin to add some configuration, with the `<defaultjvmserver>` property:
-    
+
     ```xml
     <build>
       <plugins>
@@ -70,32 +140,11 @@ To use the `cics-bundle-maven-plugin`:
 
 1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your Maven project's resources directory, for instance `src/main/resources`. Files in your Maven project's resources directory will be included within the output CICS bundle, and supported types will have a define added to the CICS bundle's cics.xml.
 
-## Supported bundlepart types
-
-The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts:
- - EAR
- - OSGi bundle
- - WAR
- - EPADAPTER
- - EPADAPTERSET
- - EVENTBINDING
- - FILE
- - LIBRARY
- - PACKAGESET
- - POLICY
- - PROGRAM
- - TCPIPSERVICE
- - TRANSACTION
- - URIMAP 
-
-## Using `cics-bundle-reactor-archetype`
-
-Maven archetypes provide templates for how a module could, or should, be structured. By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi-module build) module, containing a CICS bundle module and a dynamic Web (WAR) module. The CICS bundle is preconfigured to depend on the WAR module. Building the reactor module builds both the children, so you end up with a CICS bundle that contains the built WAR file.
 
 ## Using nightly/snapshot builds
 
 Snapshot builds are published to the Sonatype OSS Maven snapshots repository.  To try a snapshot build, you will need to add the following plugin repository to your `pom.xml`:
-    
+
 ```xml
 <project>
   ...
