@@ -1,7 +1,10 @@
 package com.ibm.cics.cbmp;
 
-import org.apache.maven.plugin.logging.Log;
-import com.ibm.cics.bundlegen.BundleConstants;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoExecutionException;
+
+import com.ibm.cics.bundle.parts.BundleResource;
+import com.ibm.cics.bundle.parts.WarBundlePart;
 
 /*-
  * #%L
@@ -17,22 +20,15 @@ import com.ibm.cics.bundlegen.BundleConstants;
  * #L%
  */
 
-public class Warbundle extends JavaBasedBundlePart  {
-	
-	private static final String TYPE = BundleConstants.NS + "/WARBUNDLE";
-	
-	public Warbundle(Log log) {
-		super(log);
-	}
+public class Warbundle extends AbstractNameableJavaBundlePartBinding {
 	
 	@Override
-	protected String getBundlePartFileExtension() {
-		return "warbundle";
-	}
-	
-	@Override
-	protected String getType() {
-		return TYPE;
+	protected BundleResource toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
+		return new WarBundlePart(
+			getName(),
+			getJvmserver(),
+			artifact.getFile()
+		);
 	}
 
 }

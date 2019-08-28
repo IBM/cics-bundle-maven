@@ -1,7 +1,10 @@
 package com.ibm.cics.cbmp;
 
-import org.apache.maven.plugin.logging.Log;
-import com.ibm.cics.bundlegen.BundleConstants;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoExecutionException;
+
+import com.ibm.cics.bundle.parts.BundleResource;
+import com.ibm.cics.bundle.parts.EarBundlePart;
 
 /*-
  * #%L
@@ -17,22 +20,14 @@ import com.ibm.cics.bundlegen.BundleConstants;
  * #L%
  */
 
-public class Earbundle extends JavaBasedBundlePart {
-	
-	private static final String TYPE = BundleConstants.NS + "/EARBUNDLE";
-	
-	public Earbundle(Log log) {
-		super(log);
-	}
+public class Earbundle extends AbstractNameableJavaBundlePartBinding {
 	
 	@Override
-	protected String getBundlePartFileExtension() {
-		return "earbundle";
+	public BundleResource toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
+		return new EarBundlePart(
+			getName(),
+			getJvmserver(),
+			artifact.getFile()
+		);
 	}
-
-	@Override
-	protected String getType() {
-		return TYPE;
-	}
-	
 }
