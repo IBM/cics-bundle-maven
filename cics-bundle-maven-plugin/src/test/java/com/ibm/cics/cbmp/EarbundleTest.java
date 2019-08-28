@@ -1,15 +1,15 @@
 package com.ibm.cics.cbmp;
 
-public class TestWarbundle extends AbstractNameableJavaBundlePartBindingTestCase {
+public class EarbundleTest extends AbstractNameableJavaBundlePartBindingTestCase {
 
 	@Override
 	protected AbstractNameableJavaBundlePartBinding createBinding() {
-		return new Warbundle();
+		return new Earbundle();
 	}
 
 	@Override
 	protected String getRootElementName() {
-		return "warbundle";
+		return "earbundle";
 	}
 
 }

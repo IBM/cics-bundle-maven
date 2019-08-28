@@ -16,7 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public class TestOsgibundle extends AbstractJavaBundlePartBindingTestCase {
+public class OsgibundleTest extends AbstractJavaBundlePartBindingTestCase {
 	
 	@Rule
 	public TemporaryFolder tempFolder = new TemporaryFolder();
