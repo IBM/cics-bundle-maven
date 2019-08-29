@@ -16,11 +16,6 @@ import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 	
 	@Override
-	String getDefaultJVMServer() {
-		return defaultjvmserver;
-	}
-	
-	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Running CICS Bundle build");
 		

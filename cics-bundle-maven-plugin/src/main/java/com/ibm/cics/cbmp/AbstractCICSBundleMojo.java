@@ -62,7 +62,7 @@ public abstract class AbstractCICSBundleMojo extends AbstractMojo {
 	protected List<BundlePartBinding> bundleParts = Collections.emptyList();
 
 	@Parameter(defaultValue = "MYJVMS", required = false, readonly = false)
-	protected String defaultjvmserver;
+	private String defaultjvmserver;
 
 	@Component
 	protected BuildContext buildContext;

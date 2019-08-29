@@ -62,9 +62,4 @@ public class PackageCICSBundleMojo extends AbstractCICSBundleMojo {
 		}
 	}
 
-	@Override
-	String getDefaultJVMServer() {
-		return defaultjvmserver;
-	}
-
 }
