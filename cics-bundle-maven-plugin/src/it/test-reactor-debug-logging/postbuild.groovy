@@ -1,7 +1,3 @@
-package com.ibm.cics.cbmp;
-
-import org.apache.maven.plugin.logging.SystemStreamLog;
-
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -15,12 +11,6 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
+File buildLog = new File(basedir, 'build.log')
 
-public class TestEarbundle extends TestJavaBasedBundlePart {
-
-	@Override
-	protected JavaBasedBundlePart getBundlePart() {
-		return new Earbundle(new SystemStreamLog());
-	}
-
-}
+assert buildLog.text.contains("[DEBUG] Wrote resource to war-0.0.1-SNAPSHOT.war")

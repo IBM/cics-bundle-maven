@@ -24,7 +24,7 @@
     <!-- Test that the build fails correctly when there's no server ID specified -->
 	  <plugin>
         <groupId>@project.groupId@</groupId>
-        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <artifactId>@project.artifactId@</artifactId>
         <version>@project.version@</version>
         <extensions>true</extensions>
         <executions>

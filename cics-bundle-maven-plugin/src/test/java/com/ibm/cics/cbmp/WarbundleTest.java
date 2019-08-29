@@ -1,4 +1,4 @@
-package com.ibm.cics.bundlegen;
+package com.ibm.cics.cbmp;
 
 /*-
  * #%L
@@ -14,8 +14,16 @@ package com.ibm.cics.bundlegen;
  * #L%
  */
 
-public interface BundleConstants {
-	
-	static final String NS = "http://www.ibm.com/xmlns/prod/cics/bundle";
+public class WarbundleTest extends AbstractNameableJavaBundlePartBindingTestCase {
+
+	@Override
+	protected AbstractNameableJavaBundlePartBinding createBinding() {
+		return new Warbundle();
+	}
+
+	@Override
+	protected String getRootElementName() {
+		return "warbundle";
+	}
 
 }

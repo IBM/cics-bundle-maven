@@ -19,10 +19,11 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-archiver</artifactId>
-      <version>3.0.1</version>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>cics-bundle-common</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    
     <dependency>
       <groupId>org.sonatype.plexus</groupId>
       <artifactId>plexus-build-api</artifactId>
@@ -46,24 +47,6 @@
       <groupId>org.codehaus.mojo</groupId>
       <artifactId>build-helper-maven-plugin</artifactId>
       <version>3.0.0</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpmime</artifactId>
-      <version>4.3.1</version>
-    </dependency>
-	
-	<dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>javax.ws.rs-api</artifactId>
-      <version>2.1.1</version>
-	</dependency>
-	
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.9.9.2</version>
     </dependency>
 
     <!-- dependencies to annotations -->
@@ -97,6 +80,12 @@
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-jre8</artifactId>
       <version>2.23.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-matchers</artifactId>
+      <version>2.6.3</version>
       <scope>test</scope>
     </dependency>
     
@@ -167,18 +156,6 @@
               <goal>install</goal>
               <goal>run</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>update-project-license</goal>
-            </goals>
-            <phase>generate-resources</phase>
           </execution>
         </executions>
       </plugin>

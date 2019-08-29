@@ -95,8 +95,8 @@ public class PostBuildOsgi {
 		assertEquals("  <meta_directives>", cxLines.get(2));
 		assertTrue(cxLines.get(3).matches("    <timestamp>\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d.\\d\\d\\dZ</timestamp>"));
 		assertEquals("  </meta_directives>", cxLines.get(4));
-		assertThat(cxLines.get(5), matchesPattern("  <define name=\"test-osgi-0\\.0\\.1-SNAPSHOT\" path=\"test-osgi_0\\.0\\.1\\.[0-9]{12}\\.osgibundle\" type=\"http://www\\.ibm\\.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>"));
-		assertThat(cxLines.get(6), matchesPattern("  <define name=\"test-tycho-0\\.0\\.1-SNAPSHOT\" path=\"test-tycho_0\\.0\\.1\\.[0-9]{12}\\.osgibundle\" type=\"http://www\\.ibm\\.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>"));
+		assertThat(cxLines.get(5), matchesPattern("  <define name=\"test-osgi_0\\.0\\.1.[0-9]{12}\" path=\"test-osgi_0\\.0\\.1\\.[0-9]{12}\\.osgibundle\" type=\"http://www\\.ibm\\.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>"));
+		assertThat(cxLines.get(6), matchesPattern("  <define name=\"test-tycho_0\\.0\\.1.[0-9]{12}\" path=\"test-tycho_0\\.0\\.1\\.[0-9]{12}\\.osgibundle\" type=\"http://www\\.ibm\\.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>"));
 		assertEquals("</manifest>", cxLines.get(7));
 	}
 	
