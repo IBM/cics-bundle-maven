@@ -32,49 +32,59 @@ The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts
 
  Maven archetypes provide templates for how a module could, or should, be structured. By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi-module build) module, containing a CICS bundle module and a dynamic Web (WAR) module. The CICS bundle is preconfigured to depend on the WAR module. Building the reactor module builds both the children, so you end up with a CICS bundle that contains the built WAR file.
 
-1. Create a Maven module by referring to the [`com.ibm.cics:cics-bundle-reactor-archetype`](https://search.maven.org/artifact/com.ibm.cics/cics-bundle-reactor-archetype/0.0.1/maven-archetype) artifact:  
+1. Create a Maven module by referring to the [`com.ibm.cics:cics-bundle-reactor-archetype`](https://search.maven.org/artifact/com.ibm.cics/cics-bundle-reactor-archetype/0.0.1/maven-archetype) artifact:
 
-  ![On command line](images/cmd.png) On command line:  
-    ```
-    mvn archetype:generate -DarchetypeGroupId=com.ibm.cics -DarchetypeArtifactId=cics-bundle-reactor-archetype -DarchetypeVersion=0.0.1 -DgroupId=<my-groupid> -DartifactId=<my-artifactId>
-    ```
+    * ![On command line](images/cmd.png) On command line:
+    
+         ```
+         mvn archetype:generate -DarchetypeGroupId=com.ibm.cics -DarchetypeArtifactId=cics-bundle-reactor-archetype -DarchetypeVersion=0.0.1 -DgroupId=<my-groupid> -DartifactId=<my-artifactId>
+         ```
 
-  ![In Eclipse](images/eclipse.png) If you're using Eclipse:  
-    1. Click **File > New > Maven Project**.
-    2. Click **Add archetype** in the New Maven Project dialog and specify the following information:
+    * ![In Eclipse](images/eclipse.png) If you're using Eclipse:
+        1. Click **File > New > Maven Project**.
+        1. Click **Next** on the first page
+        1. On the second page, click **Add archetype...** in the New Maven Project dialog and specify the following information:
+    
+            Archetype Group Id: `com.ibm.cics`  
+            Archetype Artifact Id: `cics-bundle-reactor-archetype`              
+            Archetype Version: `0.0.1`  
 
-        ```
-        <groupId>com.ibm.cics</groupId>
-        <artifactId>cics-bundle-reactor-archetype</artifactId>
-        <version>0.0.1</version>
-        ```
-
-        Then hit **OK**.  
-    3. From the search result list, select the desired artifact and hit **Next**. 
-    4. Specify information about your own project, including the group ID and artifact ID. Then hit **Finish**.  
+            Then hit **OK**.  
+        1. From the archetype list, select `cics-bundle-reactor-archetype` and hit **Next**. 
+        1. Specify information about your own project, including the group ID and artifact ID. Then hit **Finish**.  
 
 2. Specify the JVM server that the application will be installed into by default in the `pom.xml` file of the bundle module:
-  ```xml
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.ibm.cics</groupId>
-        <artifactId>cics-bundle-maven-plugin</artifactId>
-        <version>0.0.1</version>
-        <extensions>true</extensions>
-        <configuration>
-          <defaultjvmserver>JVMSRV1</defaultjvmserver>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  ```
-3. Build the bundle and install it into your local repository.  
-  ![On command line](images/cmd.png) On command line, switch to the parent module and run:
-  ```
-  mvn install
-  ```
-  ![In Eclipse](images/eclipse.png) In Eclipse, in the `pom.xml` editor of the parent module, right-click and select **Run As > Maven install**.  
+    
+    ```xml
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.ibm.cics</groupId>
+          <artifactId>cics-bundle-maven-plugin</artifactId>
+          <version>0.0.1</version>
+          <extensions>true</extensions>
+          <configuration>
+            <defaultjvmserver>JVMSRV1</defaultjvmserver>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+    ```
+
+    
+3. Build the bundle and install it into your local repository.
+
+    * ![On command line](images/cmd.png) On command line:
+    
+        Switch to the parent module and run:
+        
+        ```
+        mvn install
+        ```
+    
+    * ![In Eclipse](images/eclipse.png) In Eclipse:
+    
+        In the `pom.xml` editor of the parent module, right-click and select **Run As > Maven install**.  
 
 **Result:** Both the CICS bundle and the WAR file on which it depends are built. The generated CICS bundle takes its bundle ID from the Maven module's artifactId and its version from the Maven module's version. Its manifest file is also generated during the build.
 
