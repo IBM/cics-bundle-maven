@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
@@ -51,7 +52,7 @@ public class BundleDeployMojo extends AbstractMojo {
 	@Parameter(required = true)
 	private String csdgroup;
 	
-	@Parameter(required = true)
+	@Parameter
 	private String serverId;
 	
 	@Parameter
@@ -63,34 +64,36 @@ public class BundleDeployMojo extends AbstractMojo {
 	@Parameter
 	private String bundle;
 	
-    @Parameter(property = "project", readonly = true)
-    private MavenProject project;
+	@Parameter
+	private String url;
+	
+	@Parameter
+	private String username;
+	
+	@Parameter
+	private String password;
+	
+	@Parameter(property = "project", readonly = true)
+	private MavenProject project;
 
-    @Component
-    private SettingsDecrypter settingsDecrypter;
-
+	@Component
+	private SettingsDecrypter settingsDecrypter;
 
 	@Override
 	public void execute() throws MojoExecutionException {
-		Server encryptedServer = settings.getServer(serverId);
-		Server server;
-		if (encryptedServer != null) {
-			server = settingsDecrypter.decrypt(new DefaultSettingsDecryptionRequest(encryptedServer)).getServer();
-			if (server == null) {
-				throw new MojoExecutionException("Server ID is null");
-			}
-		} else {
-			throw new MojoExecutionException("Server '" + serverId + "' does not exist");
-		}
+		ServerConfig serverConfig = getServerConfig();
+
+		//Override settings.xml with pom configuration
+		if (url != null) serverConfig.setEndpointUrl(parseURL(url));
+		if (cicsplex != null) serverConfig.setCicsplex(cicsplex);
+		if (region != null) serverConfig.setRegion(region);
+		if (username != null) serverConfig.setUsername(username);
+		if (password != null) serverConfig.setPassword(password);
 		
-		AuthenticationInfo authenticationInfo = getAuthenticationInfo(server);
-		ServerConfig serverConfig = getServerConfig(server);
-		
-		String cicsplexResolved = cicsplex != null ? cicsplex : serverConfig.getCicsplex();
-		if (cicsplexResolved == null || cicsplexResolved.isEmpty()) throw new MojoExecutionException("cicsplex must be specified either in plugin configuration or server configuration");
-		
-		String regionResolved = region != null ? region : serverConfig.getRegion();
-		if (regionResolved == null || regionResolved.isEmpty()) throw new MojoExecutionException("region must be specified either in plugin configuration or server configuration");
+		//Validate mandatory configuration
+		if (serverConfig.getEndpointUrl() == null) throw new MojoExecutionException("url must be specified either in plugin configuration or server configuration");
+		if (StringUtils.isEmpty(serverConfig.getCicsplex())) throw new MojoExecutionException("cicsplex must be specified either in plugin configuration or server configuration");
+		if (StringUtils.isEmpty(serverConfig.getRegion())) throw new MojoExecutionException("region must be specified either in plugin configuration or server configuration");
 		
 		try {
 			BundleDeployHelper.deployBundle(
@@ -98,10 +101,10 @@ public class BundleDeployMojo extends AbstractMojo {
 				getBundle(),
 				bunddef,
 				csdgroup,
-				cicsplexResolved,
-				regionResolved,
-				authenticationInfo.getUsername(),
-				authenticationInfo.getPassword()
+				serverConfig.getCicsplex(),
+				serverConfig.getRegion(),
+				serverConfig.getUsername(),
+				serverConfig.getPassword()
 			);
 		} catch (BundleDeployException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
@@ -110,52 +113,67 @@ public class BundleDeployMojo extends AbstractMojo {
 		}
 	}
 	
-    private AuthenticationInfo getAuthenticationInfo(Server server) {
+	private AuthenticationInfo getAuthenticationInfo(Server server) {
 		AuthenticationInfo authInfo = new AuthenticationInfo();
 		authInfo.setUsername(server.getUsername());
 		authInfo.setPassword(server.getPassword());
 		authInfo.setPrivateKey(server.getPrivateKey());
 		authInfo.setPassphrase(server.getPassphrase());
 		return authInfo;
-    }
-    
-    private ServerConfig getServerConfig(Server server) throws MojoExecutionException {
+	}
+	
+	private ServerConfig getServerConfig() throws MojoExecutionException {
 		ServerConfig serverConfig = new ServerConfig();
-		Object configuration = server.getConfiguration();
-		
-		if (configuration == null) {
-			throw new MojoExecutionException("Server didn't specify any configuration.  URL is mandatory");
-		}
-		
-		if (configuration instanceof Xpp3Dom) {
-			Xpp3Dom c = (Xpp3Dom) configuration;
-			
-			Xpp3Dom endpointUrl = c.getChild("url");
-			if (endpointUrl != null) {
-				try {
-					serverConfig.setEndpointUrl(new URI(endpointUrl.getValue()));
-				} catch (URISyntaxException e) {
-					throw new MojoExecutionException("Endpoint URL is invalid", e);
+		if (serverId != null) {
+			Server encryptedServer = settings.getServer(serverId);
+			Server server;
+			if (encryptedServer != null) {
+				server = settingsDecrypter.decrypt(new DefaultSettingsDecryptionRequest(encryptedServer)).getServer();
+				if (server == null) {
+					throw new MojoExecutionException("Server ID is null");
 				}
 			} else {
-				throw new MojoExecutionException("No endpoint URL set");
+				throw new MojoExecutionException("Server '" + serverId + "' does not exist");
 			}
 			
-			Xpp3Dom cicsplex = c.getChild("cicsplex");
-			if (cicsplex != null) {
-				serverConfig.setCicsplex(cicsplex.getValue());
-			}
+			AuthenticationInfo authenticationInfo = getAuthenticationInfo(server);
+			serverConfig.setUsername(authenticationInfo.getUsername());
+			serverConfig.setPassword(authenticationInfo.getPassword());
 			
-			Xpp3Dom region = c.getChild("region");
-			if (region != null) {
-				serverConfig.setRegion(region.getValue());
+			Object configuration = server.getConfiguration();
+			
+			if (configuration instanceof Xpp3Dom) {
+				Xpp3Dom c = (Xpp3Dom) configuration;
+				
+				Xpp3Dom endpointUrl = c.getChild("url");
+				if (endpointUrl != null) {
+					serverConfig.setEndpointUrl(parseURL(endpointUrl.getValue()));
+				}
+				
+				Xpp3Dom cicsplex = c.getChild("cicsplex");
+				if (cicsplex != null) {
+					serverConfig.setCicsplex(cicsplex.getValue());
+				}
+				
+				Xpp3Dom region = c.getChild("region");
+				if (region != null) {
+					serverConfig.setRegion(region.getValue());
+				}
+			} else {
+				throw new MojoExecutionException("Unknown server configuration format: " + configuration.getClass());
 			}
-		} else {
-			throw new MojoExecutionException("Unknown server configuration format: " + configuration.getClass());
 		}
 		return serverConfig;
-    }
-    
+	}
+
+	private static URI parseURL(String x) throws MojoExecutionException {
+		try {
+			return new URI(x);
+		} catch (URISyntaxException e) {
+			throw new MojoExecutionException("Endpoint URL is invalid", e);
+		}
+	}
+	
     private File getBundle() throws MojoExecutionException {
 		if (bundle != null) {
 			return new File(bundle);
