@@ -31,7 +31,7 @@ public abstract class AbstractNameableJavaBundlePartBinding extends AbstractJava
 	}
 	
 	@Override
-	protected void applyDefaults(Artifact artifact, AbstractCICSBundleMojo mojo) throws MojoExecutionException {
+	protected void applyDefaults(Artifact artifact, AbstractAutoConfigureBundlePublisherMojo mojo) throws MojoExecutionException {
 		if (StringUtils.isEmpty(name)) {
 			name = artifact.getArtifactId() + "-" + artifact.getVersion();
 		}

@@ -33,7 +33,7 @@ public abstract class AbstractJavaBundlePartBinding extends BundlePartBinding {
 		this.jvmserver = jvmserver;
 	}
 	
-	protected void applyDefaults(Artifact artifact, AbstractCICSBundleMojo mojo) throws MojoExecutionException {
+	protected void applyDefaults(Artifact artifact, AbstractAutoConfigureBundlePublisherMojo mojo) throws MojoExecutionException {
 		if (StringUtils.isEmpty(jvmserver)) {
 			String defaultJVMServer = mojo.getDefaultJVMServer();
 			if (StringUtils.isEmpty(defaultJVMServer)) {

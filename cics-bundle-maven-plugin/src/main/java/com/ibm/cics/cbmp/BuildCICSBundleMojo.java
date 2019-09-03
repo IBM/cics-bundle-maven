@@ -27,7 +27,7 @@ import com.ibm.cics.bundle.parts.BundlePublisher;
 import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
-public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
+public class BuildCICSBundleMojo extends AbstractAutoConfigureBundlePublisherMojo {
 	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -51,7 +51,7 @@ public class BuildCICSBundleMojo extends AbstractCICSBundleMojo {
 		
 		workDir.mkdirs();
 		
-		BundlePublisher bundlePublisher = initBundlePublisher();
+		BundlePublisher bundlePublisher = getBundlePublisher();
 		
 		try {
 			bundlePublisher.publishResources();

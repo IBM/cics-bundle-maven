@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -63,6 +64,9 @@ public class BundleDeployMojo extends AbstractMojo {
 
 	@Parameter
 	private String bundle;
+	
+	@Parameter
+	private String classifier;
 	
 	@Parameter
 	private String url;
@@ -179,20 +183,29 @@ public class BundleDeployMojo extends AbstractMojo {
 			return new File(bundle);
 		} else {
 			if (project != null && project.getArtifact() != null) {
-				if ("cics-bundle".equals(project.getPackaging())) {
-					File file = project.getArtifact().getFile();
-					if (file != null) {
-						return file;
-					} else {
-						throw new MojoExecutionException("CICS bundle not found");
-					}
-		        } else {
-		        		throw new MojoExecutionException("Unsupported packaging type: " + project.getPackaging());
-		        }
+				Artifact artifact;
+				if (classifier != null) {
+					artifact = project
+						.getAttachedArtifacts()
+						.stream()
+						.filter(a -> classifier.equals(a.getClassifier()))
+						.findFirst()
+						.orElse(null);
+				} else {
+					artifact = project.getArtifact();
+				}
+
+				//TODO: have a look inside the artifact to see if it contains a cics.xml instead of validating the packaging type
+				File file = project.getArtifact().getFile();
+				if (file != null) {
+					return file;
+				} else {
+					throw new MojoExecutionException("CICS bundle not found");
+				}
 			} else {
 				throw new MojoExecutionException("Project artifact not found");
 			}
 		}
-    }
+	}
 
 }

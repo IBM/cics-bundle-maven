@@ -39,7 +39,7 @@ public abstract class AbstractJavaBundlePartBindingTestCase {
 	public static final String ARTIFACT_ID = "the-artifact-id";
 	public static final String GROUP_ID = "1.0.0-SNAPSHOT";
 
-	private AbstractCICSBundleMojo mojo;
+	private AbstractAutoConfigureBundlePublisherMojo mojo;
 
 	private Map<String, String> defineAttributes = new HashMap<>();
 	
@@ -52,7 +52,7 @@ public abstract class AbstractJavaBundlePartBindingTestCase {
 	@Before
 	public void setUp() {
 		binding = createBinding();
-		mojo = mock(AbstractCICSBundleMojo.class);
+		mojo = mock(AbstractAutoConfigureBundlePublisherMojo.class);
 		
 		artifact = mock(org.apache.maven.artifact.Artifact.class);
 		

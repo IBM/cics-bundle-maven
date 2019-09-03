@@ -31,12 +31,12 @@ public abstract class BundlePartBinding {
 		return artifact.matches(a);
 	}
 
-	public final BundleResource toBundlePart(Artifact artifact, AbstractCICSBundleMojo mojo) throws MojoExecutionException {
+	public final BundleResource toBundlePart(Artifact artifact, AbstractAutoConfigureBundlePublisherMojo mojo) throws MojoExecutionException {
 		applyDefaults(artifact, mojo);
 		return toBundlePartImpl(artifact);
 	}
 	
-	protected abstract void applyDefaults(Artifact artifact, AbstractCICSBundleMojo mojo) throws MojoExecutionException;
+	protected abstract void applyDefaults(Artifact artifact, AbstractAutoConfigureBundlePublisherMojo mojo) throws MojoExecutionException;
 	
 	protected abstract BundleResource toBundlePartImpl(Artifact artifact) throws MojoExecutionException;
 	
