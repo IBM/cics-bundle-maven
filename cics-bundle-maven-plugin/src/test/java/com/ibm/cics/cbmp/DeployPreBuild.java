@@ -47,7 +47,7 @@ public class DeployPreBuild {
 		
 		wireMockServer
 			.stubFor(
-				post(urlEqualTo("/deploy"))
+				post(urlEqualTo("/managedcicsbundles"))
 					.withMultipartRequestBody(
 						aMultipart()
 							.withName("cicsplex")
@@ -95,7 +95,7 @@ public class DeployPreBuild {
 		
 		wireMockServer
 			.stubFor(
-				post(urlEqualTo("/deploy"))
+				post(urlEqualTo("/managedcicsbundles"))
 					.withMultipartRequestBody(
 						aMultipart()
 							.withName("cicsplex")
