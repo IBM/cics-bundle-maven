@@ -33,7 +33,7 @@ import com.ibm.cics.bundle.parts.BundlePublisher;
 import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
 @Mojo(name = "package", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PACKAGE)
-public class PackageCICSBundleMojo extends AbstractBundlePublisherMojo {	
+public class PackageCICSBundleMojo extends AbstractAutoConfigureBundlePublisherMojo {	
 	
 	static final String CICS_BUNDLE_EXTENSION = "zip";
 	

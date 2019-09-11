@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
-import com.ibm.cics.bundle.parts.BundleResource;
 import com.ibm.cics.bundle.parts.OsgiBundlePart;
 
 /*-
@@ -26,7 +25,7 @@ import com.ibm.cics.bundle.parts.OsgiBundlePart;
 public class Osgibundle extends AbstractJavaBundlePartBinding {
 	
 	@Override
-	public BundleResource toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
+	public OsgiBundlePart toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
 		File osgiBundle = artifact.getFile();
 		
 		String osgiVersion;

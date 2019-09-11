@@ -1,5 +1,7 @@
 package com.ibm.cics.cbmp;
 
+import org.apache.maven.plugin.MojoExecutionException;
+
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -18,14 +20,12 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-import com.ibm.cics.bundle.parts.WarBundlePart;
-
 @Mojo(name = "bundle-war", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.VERIFY)
 public class BundleWarMojo extends AbstractBundleJavaMojo {
 	
 	@Override
-	protected WarBundlePart getBundlePart(org.apache.maven.artifact.Artifact artifact) {
-		return new WarBundlePart(artifact.getArtifactId() + "_" + artifact.getVersion(), jvmserver, artifact.getFile());
+	protected AbstractJavaBundlePartBinding getBundlePartBinding(org.apache.maven.artifact.Artifact artifact) throws MojoExecutionException {
+		return new Warbundle();
 	}
 
 }

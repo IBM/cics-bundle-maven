@@ -32,10 +32,10 @@ public abstract class AbstractJavaBundlePartBinding extends BundlePartBinding {
 	public void setJvmserver(String jvmserver) {
 		this.jvmserver = jvmserver;
 	}
-	
-	protected void applyDefaults(Artifact artifact, AbstractAutoConfigureBundlePublisherMojo mojo) throws MojoExecutionException {
+	@Override
+	protected void applyDefaults(Artifact artifact, DefaultsProvider defaults) throws MojoExecutionException {
 		if (StringUtils.isEmpty(jvmserver)) {
-			String defaultJVMServer = mojo.getDefaultJVMServer();
+			String defaultJVMServer = defaults.getJVMServer();
 			if (StringUtils.isEmpty(defaultJVMServer)) {
 				throw new MojoExecutionException("Bundle part for artifact " + artifact + " did not specify a JVM server explicitly, and no default was configured");
 			} else {

@@ -15,6 +15,7 @@ package com.ibm.cics.cbmp;
  */
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,9 +44,6 @@ public abstract class AbstractBundlePublisherMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.directory}", required = true, readonly = true)
 	protected File buildDir;
 
-	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
-	protected File workDir;
-
 	@Parameter(required = false)
 	protected List<BundlePartBinding> bundleParts = Collections.emptyList();
 	
@@ -65,7 +63,7 @@ public abstract class AbstractBundlePublisherMojo extends AbstractMojo {
 	private BundlePublisher createBundlePublisher() throws MojoExecutionException {
 		VersionInformation v = new VersionInformation(project.getVersion());
 		BundlePublisher bundlePublisher = new BundlePublisher(
-			workDir.toPath(),
+			getWorkDir(),
 			project.getArtifactId(),
 			v.getMajor(),
 			v.getMinor(),
@@ -79,6 +77,8 @@ public abstract class AbstractBundlePublisherMojo extends AbstractMojo {
 		initBundlePublisher(bundlePublisher);
 		return bundlePublisher;
 	}
+	
+	protected abstract Path getWorkDir();
 	
 	protected void initBundlePublisher(BundlePublisher bundlePublisher) throws MojoExecutionException {
 		

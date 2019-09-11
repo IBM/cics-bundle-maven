@@ -63,7 +63,7 @@ public abstract class AbstractJavaBundlePartBindingTestCase {
 	
 	@Before
 	public void defaultJvmServer() {
-		when(mojo.getDefaultJVMServer()).thenReturn("MYJVMS");
+		when(mojo.getJVMServer()).thenReturn("MYJVMS");
 		setExpectedJVMServer("MYJVMS");
 	}
 	

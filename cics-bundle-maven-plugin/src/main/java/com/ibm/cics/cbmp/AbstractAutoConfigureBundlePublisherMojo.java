@@ -1,5 +1,7 @@
 package com.ibm.cics.cbmp;
 
+import java.io.File;
+
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -29,12 +31,16 @@ import org.apache.maven.plugins.annotations.Parameter;
 import com.ibm.cics.bundle.parts.BundlePublisher;
 import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
-public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractBundlePublisherMojo {
+public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractBundlePublisherMojo implements DefaultsProvider {
 
 	@Parameter(defaultValue = "MYJVMS", required = false, readonly = false)
 	private String defaultjvmserver;
+	
+	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
+	protected File workDir;
 
-	String getDefaultJVMServer() {
+	@Override
+	public String getJVMServer() {
 		return defaultjvmserver;
 	}
 	
@@ -140,6 +146,11 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 			case JAR: return new Osgibundle();
 			default: return null;
 		}
+	}
+	
+	@Override
+	protected Path getWorkDir() {
+		return workDir.toPath();
 	}
 
 }

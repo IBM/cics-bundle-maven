@@ -18,14 +18,12 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-import com.ibm.cics.bundle.parts.EarBundlePart;
-
 @Mojo(name = "bundle-ear", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.VERIFY)
 public class BundleEarMojo extends AbstractBundleJavaMojo {
 	
 	@Override
-	protected EarBundlePart getBundlePart(org.apache.maven.artifact.Artifact artifact) {
-		return new EarBundlePart(artifact.getArtifactId() + "_" + artifact.getVersion(), jvmserver, artifact.getFile());
+	protected AbstractJavaBundlePartBinding getBundlePartBinding(org.apache.maven.artifact.Artifact artifact) {
+		return new Earbundle();
 	}
 
 }
