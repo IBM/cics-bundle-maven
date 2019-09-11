@@ -1,5 +1,9 @@
 package com.ibm.cics.cbmp;
 
+import static org.junit.Assert.assertThat;
+
+import java.io.FileNotFoundException;
+
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -65,8 +69,16 @@ public class BundleValidator {
 			Path bundle,
 			BundleFileValidator... validators) {
 		
+		URI uri;
 		try {
-			FileSystem bundleFS = FileSystems.newFileSystem(new URI("jar:" + bundle.toUri().toString()), Collections.emptyMap());
+			uri = new URI("jar:" + bundle.toUri().toString());
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		
+		System.out.println("Validating bundle: " + uri.toString());
+		
+		try (FileSystem bundleFS = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
 			Path root = bundleFS.getRootDirectories().iterator().next();
 			
 			Files
@@ -85,7 +97,9 @@ public class BundleValidator {
 						throw new RuntimeException(e);
 					};
 				});
-		} catch (IOException | URISyntaxException e) {
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Bundle not found: " + uri);
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -111,16 +125,20 @@ public class BundleValidator {
 		};
 	}
 
-	public static CompareMatcher manifestMatcher(String expectedManifest) {
-		return CompareMatcher
-			.isIdenticalTo(
-				expectedManifest
-			).withDifferenceEvaluator(
-				DifferenceEvaluators.chain(
-					DifferenceEvaluators.Default,
-					TIMESTAMP_EVALUATOR
+	public static BundleFileValidator manifestValidator(String expectedManifest) {
+		return bfv(
+			"/META-INF/cics.xml",
+			is -> assertThat(is, CompareMatcher
+				.isIdenticalTo(
+					expectedManifest
+				).withDifferenceEvaluator(
+					DifferenceEvaluators.chain(
+						DifferenceEvaluators.Default,
+						TIMESTAMP_EVALUATOR
+					)
 				)
-			);
+			)
+		);
 	}
 
 }

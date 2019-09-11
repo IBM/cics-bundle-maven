@@ -2,6 +2,7 @@ package com.ibm.cics.cbmp;
 
 import static com.ibm.cics.cbmp.BundleValidator.assertBundleContents;
 import static com.ibm.cics.cbmp.BundleValidator.bfv;
+import static com.ibm.cics.cbmp.BundleValidator.manifestValidator;
 
 /*-
  * #%L
@@ -38,17 +39,10 @@ public class PostBuildTestBundleWar {
 		"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
 		"<warbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-bundle-war-0.0.1-SNAPSHOT\"/>";
 	
-	public static void main(String[] args) throws Exception {
-		assertOutput(new File("/Users/stewf/repos/cics-bundle-maven/cics-bundle-maven-plugin/target/it/test-bundle-war"));
-	}
-	
 	static void assertOutput(File root) throws Exception {
 		assertBundleContents(
 			root.toPath().resolve("target/test-bundle-war-0.0.1-SNAPSHOT-cics-bundle.zip"),
-			bfv(
-				"/META-INF/cics.xml",
-				is -> assertThat(is , BundleValidator.manifestMatcher(EXPECTED_MANIFEST))
-			),
+			manifestValidator(EXPECTED_MANIFEST),
 			bfv(
 				"/test-bundle-war-0.0.1-SNAPSHOT.warbundle",
 				is -> assertThat(is, CompareMatcher.isIdenticalTo(EXPECTED_BUNDLE_PART))
