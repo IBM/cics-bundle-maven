@@ -1,5 +1,7 @@
 package com.ibm.cics.cbmp;
 
+import java.io.File;
+
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -14,85 +16,40 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.mojo.buildhelper.versioning.VersionInformation;
-import org.sonatype.plexus.build.incremental.BuildContext;
 
 import com.ibm.cics.bundle.parts.BundlePublisher;
 import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
-public abstract class AbstractCICSBundleMojo extends AbstractMojo {
-
-	protected static final String EAR = "ear";
-	protected static final String WAR = "war";
-	protected static final String JAR = "jar";
-
-	@Parameter(defaultValue = "${project}", required = true, readonly = true)
-	protected MavenProject project;
-
-	@Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
-	protected File baseDir;
-	
-	@Parameter(defaultValue = "${project.build.directory}", required = true, readonly = true)
-	protected File buildDir;
-
-	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
-	protected File workDir;
-
-	@Parameter(required = false, readonly = false)
-	protected String classifier;
-
-	@Parameter(required = false)
-	protected List<BundlePartBinding> bundleParts = Collections.emptyList();
+public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractBundlePublisherMojo implements DefaultsProvider {
 
 	@Parameter(defaultValue = "MYJVMS", required = false, readonly = false)
 	private String defaultjvmserver;
+	
+	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
+	protected File workDir;
 
-	@Component
-	protected BuildContext buildContext;
-
-	@Component
-	protected MavenProjectHelper projectHelper;
-
-	String getDefaultJVMServer() {
+	@Override
+	public String getJVMServer() {
 		return defaultjvmserver;
 	}
 	
-	protected BundlePublisher initBundlePublisher() throws MojoExecutionException {
-		VersionInformation v = new VersionInformation(project.getVersion());
-		BundlePublisher bundlePublisher = new BundlePublisher(
-			workDir.toPath(),
-			project.getArtifactId(),
-			v.getMajor(),
-			v.getMinor(),
-			v.getPatch(),
-			v.getBuildNumber()
-		);
-		
-		//Notify the build context of file changes
-		bundlePublisher.setFileChangeListener(path -> buildContext.refresh(path.toFile()));
-		
+	@Override
+	protected void initBundlePublisher(BundlePublisher bundlePublisher) throws MojoExecutionException {
 		ArrayList<Artifact> artifacts = new ArrayList<>(project.getArtifacts());
 		addExplicitBundleParts(bundlePublisher, artifacts);
 		addAutoBundleParts(bundlePublisher, artifacts);
 		addStaticBundleResources(bundlePublisher);
-		return bundlePublisher;
 	}
 
 	private void addStaticBundleResources(BundlePublisher bundlePublisher) throws MojoExecutionException {
@@ -182,13 +139,18 @@ public abstract class AbstractCICSBundleMojo extends AbstractMojo {
 		getLog().info("Adding " + bundlePartBinding.getClass().getSimpleName() + " bundle part for " + artifact.getId() + "(" + artifact.getType() + ")");
 	}
 
-	private BundlePartBinding getDefaultBundlePartBinding(Artifact artifact) {
+	private static BundlePartBinding getDefaultBundlePartBinding(Artifact artifact) {
 		switch (artifact.getType()) {
 			case WAR: return new Warbundle();
 			case EAR: return new Earbundle();
 			case JAR: return new Osgibundle();
 			default: return null;
 		}
+	}
+	
+	@Override
+	protected Path getWorkDir() {
+		return workDir.toPath();
 	}
 
 }

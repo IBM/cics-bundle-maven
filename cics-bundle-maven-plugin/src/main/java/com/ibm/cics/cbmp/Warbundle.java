@@ -3,7 +3,6 @@ package com.ibm.cics.cbmp;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
-import com.ibm.cics.bundle.parts.BundleResource;
 import com.ibm.cics.bundle.parts.WarBundlePart;
 
 /*-
@@ -23,7 +22,7 @@ import com.ibm.cics.bundle.parts.WarBundlePart;
 public class Warbundle extends AbstractNameableJavaBundlePartBinding {
 	
 	@Override
-	protected BundleResource toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
+	public WarBundlePart toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
 		return new WarBundlePart(
 			getName(),
 			getJvmserver(),
