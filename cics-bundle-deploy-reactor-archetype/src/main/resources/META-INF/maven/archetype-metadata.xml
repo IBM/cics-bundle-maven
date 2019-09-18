@@ -1,0 +1,55 @@
+<archetype-descriptor>
+  <requiredProperties>
+    <requiredProperty key="defaultjvmserver">
+      <defaultValue>defaultjvmserver</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="bunddef">
+      <defaultValue>bundledefinition</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="csdgroup">
+      <defaultValue>csdgroup</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="username">
+      <defaultValue>username</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="password">
+      <defaultValue>password</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="deployURL">
+      <defaultValue>deployURL</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="cicsplex">
+      <defaultValue>cicsplex</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="region">
+      <defaultValue>region</defaultValue>
+    </requiredProperty>
+  </requiredProperties>
+  <modules>
+    <module name="\${rootArtifactId}-war" id="\${rootArtifactId}-war" dir="__rootArtifactId__-war">
+      <fileSets>
+        <fileSet>
+          <directory>src</directory>
+          <includes>
+            <include>**/*.java</include>
+            <include>**/*.xml</include>
+            <include>**/*.png</include>
+            <include>**/*.html</include>
+            <include>**/*.js</include>
+            <include>**/*.css</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
+    <module name="\${rootArtifactId}-bundle" id="\${rootArtifactId}-bundle" dir="__rootArtifactId__-bundle">
+      <fileSets>
+        <fileSet filtered="true">
+          <directory></directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>	
+  </modules>
+</archetype-descriptor>

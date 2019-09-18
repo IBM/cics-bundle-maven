@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+	  <groupId>\${groupId}</groupId>
+	  <artifactId>\${rootArtifactId}</artifactId>
+	  <version>\${version}</version>
+  </parent>
+  
+  <artifactId>\${artifactId}</artifactId>
+  <packaging>cics-bundle</packaging>
+  <name>Example CICS bundle</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>\${groupId}</groupId>
+      <artifactId>\${rootArtifactId}-war</artifactId>
+      <version>\${version}</version>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <defaultjvmserver>\${defaultjvmserver}</defaultjvmserver>
+        </configuration>
+        <executions>
+          <execution>
+            <id>deploy</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <configuration>
+              <serverId>deployserver</serverId>
+              <bunddef>\${bunddef}</bunddef>
+              <csdgroup>\${csdgroup}</csdgroup>
+              <bundle>\${project.build.directory}/\${artifactId}-\${version}.zip</bundle>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
