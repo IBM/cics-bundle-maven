@@ -19,6 +19,6 @@ File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.exists()
 assert buildLog.text.contains("[ERROR] Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:")
-assert buildLog.text.contains(":deploy (deploy) on project test-bundle-deploy: The parameters 'bunddef' for goal com.ibm.cics:cics-bundle-maven-plugin:")
+assert buildLog.text.contains(":deploy (deploy) on project test-bundle-deploy_missing-required-attribute: The parameters 'bunddef' for goal com.ibm.cics:cics-bundle-maven-plugin:")
 assert buildLog.text.contains(":deploy are missing or invalid")
 assert buildLog.text.contains("Caused by: org.apache.maven.plugin.PluginParameterException: The parameters 'bunddef' for goal com.ibm.cics:cics-bundle-maven-plugin")
