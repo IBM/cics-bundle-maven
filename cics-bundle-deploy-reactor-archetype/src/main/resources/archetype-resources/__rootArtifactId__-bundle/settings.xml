@@ -1,0 +1,14 @@
+<settings>
+	<servers>
+		<server>
+			<id>deployserver</id>
+			<username>\${username}</username>
+			<password>\${password}</password>
+			<configuration>
+				<url>\${deployURL}</url>
+				<cicsplex>\${cicsplex}</cicsplex>
+				<region>\${region}</region>
+			</configuration>
+		</server>
+	</servers>
+</settings>
