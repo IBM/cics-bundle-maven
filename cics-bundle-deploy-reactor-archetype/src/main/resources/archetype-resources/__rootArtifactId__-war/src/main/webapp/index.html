@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Hello World example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A Hello World example to show static and dynamic web content.">
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap" rel="stylesheet">
+	<style>
+		body {
+			background-color: #282828;
+			color: #fff;
+			font-family: "IBM Plex Sans", sans-serif;
+		}
+		h1 {
+			font-weight: bold;
+			font-size: 2em;
+		}
+	</style>
+</head>
+<body>
+	<h1>Welcome to the example web application.</h1>
+	<span id="placeholder"></span>
+	<script type="text/javascript">
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var message = JSON.parse(this.responseText).message
+				document.getElementById("placeholder").innerText = message;
+			}
+		};
+		xhr.open("GET", "hello");
+		xhr.send();
+	</script>
+</body>
+</html>

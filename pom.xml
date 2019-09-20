@@ -227,5 +227,6 @@
   <modules>
     <module>cics-bundle-maven-plugin</module>
     <module>cics-bundle-reactor-archetype</module>
+    <module>cics-bundle-deploy-reactor-archetype</module>    
   </modules>
 </project>
