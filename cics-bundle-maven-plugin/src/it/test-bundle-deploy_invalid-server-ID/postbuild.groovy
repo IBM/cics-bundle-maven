@@ -19,5 +19,5 @@ File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.exists()
 assert buildLog.text.contains("[ERROR] Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:")
-assert buildLog.text.contains(":deploy (deploy) on project test-bundle-deploy: Server 'INVALID' does not exist")
+assert buildLog.text.contains(":deploy (deploy) on project test-bundle-deploy_invalid-server-ID: Server 'INVALID' does not exist")
 assert buildLog.text.contains("Caused by: org.apache.maven.plugin.MojoExecutionException: Server 'INVALID' does not exist")

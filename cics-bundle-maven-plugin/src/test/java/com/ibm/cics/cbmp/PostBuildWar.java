@@ -31,7 +31,7 @@ public class PostBuildWar {
 
 	private static final String CICS_XML = "cics.xml";
 	private static final String META_INF = "META-INF";
-	private static final String BASE_NAME = "test-war-0.0.1-SNAPSHOT";
+	private static final String BASE_NAME = "test-war-1.0.0";
 	private static final String WAR_BUNDLE_PART = BASE_NAME + ".warbundle";
 	private static final String WAR_BUNDLE = BASE_NAME + ".war";
 
@@ -52,7 +52,7 @@ public class PostBuildWar {
 		assertEquals(2, wbpLines.size());
 		assertTrue(wbpLines.get(0).startsWith("<?xml"));
 		assertTrue(wbpLines.get(0).endsWith("?>"));
-		assertEquals("<warbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-war-0.0.1-SNAPSHOT\"/>", wbpLines.get(1));
+		assertEquals("<warbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-war-1.0.0\"/>", wbpLines.get(1));
 		
 		File metaInf = new File(tempDir, META_INF);
 		files = metaInf.list();
@@ -68,7 +68,7 @@ public class PostBuildWar {
 		assertEquals("  <meta_directives>", cxLines.get(2));
 		assertTrue(cxLines.get(3).matches("    <timestamp>\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d.\\d\\d\\dZ</timestamp>"));
 		assertEquals("  </meta_directives>", cxLines.get(4));
-		assertEquals("  <define name=\"test-war-0.0.1-SNAPSHOT\" path=\"test-war-0.0.1-SNAPSHOT.warbundle\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/WARBUNDLE\"/>", cxLines.get(5));
+		assertEquals("  <define name=\"test-war-1.0.0\" path=\"test-war-1.0.0.warbundle\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/WARBUNDLE\"/>", cxLines.get(5));
 		assertEquals("</manifest>", cxLines.get(6));
 	}
 	
