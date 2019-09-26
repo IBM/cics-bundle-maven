@@ -18,6 +18,9 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
+/**
+ * Package the produced EAR project as a CICS bundle.
+ */
 @Mojo(name = "bundle-ear", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.VERIFY)
 public class BundleEarMojo extends AbstractBundleJavaMojo {
 	

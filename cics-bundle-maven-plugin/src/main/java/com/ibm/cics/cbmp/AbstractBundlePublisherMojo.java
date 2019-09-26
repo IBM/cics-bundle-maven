@@ -16,8 +16,6 @@ package com.ibm.cics.cbmp;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -44,8 +42,6 @@ public abstract class AbstractBundlePublisherMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.directory}", required = true, readonly = true)
 	protected File buildDir;
 
-	@Parameter(required = false)
-	protected List<BundlePartBinding> bundleParts = Collections.emptyList();
 	
 	@Component
 	protected BuildContext buildContext;

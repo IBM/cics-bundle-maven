@@ -26,6 +26,9 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import com.ibm.cics.bundle.parts.BundlePublisher;
 import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
+/**
+ * Builds a CICS bundle to the target directory, including any dependencies and resource definition artifacts.
+ */
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
 public class BuildCICSBundleMojo extends AbstractAutoConfigureBundlePublisherMojo {
 	

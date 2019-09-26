@@ -31,14 +31,17 @@ public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo
 	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}-cics-bundle.zip", required = true, readonly = true)
 	private File cicsBundleArchive;
 	
+	/**
+	 * The CICS JVM server that the Java code will execute in.
+	 */
 	@Parameter(required = true)
 	protected String jvmserver;
 	
+	/**
+	 * The Maven classifier to use for the generated bundle archive. 
+	 */
 	@Parameter(defaultValue = "cics-bundle")
 	private String classifier;
-	
-	@Parameter
-	private Artifact artifact;
 
 	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}-cics-bundle", required = true, readonly = true)
 	private File workDir;

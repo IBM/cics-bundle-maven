@@ -32,11 +32,18 @@ import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import com.ibm.cics.bundle.parts.BundlePublisher;
 import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
+
+/**
+ * Packages a CICS bundle as an archive file.
+ */
 @Mojo(name = "package", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PACKAGE)
 public class PackageCICSBundleMojo extends AbstractAutoConfigureBundlePublisherMojo {	
 	
 	static final String CICS_BUNDLE_EXTENSION = "zip";
 	
+	/**
+	 * The Maven classifier to use for the generated bundle archive. 
+	 */
 	@Parameter(required = false, readonly = false)
 	private String classifier;
 

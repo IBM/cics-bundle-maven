@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,11 +34,20 @@ import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
 public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractBundlePublisherMojo implements DefaultsProvider {
 
+	/**
+	 * The default fallback value for the CICS JVM server that will be used for any Java-based artifacts that don't have a JVM server specified.
+	 */
 	@Parameter(defaultValue = "MYJVMS", required = false, readonly = false)
 	private String defaultjvmserver;
 	
 	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
 	protected File workDir;
+
+	/**
+	 * Specify that a declared dependency should be treated as an EAR, WAR, or JAR bundle part.
+	 */
+	@Parameter(required = false)
+	protected List<BundlePartBinding> bundleParts = Collections.emptyList();
 
 	@Override
 	public String getJVMServer() {
