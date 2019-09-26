@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ibm.cics</groupId>
+    <artifactId>cics-bundle-demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>demo-bundle</artifactId>
+  
+  <!-- Tell Maven to build a CICS bundle -->
+  <packaging>cics-bundle</packaging>
+
+  <!-- Declares a dependency on the demo-war module containing the source for the war project, which will be packaged into a war as part of the build -->
+  <!-- The generated CICS bundle will will have a bundle ID of demo-war-0.0.1-SNAPSHOT, which it gets from this artifact ID and version -->
+  <dependencies>
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>demo-war</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <!-- Use the cics-bundle-maven-plugin to build the war, package it into a CICS bundle, and deploy it -->
+      <plugin>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <extensions>true</extensions>
+
+        <!-- Update the default JVM server that the application will be installed into by default, This is used when creating the bundle, and goes into the CICS bundle's manifest -->
+        <configuration>
+          <defaultjvmserver>JVMSRV1</defaultjvmserver>
+        </configuration>
+        <executions>
+          <execution>
+          
+            <!-- This declares that we want to run the deploy goal and we want this to happen during the verify phase of the lifecycle-->
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <phase>verify</phase>
+            
+            <!-- The below configuration is used to deploy the built bundle to CICS.  -->
+            <configuration>
+              <!-- Set the URL of the deploy target -->
+              <url>http://yourcicsurl.com:9080</url>
+              <!-- We'd recommend that you use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
+              <username>${deploy-user}</username>
+              <password>${deploy-password}</password>
+              <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSPlex you want to deploy to -->
+              <bunddef>DEMOBUNDLE</bunddef>
+              <csdgroup>BAR</csdgroup>
+              <cicsplex>CICSEX56</cicsplex>
+              <region>IYCWEMW2</region>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>
