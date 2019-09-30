@@ -32,6 +32,7 @@
     </repository>
     <site>
       <id>github</id>
+      <!--  TODO - after testing, replace this with the main branch -->
       <url>scm:git:https://github.com/davenice/cics-bundle-maven.git</url>
     </site>
   </distributionManagement>
