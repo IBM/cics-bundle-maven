@@ -9,6 +9,11 @@
       <username>${env.OSSRH_USERNAME}</username>
       <password>${env.OSSRH_PASSWORD}</password>
     </server>
+    <server>
+      <id>github</id>
+      <username>${env.GHPAT_USER}</username>
+      <password>${env.GHPAT_TOKEN}</password>
+    </server>
   </servers>
   
   <profiles>
