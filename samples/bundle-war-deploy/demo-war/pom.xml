@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ibm.cics</groupId>
+  <artifactId>demo-war</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>Liberty Profile Sample - Servlet</name>
+  <url>https://wasdev.github.io</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://raw.github.com/WASdev/sample.servlet/master/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-servlet_3.0_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>com.ibm.cics.server</artifactId>
+      <version>1.700.0-5.5-PH10453</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-servlet_3.0_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>jsr250-api</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <configuration>
+            <failOnMissingWebXml>false</failOnMissingWebXml>
+            <warName>JavaHelloWorldApp</warName>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+        <executions>
+          <execution>
+
+            <!-- These goals will firstly run the war packaging oin the project, and then will run the deploy goal, which will happen during the verify phase of the lifecycle by default-->
+            <goals>
+              <goal>bundle-war</goal>
+              <goal>deploy</goal>
+            </goals>
+
+            <configuration>
+              <!-- The bundle classifier indicates that the war should be packaged into a CICS bundle first -->
+              <classifier>cics-bundle</classifier>
+      
+              <!-- Update the default JVM server that the application will be installed into by default, This is used when creating the bundle, and goes into the CICS bundle's manifest -->
+              <jvmserver>JVMSRV1</jvmserver>
+              
+              <!-- Set the URL of the deploy target -->
+              <url>http://yourcicsurl.com:9080</url>
+
+              <!-- We'd recommend that you use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
+              <username>${deploy-user}</username>
+              <password>${deploy-password}</password>
+
+              <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSPlex you want to deploy to -->
+              <bunddef>DEMOBUNDLE</bunddef>
+              <csdgroup>BAR</csdgroup>
+              <cicsplex>CICSEX56</cicsplex>
+              <region>IYCWEMW2</region>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
