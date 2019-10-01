@@ -1,5 +1,8 @@
 ### Bundle reactor deploy sample
-This sample demonstrates how you could create a new Maven reactor project with multiple modules. One module (demo-war) contains the Java project and the other (demo-bundle) contains the configuration to package the Java project into a CICS bundle and then deploy this to CICS. This is the quickest way to give this a try without having an existing Java Maven project. 
+This sample demonstrates how you can create a new Maven reactor project with multiple modules. 
+One module (demo-war) contains a Java project which uses JCICS from Maven Central. 
+The other module (demo-bundle) contains the configuration to package the Java project into a CICS bundle and then deploy this to CICS. 
+This is the quickest way to give this a try without having an existing Java Maven project. 
 
 ## Set Up
 # Have your system programmer create your bundle definition in CSD

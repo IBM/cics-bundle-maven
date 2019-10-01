@@ -36,12 +36,14 @@
   </dependencyManagement>
 
   <dependencies>
+    <!-- JCICS dependency, used in SimpleServlet.java -->
     <dependency>
       <groupId>com.ibm.cics</groupId>
       <artifactId>com.ibm.cics.server</artifactId>
       <version>1.700.0-5.5-PH10453</version>
       <scope>provided</scope>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
       <artifactId>geronimo-servlet_3.0_spec</artifactId>
@@ -59,6 +61,7 @@
   <build>
     <pluginManagement>
       <plugins>
+        <!-- Packages the contents of demo-war into a war called JavaHelloWorldApp.war, this will build to the target directory -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
