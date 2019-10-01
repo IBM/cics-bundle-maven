@@ -1,4 +1,4 @@
-# cics-bundle-maven
+# cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Build Status](https://travis-ci.com/IBM/cics-bundle-maven.svg?branch=master)](https://travis-ci.com/IBM/cics-bundle-maven)
 
 A collection of Maven plugins and utilities that can be used to build CICS bundles, ready to be installed into CICS TS.
 
