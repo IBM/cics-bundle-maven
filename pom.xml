@@ -67,7 +67,8 @@
 				<version>3.0.0</version>
 				<configuration>
 				<scmBranch>gh-pages</scmBranch>
-				<serverId>github</serverId>
+				<username>${env.GHPAT_USER}</username>
+				<password>${env.GHPAT_TOKEN}</password>
 				</configuration>
 			</plugin>
 			<plugin>
