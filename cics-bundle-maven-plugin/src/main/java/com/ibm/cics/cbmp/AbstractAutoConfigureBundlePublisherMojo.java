@@ -56,7 +56,7 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 	
 	@Override
 	protected void initBundlePublisher(BundlePublisher bundlePublisher) throws MojoExecutionException {
-		ArrayList<Artifact> artifacts = new ArrayList<>(project.getArtifacts());
+		ArrayList<Artifact> artifacts = new ArrayList<>(project.getDependencyArtifacts());
 		addExplicitBundleParts(bundlePublisher, artifacts);
 		addAutoBundleParts(bundlePublisher, artifacts);
 		addStaticBundleResources(bundlePublisher);
