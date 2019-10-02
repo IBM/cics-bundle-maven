@@ -19,37 +19,14 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   
-  <artifactId>war</artifactId>
-  <packaging>war</packaging>
+  <artifactId>jar2</artifactId>
   
   <dependencies>
     <dependency>
       <groupId>com.ibm.cics.test-no-transitive</groupId>
-      <artifactId>jar</artifactId>
+      <artifactId>jar1</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
-  
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <packagingExcludes>pom.xml</packagingExcludes>
-          <warName>test-war</warName>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   
 </project>

@@ -25,9 +25,8 @@
   <dependencies>
     <dependency>
       <groupId>com.ibm.cics.test-no-transitive</groupId>
-      <artifactId>war</artifactId>
+      <artifactId>jar2</artifactId>
       <version>${project.version}</version>
-      <type>war</type>
     </dependency>
   </dependencies>
   

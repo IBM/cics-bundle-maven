@@ -19,6 +19,6 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   
-  <artifactId>jar</artifactId>
+  <artifactId>jar1</artifactId>
   
 </project>
