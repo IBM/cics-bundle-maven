@@ -65,9 +65,9 @@
 		<artifactId>maven-scm-publish-plugin</artifactId>
 		<version>3.0.0</version>
 		<configuration>
-		<scmBranch>gh-pages</scmBranch>
-		<username>${env.GHPAT_USER}</username>
-		<password>${env.GHPAT_TOKEN}</password>
+			<serverId>github</serverId>
+			<scmBranch>gh-pages</scmBranch>
+			<content>${project.build.directory}/staging/cics-bundle-maven-plugin</content>
 		</configuration>
 	</plugin>
 	<plugin>
