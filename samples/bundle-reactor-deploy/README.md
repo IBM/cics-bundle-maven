@@ -1,11 +1,11 @@
-### Bundle reactor deploy sample
+# Bundle reactor deploy sample
 This sample demonstrates how you can create a new Maven reactor project with multiple modules. 
 One module (demo-war) contains a Java project which uses JCICS from Maven Central. 
 The other module (demo-bundle) contains the configuration to package the Java project into a CICS bundle and then deploy this to CICS. 
 This is the quickest way to give this a try without having an existing Java Maven project. 
 
 ## Set Up
-# Have your system programmer create your bundle definition in CSD
+### Have your system programmer create your bundle definition in CSD
 Your system programmer has the freedom to choose whichever CSD group and BUNDDEF name they like.
 The bundle directory of your bundle definition should be set as follows: <bundle_deploy_root>/<bundle_id>_<bundle_version>.  So for this sample, ensure the bundle deploy root is set to `/u/expauto/bundles/demo-bundle_0.0.1`.
 
