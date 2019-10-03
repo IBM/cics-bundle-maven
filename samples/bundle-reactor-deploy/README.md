@@ -12,7 +12,7 @@ The bundle directory of your bundle definition should be set as follows: `<bundl
 ## Using the sample
 Clone the sample into your preferred IDE
 
-Edit the variables in demo-bundle/pom.xml to match the CSD group, CICS Plex, region and bundle definition name. 
+Edit the variables in demo-bundle/pom.xml to match the CSD group, CICSplex, region and bundle definition name. 
 
 The project is built as a reactor project. By running the parent project's build, all the children will also be built.
 

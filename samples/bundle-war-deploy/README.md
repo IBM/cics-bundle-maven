@@ -10,7 +10,7 @@ The bundle directory of your bundle definition should be set as follows: `<bundl
 ## Using the sample
 Clone the sample into your preferred IDE
 
-Edit the variables from the below block in demo-war/pom.xml to match the CSD group, CICS Plex, region and bundle definition name. 
+Edit the variables from the below block in demo-war/pom.xml to match the CSD group, CICSplex, region and bundle definition name. 
 
       <plugin>
         <groupId>com.ibm.cics</groupId>
