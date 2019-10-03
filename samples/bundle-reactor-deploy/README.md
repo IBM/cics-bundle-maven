@@ -6,13 +6,13 @@ This is the quickest way to give this a try without having an existing Java Mave
 
 ## Set Up
 ### Have your system programmer create your bundle definition in CSD
-Your system programmer should create a bundle definition in CSD and tell you the CSD group and BUNDDEF name they have used.
+Your system programmer should create a bundle definition in CSD and tell you the CSD group and bundle definition name they have used.
 The bundle directory of your bundle definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.  So for this sample, if your bundle_deploy_root was `/u/someuser/bundles/`, the bundle directory would be `/u/someuser/bundles/demo-bundle_0.0.1`.
 
 ## Using the sample
 Clone the sample into your preferred IDE
 
-Edit the variables in demo-bundle/pom.xml to match the CSD group, CICS Plex, region and bundle definition name. 
+Edit the variables in demo-bundle/pom.xml to match the CSD group, CICSplex, region and bundle definition name. 
 
 The project is built as a reactor project. By running the parent project's build, all the children will also be built.
 

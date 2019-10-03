@@ -53,7 +53,7 @@
               <!-- We'd recommend that you use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
               <username>${cics-user-id}</username>
               <password>${cics-password}</password>
-              <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSPlex you want to deploy to -->
+              <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSplex you want to deploy to -->
               <bunddef>DEMOBUNDLE</bunddef>
               <csdgroup>BAR</csdgroup>
               <cicsplex>CICSEX56</cicsplex>
