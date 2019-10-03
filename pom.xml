@@ -60,31 +60,31 @@
       </extension>
     </extensions>
     <plugins>
-	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-scm-publish-plugin</artifactId>
-		<version>3.0.0</version>
-		<configuration>
-			<serverId>github</serverId>
-			<scmBranch>gh-pages</scmBranch>
-			<content>${project.build.directory}/staging/cics-bundle-maven-plugin</content>
-		</configuration>
-	</plugin>
-	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-site-plugin</artifactId>
-		<version>3.8.2</version>
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.maven.doxia</groupId>
-				<artifactId>doxia-module-markdown</artifactId>
-				<version>1.6</version>
-			</dependency>
-		</dependencies>
-		<configuration>
-			<relativizeDecorationLinks>false</relativizeDecorationLinks>
-		</configuration>
-	</plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+            <serverId>github</serverId>
+            <scmBranch>gh-pages</scmBranch>
+            <content>${project.build.directory}/staging/cics-bundle-maven-plugin</content>
+        </configuration>
+    </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.8.2</version>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.maven.doxia</groupId>
+                <artifactId>doxia-module-markdown</artifactId>
+                <version>1.6</version>
+            </dependency>
+        </dependencies>
+        <configuration>
+            <relativizeDecorationLinks>false</relativizeDecorationLinks>
+        </configuration>
+    </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
@@ -277,5 +277,6 @@
     <module>cics-bundle-maven-plugin</module>
     <module>cics-bundle-reactor-archetype</module>
     <module>cics-bundle-deploy-reactor-archetype</module>    
+    <module>cics-bundle-maven-site</module>
   </modules>
 </project>

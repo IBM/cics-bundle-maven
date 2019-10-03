@@ -104,29 +104,6 @@
   <build>
     <plugins>
       <plugin>
-	    <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-          <id>copy-index</id>
-          <phase>post-site</phase>
-          <goals>
-            <goal>copy-resources</goal>
-          </goals>
-          <configuration>
-            <outputDirectory>${project.basedir}${file.separator}..${file.separator}target${file.separator}staging${file.separator}cics-bundle-maven-plugin</outputDirectory>
-              <resources>          
-                <resource>
-                  <directory>${project.basedir}${file.separator}..${file.separator}</directory>
-                  <include>README.md</include>
-                </resource>
-              </resources>             
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>3.6.0</version>
