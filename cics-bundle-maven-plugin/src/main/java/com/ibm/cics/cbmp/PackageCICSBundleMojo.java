@@ -34,7 +34,7 @@ import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
 
 /**
- * Packages a CICS bundle as an archive file.
+ * <p>This mojo packages a CICS bundle as an archive file. It will normally be run by default without specific configuration.</p>
  */
 @Mojo(name = "package", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PACKAGE)
 public class PackageCICSBundleMojo extends AbstractAutoConfigureBundlePublisherMojo {	
