@@ -3,9 +3,9 @@ This sample demonstrates how you can add to an existing pom.xml of a war project
 Everything within the demo-war directory would be an existing Maven project. The additional step to publish this to CICS is the additional plugin in the pom.xml: 
 
 ## Set Up
-# Have your system programmer create your bundle definition in CSD
-Your system programmer has the freedom to choose whichever CSD group and BUNDDEF name they like.
-The bundle directory of your bundle definition should be set as follows: <bundle_deploy_root>/<bundle_id>_<bundle_version>.  So for this sample, ensure the bundle deploy root is set to `/u/expauto/bundles/demo-war_0.0.1`.
+### Have your system programmer create your bundle definition in CSD
+Your system programmer should create a bundle definition in CSD and tell you the CSD group and BUNDDEF name they have used.
+The bundle directory of your bundle definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.  So for this sample, if your bundle_deploy_root was `/u/someuser/bundles/`, the bundle directory would be `/u/someuser/bundles/demo-war_0.0.1`.
 
 ## Using the sample
 Clone the sample into your preferred IDE
