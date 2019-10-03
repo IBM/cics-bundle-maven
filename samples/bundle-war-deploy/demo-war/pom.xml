@@ -29,9 +29,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-servlet_3.0_spec</artifactId>
-      <version>1.0</version>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -67,7 +67,7 @@
             </goals>
 
             <configuration>
-              <!-- The bundle classifier indicates that the war should be packaged into a CICS bundle first -->
+              <!-- The bundle classifier indicates that the war should be packaged into a CICS bundle -->
               <classifier>cics-bundle</classifier>
       
               <!-- Update the default JVM server that the application will be installed into by default, This is used when creating the bundle, and goes into the CICS bundle's manifest -->
@@ -80,7 +80,7 @@
               <username>${cics-user-id}</username>
               <password>${cics-password}</password>
 
-              <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSPlex you want to deploy to -->
+              <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSplex you want to deploy to -->
               <bunddef>DEMOBUNDLE</bunddef>
               <csdgroup>BAR</csdgroup>
               <cicsplex>CICSEX56</cicsplex>
