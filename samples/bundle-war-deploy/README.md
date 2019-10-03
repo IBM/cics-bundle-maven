@@ -1,6 +1,6 @@
+# Bundle war deploy sample
 This sample demonstrates how you can add to an existing pom.xml of a war project that already exists.
 Everything within the demo-war directory would be an existing Maven project. The additional step to publish this to CICS is the additional plugin in the pom.xml: 
-
 
 ## Set Up
 # Have your system programmer create your bundle definition in CSD
@@ -26,8 +26,8 @@ Edit the variables from the below block in demo-war/pom.xml to match the CSD gro
               <classifier>cics-bundle</classifier>
               <jvmserver>JVMSRV1</jvmserver>
               <url>http://yourcicsurl.com:9080</url>
-              <username>${deploy-user}</username>
-              <password>${deploy-password}</password>
+              <username>${cics-user-id}</username>
+              <password>${cics-password}</password>
               <bunddef>DEMOBUNDLE</bunddef>
               <csdgroup>BAR</csdgroup>
               <cicsplex>CICSEX56</cicsplex>

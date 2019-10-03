@@ -82,7 +82,7 @@
         <executions>
           <execution>
 
-            <!-- These goals will firstly run the war packaging oin the project, and then will run the deploy goal, which will happen during the verify phase of the lifecycle by default-->
+            <!-- These goals will firstly run the war packaging on the project, and then will run the deploy goal, which will happen during the verify phase of the lifecycle by default-->
             <goals>
               <goal>bundle-war</goal>
               <goal>deploy</goal>
