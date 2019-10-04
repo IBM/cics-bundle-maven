@@ -65,7 +65,8 @@
         <artifactId>maven-scm-publish-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-            <serverId>github</serverId>
+            <username>${env.GHPAT_USER}</username>
+            <password>${env.GHPAT_TOKEN}</password>
             <scmBranch>gh-pages</scmBranch>
             <content>${project.build.directory}/staging/cics-bundle-maven-plugin</content>
         </configuration>
@@ -250,26 +251,26 @@
           </plugins>
         </pluginManagement>
       </build>
-      			<reporting>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-plugin-plugin</artifactId>
-						<version>3.6.0</version>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-site-plugin</artifactId>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<!-- don't produce any project info reports -->
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-				</plugins>
-			</reporting>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-plugin-plugin</artifactId>
+            <version>3.6.0</version>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <!-- don't produce any project info reports -->
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
     </profile>
   </profiles>
 
