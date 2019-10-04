@@ -39,7 +39,9 @@ import com.ibm.cics.bundle.deploy.BundleDeployException;
 import com.ibm.cics.bundle.deploy.BundleDeployHelper;
 
 /**
- * Deploys a CICS bundle to the specified CICS region using the CICS bundle deployment API. A matching bundle definition must be provided in the CSD in advance.
+ * <p>This mojo deploys a CICS bundle to the specified CICS region using the CICS bundle deployment API. A matching bundle definition must be provided in the CSD in advance.</p>
+ * <p>The <code>deploy</code> goal is not bound by default, so will not run unless specifically configured. You might choose to configure the <code>deploy</code> goal to run inside a specific profile, so that
+ * a developer can choose whether to deploy their bundle with a command-line parameter to switch Maven profiles.</p>
  */
 @Mojo(name = "deploy", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.VERIFY)
 public class BundleDeployMojo extends AbstractMojo {

@@ -21,7 +21,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
- * Package the produced OSGi project as a CICS bundle.
+ * <p>This mojo packages the produced OSGi project as a CICS bundle.
+ * <p>Use this mojo to add configuration to an existing OSGi project so that it is packaged as a CICS bundle, without creating an additional Maven module.</p>
  */
 @Mojo(name = "bundle-osgi", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.VERIFY)
 public class BundleOSGiMojo extends AbstractBundleJavaMojo {

@@ -27,7 +27,9 @@ import com.ibm.cics.bundle.parts.BundlePublisher;
 import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
 /**
- * Builds a CICS bundle to the target directory, including any dependencies and resource definition artifacts.
+ * <p>This mojo builds a CICS bundle to the target directory, including any dependencies and resource definition artifacts.</p> 
+ * <p>Use this mojo by creating a new Maven module with packaging type <code>cics-bundle</code> to package an existing Java-based 
+ * dependency as a bundle without modifying the existing dependency, or to create a bundle that only contains resource definitions artifacts.</p> 
  */
 @Mojo(name = "build", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.COMPILE)
 public class BuildCICSBundleMojo extends AbstractAutoConfigureBundlePublisherMojo {
