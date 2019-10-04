@@ -38,6 +38,10 @@
                   <directory>${project.basedir}/../</directory>
                   <include>README.md</include>
                 </resource>
+                <resource>
+                  <directory>${project.basedir}/../images</directory>
+                  <include>**/*.png</include>
+                </resource>
               </resources>
             </configuration>
           </execution>
