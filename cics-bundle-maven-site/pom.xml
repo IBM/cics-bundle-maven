@@ -37,7 +37,7 @@
                 <resource>
                   <directory>${project.basedir}/../</directory>
                   <include>README.md</include>
-                  <include>**/*.png</include>
+                  <include>images/*.png</include>
                 </resource>
               </resources>
             </configuration>
