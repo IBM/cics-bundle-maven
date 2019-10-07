@@ -62,17 +62,6 @@
     <plugins>
     <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-scm-publish-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-            <username>${env.GHPAT_USER}</username>
-            <password>${env.GHPAT_TOKEN}</password>
-            <scmBranch>gh-pages</scmBranch>
-            <content>${project.build.directory}/staging/cics-bundle-maven-plugin</content>
-        </configuration>
-    </plugin>
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>3.8.2</version>
         <dependencies>
