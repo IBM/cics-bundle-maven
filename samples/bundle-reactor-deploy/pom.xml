@@ -22,6 +22,8 @@
     </pluginRepository>
   </pluginRepositories>
 
+  <!-- The demo-war module will package the source into a war. The demo-bundle module will package this into a CICS bundle and deploy it. 
+       The ordering of the modules doesn't matter as demo-bundle has a dependency on demo-war so it knows to build that first. -->
   <modules>
     <module>demo-war</module>
     <module>demo-bundle</module>
