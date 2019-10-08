@@ -10,7 +10,7 @@ Your system programmer should create a bundle definition in CSD and tell you the
 The bundle directory of your bundle definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.  So for this sample, if your bundle_deploy_root was `/u/someuser/bundles/`, the bundle directory would be `/u/someuser/bundles/demo-bundle_0.0.1`.
 
 ## Using the sample
-Clone the sample into your preferred IDE
+[Clone the sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-reactor-deploy) into your preferred IDE
 
 Edit the variables in demo-bundle/pom.xml to match the CSD group, CICSplex, region and bundle definition name. 
 

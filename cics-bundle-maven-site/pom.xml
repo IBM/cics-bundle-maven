@@ -39,6 +39,8 @@
                   <include>README.md</include>
                   <include>images/*.png</include>
                   <include>_config.yml</include>
+                  <include>samples/bundle-reactor-deploy/README.md</include>
+                  <include>samples/bundle-war-deploy/README.md</include>
                 </resource>
               </resources>
             </configuration>
