@@ -45,7 +45,7 @@ Edit the variables from the configuration section below in demo-war/pom.xml to m
       ```
       
 ### Option 2: Add to an existing Maven project
-If you already have an existing java Maven project, you can add the below to the plugins section of your pom.xml and edit the configuration variables. Your Maven project should now resemble the sample.
+If you already have an existing Java Maven project, you can add the below to the plugins section of your pom.xml and edit the configuration variables. Your Maven project should now resemble the sample.
 
       ```xml
       <plugin>
