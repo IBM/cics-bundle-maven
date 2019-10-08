@@ -9,6 +9,14 @@ install:
 - ".travis/setup-signing.sh"
 script:
 - ".travis/script.sh"
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GHPAT_TOKEN
+  keep_history: true
+  local-dir: target/staging/cics-bundle-maven-plugin
+  on:
+    branch: master
 env:
   global:
   - secure: Mbz75ASqQi/bnYa3tO9fH4hTzuEcCG5odCb6QcGWBM5ENuJX/TB/UDOODHD1HuFhD26Jwdo8lx5dzpQ6pmlHpjf1xCEAVljyxYUNQz5Rtq81S/HSG2834ytAeFQiDW/qi9wSL3XEiqyEsAwbc+lbcxzfnb4JYIXVO0uYbLBU8O/WsW0SyrHx/ZZoAsUwUabIdoCT/Wxwnf7SgrC2Q9jpEetILq3gEHbAC8Vrq9cHn0N+EVChxzKmy3pPcGtN3StVVcY3be1qrgjcXd3c0r2vTDF77ydj65FochFu5DwHjo79jVFSpz6VJM7dMelMBEmWEbYbbtxwcpApSTKSizdBh4yMwh5aiZZmrUMzVktjdp+U22tGMyMCOmHhJzyBkRHVn3B9jRLmzAW7fGPExFM2S+6Cw2xF49Zk8NpeQ+MYtOPKBWnP68Y2XRFZx4IiQu5PBBf2/SFuVq4tb6o2v7udjlKPMDCe+uSmpHzgUrfDlKe0vNp3qxVHDwxn/vXwkiFa+T3Bn8jxyhRiHYxeewexqo2gTYsjM263PZ5w1lWbwdZ2kGhqUfL7WXnyFAkI4xmLiDKahH9xPE2OJASwnEiA0L7b7dDISEKXdr6IXOOJCMakKt6CvACub+XaOvrXlkTTwVZwBEW5ZA3H0/1eKfiMOQkoN/gCiAagF8HZnBT/hEA=
