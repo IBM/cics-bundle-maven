@@ -38,6 +38,7 @@
                   <directory>${project.basedir}/../</directory>
                   <include>README.md</include>
                   <include>images/*.png</include>
+                  <include>_config.yml</include>
                 </resource>
               </resources>
             </configuration>
