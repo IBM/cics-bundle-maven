@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>samples</artifactId>
-	<packaging>pom</packaging>
-	<parent>
-		<groupId>com.ibm.cics</groupId>
-		<artifactId>cics-bundle-maven</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
-	</parent>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-invoker-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<streamLogs>true</streamLogs>
-					<showErrors>true</showErrors>
-					<goals>package</goals><!--  stop before we deploy, for now - this requires infrastructure -->
-					<cloneProjectsTo>${project.build.directory}/sample-build</cloneProjectsTo>
-					<settingsFile>../cics-bundle-maven-plugin/src/it/settings.xml</settingsFile>
-					<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-					<projectsDirectory>${basedir}</projectsDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>integration-test</id>
-						<goals>
-							<goal>install</goal>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>samples</artifactId>
+  <packaging>pom</packaging>
+  <parent>
+    <groupId>com.ibm.cics</groupId>
+    <artifactId>cics-bundle-maven</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+  </parent>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <streamLogs>true</streamLogs>
+          <showErrors>true</showErrors>
+          <goals>package</goals><!--  stop before we deploy, for now - this requires infrastructure -->
+          <cloneProjectsTo>${project.build.directory}/sample-build</cloneProjectsTo>
+          <settingsFile>../cics-bundle-maven-plugin/src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <projectsDirectory>${basedir}</projectsDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
