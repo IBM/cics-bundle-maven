@@ -13,7 +13,7 @@ Option 1 is to use the whole sample as-is, for example, if you want to try this 
 Option 2 is to extend an existing maven project, which you'd like to package and install as a CICS bundle. 
 
 ### Option 1: Using the full sample
-Clone the sample into your preferred IDE
+[Clone the sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-war-deploy) into your preferred IDE
 
 Edit the variables from the configuration section below in demo-war/pom.xml to match the CSD group, CICSplex, region and bundle definition name. 
 
