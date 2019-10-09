@@ -142,6 +142,7 @@ public class BundleDeployMojo extends AbstractMojo {
 		if (StringUtils.isEmpty(serverConfig.getCicsplex())) throw new MojoExecutionException("cicsplex must be specified either in plugin configuration or server configuration");
 		if (StringUtils.isEmpty(serverConfig.getRegion())) throw new MojoExecutionException("region must be specified either in plugin configuration or server configuration");
 		
+		getLog().info("Deploying bundle to " + serverConfig.getEndpointUrl().toASCIIString() + " into region " + serverConfig.getCicsplex() + "/" + serverConfig.getRegion());
 		try {
 			BundleDeployHelper.deployBundle(
 				serverConfig.getEndpointUrl(),
@@ -158,6 +159,7 @@ public class BundleDeployMojo extends AbstractMojo {
 		} catch (IOException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
 		}
+		getLog().info("Bundle deployed");
 	}
 	
 	private AuthenticationInfo getAuthenticationInfo(Server server) {
