@@ -57,6 +57,8 @@ To use the `cics-bundle-maven-plugin`:
       </plugins>
     </build>
     ```
+    Note that the version should be the latest version of this plugin, which can be found at the top of this page. This plugin uses [SNAPSHOT versions](https://maven.apache.org/guides/getting-started/index.html#What_is_a_SNAPSHOT_version) for development.
+    
 1. Change the packaging type of the CICS bundle module to the new CICS bundle type:
 
     ```xml
