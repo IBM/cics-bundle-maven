@@ -73,13 +73,13 @@
               <!-- Update the default JVM server that the application will be installed into by default, This is used when creating the bundle, and goes into the CICS bundle's manifest -->
               <jvmserver>JVMSRV1</jvmserver>
               
-              <!-- Set the URL of the deploy target -->
-              <url>http://yourcicsurl.com:9080</url>
-
-              <!-- We'd recommend that you use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
+              <!-- Set the transport, hostname, and port for your CMCI -->
+              <url>https://yourcicsurl.com:9080</url>
+              
+              <!-- Use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
               <username>${cics-user-id}</username>
               <password>${cics-password}</password>
-
+              
               <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSplex you want to deploy to -->
               <bunddef>DEMOBUNDLE</bunddef>
               <csdgroup>BAR</csdgroup>

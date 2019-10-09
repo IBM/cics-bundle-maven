@@ -266,7 +266,8 @@
   <modules>
     <module>cics-bundle-maven-plugin</module>
     <module>cics-bundle-reactor-archetype</module>
-    <module>cics-bundle-deploy-reactor-archetype</module>    
+    <module>cics-bundle-deploy-reactor-archetype</module>
     <module>cics-bundle-maven-site</module>
+    <module>samples</module>
   </modules>
 </project>
