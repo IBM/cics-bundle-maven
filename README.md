@@ -29,6 +29,11 @@ The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts
  To use the plugins, make sure that:
  * Maven is installed into your environment, or
  * You use a Java IDE that supports Maven, e.g. Eclipse, IntelliJ, VS Code...
+ 
+ The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region. To use this make sure that:
+ * You have a CICS region that is at CICS® TS V5.6 open beta or later
+ * This region is configured to be a WUI region for the CICSplex that contains the deployment target region
+ * This WUI region is configured to use the CMCI JVM server
 
 
 ## Create a CICS bundle using `cics-bundle-maven-plugin`
