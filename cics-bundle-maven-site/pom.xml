@@ -36,12 +36,9 @@
               <resources>
                 <resource>
                   <directory>${project.basedir}/../</directory>
-                  <include>README.md</include>
+                  <include>**/*.md</include>
                   <include>images/*.png</include>
                   <include>_config.yml</include>
-                  <include>samples/bundle-reactor-deploy/README.md</include>
-                  <include>samples/bundle-war-deploy/README.md</include>
-                  <include>CONTRIBUTING.md</include>
                 </resource>
               </resources>
             </configuration>
