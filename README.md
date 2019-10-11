@@ -102,6 +102,56 @@ To use the `cics-bundle-maven-plugin`:
 
 1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your Maven project's resources directory, for instance `src/main/resources`. Files in your Maven project's resources directory will be included within the output CICS bundle, and supported types will have a define added to the CICS bundle's cics.xml.
 
+## Install a CICS bundle using `cics-bundle-maven-plugin`
+
+Following the instructions above, you will now have built a CICS bundle. You can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#Prerequisites).
+
+1. Have your system programmer create your bundle definition in CSD and tell you the CSD group and bundle definition name they have used.
+The bundle directory of your bundle definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`. 
+
+1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:
+
+  ```xml
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>bundle-war</goal>
+              <goal>deploy</goal>
+            </goals>
+            <configuration>
+              <defaultjvmserver>JVMSRV1</defaultjvmserver>
+              <url>http://yourcicsurl.com:9080</url>
+              <username>${cics-user-id}</username>
+              <password>${cics-password}</password>
+              <bunddef>DEMOBUNDLE</bunddef>
+              <csdgroup>BAR</csdgroup>
+              <cicsplex>CICSEX56</cicsplex>
+              <region>IYCWEMW2</region>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  ```
+
+1. Edit the values in the configuration section to match your CICS configuration.
+   * `url` - Set the transport, hostname, and port for your CMCI
+   * `username` & `password` - These are your credentials for CICS. Use Maven's password encryption, or supply your credentials using environment variables or properties
+   * `bunddef` - The name of the bundle definition to be installed
+   * `csdgroup` - The name of the CSD group that contains the bundle definition
+   * `cicsplex` - The name of  the CICSplex that the target region belongs to
+   * `region` - The name of the region that the bundle should be installed to
+
+  Now if you run the Maven build it will create the CICS bundle as above, and install this in CICS. 
+  Each time you make a change to the Java project and rerun the build it will redeploy the bundle and publish your changes. 
+  
 
 ## Using nightly/snapshot builds
 
