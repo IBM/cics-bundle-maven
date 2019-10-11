@@ -1,5 +1,5 @@
 # Bundle WAR deploy sample
-This sample demonstrates how you can add configure an existing WAR project to build a CICS bundle.
+This sample demonstrates how you can configure an existing WAR project to build a CICS bundle.
 Everything within the demo-war directory would be an existing Maven project. The additional step to publish this to CICS is the additional plugin in the pom.xml: 
 
 ## Set Up
