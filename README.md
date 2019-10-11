@@ -104,42 +104,42 @@ To use the `cics-bundle-maven-plugin`:
 
 ## Install a CICS bundle using `cics-bundle-maven-plugin`
 
-Following the instructions above, you will now have built a CICS bundle. To extend this, you can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#Prerequisites).
+Following the instructions above, you will now have built a CICS bundle. You can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#Prerequisites).
 
 1. Have your system programmer create your bundle definition in CSD and tell you the CSD group and bundle definition name they have used.
 The bundle directory of your bundle definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`. 
 
 1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:
 
-    ```xml
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>com.ibm.cics</groupId>
-          <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>0.0.2-SNAPSHOT</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>bundle-war</goal>
-                <goal>deploy</goal>
-              </goals>
-              <configuration>
-                <defaultjvmserver>JVMSRV1</defaultjvmserver>
-                <url>http://yourcicsurl.com:9080</url>
-                <username>${cics-user-id}</username>
-                <password>${cics-password}</password>
-                <bunddef>DEMOBUNDLE</bunddef>
-                <csdgroup>BAR</csdgroup>
-                <cicsplex>CICSEX56</cicsplex>
-                <region>IYCWEMW2</region>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </build>
-    ```
+  ```xml
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>bundle-war</goal>
+              <goal>deploy</goal>
+            </goals>
+            <configuration>
+              <defaultjvmserver>JVMSRV1</defaultjvmserver>
+              <url>http://yourcicsurl.com:9080</url>
+              <username>${cics-user-id}</username>
+              <password>${cics-password}</password>
+              <bunddef>DEMOBUNDLE</bunddef>
+              <csdgroup>BAR</csdgroup>
+              <cicsplex>CICSEX56</cicsplex>
+              <region>IYCWEMW2</region>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  ```
 
 1. Edit the values in the configuration section to match your CICS configuration.
    * `url` - Set the transport, hostname, and port for your CMCI
@@ -150,7 +150,7 @@ The bundle directory of your bundle definition should be set as follows: `<bundl
    * `region` - The name of the region that the bundle should be installed to
 
   Now if you run the Maven build it will create the CICS bundle as above, and install this in CICS. 
-  Each time you make a change to the Java project and rerun the built it will lifecycle the bundle so you can see your changes. 
+  Each time you make a change to the Java project and rerun the build it will redeploy the bundle and publish your changes. 
   
 
 ## Using nightly/snapshot builds
