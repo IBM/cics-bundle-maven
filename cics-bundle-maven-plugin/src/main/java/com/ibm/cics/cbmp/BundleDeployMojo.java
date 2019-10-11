@@ -100,7 +100,7 @@ public class BundleDeployMojo extends AbstractMojo {
 	private String classifier;
 	
 	/**
-	 * The URL to the the CMCI connection the CICS bundle deployment API is available on. For example `https://yourcicshost.com:9080`.
+	 * The CMCI URL that the CICS bundle deployment API is available on. For example `https://yourcicshost.com:9080`.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
 	@Parameter
