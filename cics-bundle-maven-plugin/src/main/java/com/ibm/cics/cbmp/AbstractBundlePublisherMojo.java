@@ -32,6 +32,7 @@ public abstract class AbstractBundlePublisherMojo extends AbstractMojo {
 	protected static final String EAR = "ear";
 	protected static final String WAR = "war";
 	protected static final String JAR = "jar";
+	protected static final String EBA = "eba";
 
 	@Parameter(defaultValue = "${project}", required = true, readonly = true)
 	protected MavenProject project;

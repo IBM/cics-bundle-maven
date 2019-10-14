@@ -13,6 +13,7 @@ The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts
  - EAR
  - OSGi bundle
  - WAR
+ - EBA
  - EPADAPTER
  - EPADAPTERSET
  - EVENTBINDING
