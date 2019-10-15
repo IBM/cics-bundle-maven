@@ -154,6 +154,7 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 			case WAR: return new Warbundle();
 			case EAR: return new Earbundle();
 			case JAR: return new Osgibundle();
+			case EBA: return new Ebabundle();
 			default: return null;
 		}
 	}
