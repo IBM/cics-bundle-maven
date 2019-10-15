@@ -199,6 +199,23 @@ Another way to get started with the plugin is to use one of the provided archety
 There are two archetypes, one which builds and packages a WAR into a CICS Bundle, and another which then installs this bundle to CICS using the CICS bundle deployment API. 
 Further details on how to use the archetypes can be found [here](ARCHETYPES-README.md).
 
+## Versioning your Maven-build CICS bundles
+
+Maven best practice is to version your code `<version>-SNAPSHOT` during development (for instance `0.0.1-SNAPSHOT` or `1.0.0-SNAPSHOT` - for more information see the Maven doc about [SNAPSHOT versions](https://maven.apache.org/guides/getting-started/index.html#What_is_a_SNAPSHOT_version)).
+
+Developing your code using a SNAPSHOT version will ensure that every time you build your code the previous SNAPSHOT is overwritten in your local Maven repository.
+
+When you are happy with the quality of your code and want to make a release version, reversion your plugin to remove the `-SNAPSHOT` qualifier. The [maven-release-plugin](http://maven.apache.org/guides/mini/guide-releasing.html) provides facilities to automatically remove qualifiers, automatically updating dependencies and promoting code in your source control.
+
+If you do not want to use the maven-release-plugin, you can update the version numbers of your parent reactor project, which will also update child project version numbers. Run this command within your parent reactor project:
+
+```
+mvn versions:set -DnewVersion=0.0.1
+```
+
+Note that this `versions:set` approach will not update dependencies (e.g. from your bundle project to your Java project) which you will need to update manually.
+
+After releasing your code, update to your next development version number, for instance `0.0.2-SNAPSHOT`.
 
 ## Building this project
 
