@@ -10,6 +10,7 @@
     <artifactId>cics-bundle-maven</artifactId>
     <version>0.0.2-SNAPSHOT</version>
   </parent>
+  
   <build>
     <plugins>
       <plugin>
@@ -18,7 +19,7 @@
         <configuration>
           <streamLogs>true</streamLogs>
           <showErrors>true</showErrors>
-          <goals>package</goals><!--  stop before we deploy, for now - this requires infrastructure -->
+          <goals>verify</goals>
           <cloneProjectsTo>${project.build.directory}/sample-build</cloneProjectsTo>
           <settingsFile>../cics-bundle-maven-plugin/src/it/settings.xml</settingsFile>
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
@@ -34,6 +35,30 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>uk.co.automatictester</groupId>
+        <artifactId>wiremock-maven-plugin</artifactId>          
+        <version>5.0.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>run</goal>
+              <goal>stop</goal>
+            </goals>
+            <configuration>
+              <dir>src/main/resources</dir> <!-- files should copy from here to target/classes which is the default value, but the files aren't being copied -->
+              <params>--port=9080</params>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>2.25.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>  
     </plugins>
   </build>
 
