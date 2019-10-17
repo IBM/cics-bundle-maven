@@ -74,7 +74,7 @@
               <jvmserver>JVMSRV1</jvmserver>
               
               <!-- Set the transport, hostname, and port for your CMCI -->
-              <url>https://yourcicsurl.com:9080</url>
+              <url>http://localhost:9080</url>
               
               <!-- Use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
               <username>${cics-user-id}</username>
