@@ -8,18 +8,21 @@ This sample demonstrates how you can create a new Maven reactor project with mul
 This sample is the quickest way to give the Maven plugin a try without having an existing Java Maven project.
 
 ## Set Up
-### Have your system programmer create your bundle definition in CSD
-Your system programmer should create a bundle definition in CSD and tell you the CSD group and bundle definition name they have used.
-The bundle directory of your bundle definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.  So for this sample, if your bundle_deploy_root was `/u/someuser/bundles/`, the bundle directory would be `/u/someuser/bundles/demo-bundle_0.0.1`.
+### Have your system programmer create your BUNDLE definition in CSD
+Your system programmer should create a BUNDLE definition in CSD and tell you the CSD group and BUNDLE definition name they have used.
+The BUNDLEDIR of the BUNDLE definition your system programmer creates should be set as follows: `<bundles-directory>/<bundle_id>_<bundle_version>`.  So for this sample, if your system programmer configured `bundles-directory` as `/u/someuser/bundles/`, the BUNDLEDIR would be `/u/someuser/bundles/demo-bundle_0.0.1`.
 
 ## Using the sample
 [Clone the repository](https://github.com/IBM/cics-bundle-maven.git) and import the sample, samples/bundle-reactor-deploy into your preferred IDE.
 
-Edit the variables in demo-bundle/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and bundle definition name for your environment.
+Edit the variables in demo-bundle/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and BUNDLE definition name for your environment.
 
 The project is built as a reactor project. By running the parent project's build (bundle-reactor-deploy/pom.xml), all the children will also be built.
 
-To build all projects, install them into your local Maven repository, and deploy the built bundle to your CICS region run:
+To build all projects, install them into your local Maven repository, and deploy the built bundle to your CICS region, change to the bundle-reactor-deploy directory and run:
+
+```
 mvn clean install
+```
 
 Visit the servlet (`http://yourcicsurl.com:9080/demo-war-0.0.1-SNAPSHOT`) to see what you published

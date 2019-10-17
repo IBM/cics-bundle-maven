@@ -31,7 +31,7 @@ The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts
  * Maven is installed into your environment, or
  * You use a Java IDE that supports Maven, e.g. Eclipse, IntelliJ, VS Code...
  
- The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region. To use this make sure that:
+ The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region (consult the [CICS TS doc](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.6.0/configuring/cmci/config-bundle-api.html) for details). To use this make sure that:
  * You have a CICS region that is at CICS® TS V5.6 open beta or later
  * This region is configured to be a WUI region for the CICSplex that contains the deployment target region
  * This WUI region is configured to use the CMCI JVM server
@@ -107,8 +107,8 @@ To use the `cics-bundle-maven-plugin`:
 
 Following the instructions above, you will now have built a CICS bundle. You can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#Prerequisites).
 
-1. Have your system programmer create your bundle definition in CSD and tell you the CSD group and bundle definition name they have used.
-The bundle directory of your bundle definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`. 
+1. Have your system programmer create your BUNDLE definition in CSD and tell you the CSD group and BUNDLE definition name they have used.
+The bundle directory of the BUNDLE definition your system programmer creates should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`. 
 
 1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:
 
@@ -145,8 +145,8 @@ The bundle directory of your bundle definition should be set as follows: `<bundl
 1. Edit the values in the configuration section to match your CICS configuration.
    * `url` - Set the transport, hostname, and port for your CMCI
    * `username` & `password` - These are your credentials for CICS. Use Maven's password encryption, or supply your credentials using environment variables or properties
-   * `bunddef` - The name of the bundle definition to be installed
-   * `csdgroup` - The name of the CSD group that contains the bundle definition
+   * `bunddef` - The name of the BUNDLE definition to be installed
+   * `csdgroup` - The name of the CSD group that contains the BUNDLE definition
    * `cicsplex` - The name of  the CICSplex that the target region belongs to
    * `region` - The name of the region that the bundle should be installed to
 
@@ -154,9 +154,9 @@ The bundle directory of your bundle definition should be set as follows: `<bundl
   Each time you make a change to the Java project and rerun the build it will redeploy the bundle and publish your changes. 
   
 
-## Using nightly/snapshot builds
+## Using nightly/snapshot development builds
 
-Snapshot builds are published to the Sonatype OSS Maven snapshots repository.  To try a snapshot build, you will need to add the following plugin repository to your `pom.xml`:
+Snapshot builds are published to the Sonatype OSS Maven snapshots repository which is not available in a default Maven install.  To try a snapshot build, you will need to add the following plugin repository to your `pom.xml`:
 
 ```xml
 <project>
@@ -217,9 +217,11 @@ Note that this `versions:set` approach will not update dependencies (e.g. from y
 
 After releasing your code, update to your next development version number, for instance `0.0.2-SNAPSHOT`.
 
-## Building this project
+## Building the cics-bundle-maven project
 
-This project is built as a reactor project. By running the parent project's build, all the children will also be built.
+You shouldn't need to build the cics-bundle-maven project unless you plan to contribute code. In normal use you will automatically reference the built plugin from Maven Central.
+
+However if you do want to build this project, clone the repository and build cics-bundle-maven/pom.xml. Because this is a reactor modules, all the children will also be built.
 
 To build all projects and install them into the local Maven repository, run:
 
