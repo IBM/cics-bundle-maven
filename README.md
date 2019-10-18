@@ -221,7 +221,7 @@ After releasing your code, update to your next development version number, for i
 
 You shouldn't need to build the cics-bundle-maven project unless you plan to contribute code. In normal use you will automatically reference the built plugin from Maven Central.
 
-However if you do want to build this project, clone the repository and build cics-bundle-maven/pom.xml. Because this is a reactor modules, all the children will also be built.
+However if you do want to build this project, clone the repository and build cics-bundle-maven/pom.xml. Because this is a reactor module, all the children will also be built.
 
 To build all projects and install them into the local Maven repository, run:
 
