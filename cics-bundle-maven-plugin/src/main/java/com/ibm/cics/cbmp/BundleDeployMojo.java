@@ -57,13 +57,13 @@ public class BundleDeployMojo extends AbstractMojo {
 	 * to the configured cicsplex/region, and must be configured with the correct bundle directory according to the 
 	 * bundle deployment API configuration and the name of the bundle the user is deploying.
 	 */
-	@Parameter(required = true)
+	@Parameter(property="cicsbundle.bunddef", required = true)
 	private String bunddef;
 	
 	/**
 	 * The CSD group containing the bundle definition to be installed.
 	 */
-	@Parameter(required = true)
+	@Parameter(property="cicsbundle.csdgroup", required = true)
 	private String csdgroup;
 	
 	/**
@@ -76,55 +76,55 @@ public class BundleDeployMojo extends AbstractMojo {
 	 * The name of the CICSplex the bundle should be installed into.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
-	@Parameter
+	@Parameter(property="cicsbundle.cicsplex")
 	private String cicsplex;
 	
 	/**
 	 * The name of the region the bundle should be installed into.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
-	@Parameter
+	@Parameter(property="cicsbundle.region")
 	private String region;
 
 	/**
 	 * The filename of the bundle archive file to be deployed.
 	 */
-	@Parameter
+	@Parameter(property="cicsbundle.bundle")
 	private String bundle;
 	
 	/**
 	 * The classifier of a bundle attached to this project which is to be deployed.
 	 * If a value for the @bundle parameter is supplied, this classifier is ignored.
 	 */
-	@Parameter
+	@Parameter(property="cicsbundle.classifier")
 	private String classifier;
 	
 	/**
 	 * The CMCI URL that the CICS bundle deployment API is available on. For example `https://yourcicshost.com:9080`.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
-	@Parameter
+	@Parameter(property="cicsbundle.url")
 	private String url;
 	
 	/**
 	 * The username to authenticate with.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
-	@Parameter
+	@Parameter(property="cicsbundle.username")
 	private String username;
 	
 	/**
 	 * When connecting to the CICS bundle deployment API, do not check that the trust chain of the host certificate is valid, 
 	 * do not verify that the host name of certificate matches host name of server.
 	 */
-	@Parameter(defaultValue = "false")
+	@Parameter(property="cicsbundle.insecure", defaultValue = "false")
 	private boolean insecure;
 	
 	/**
 	 * The password to authenticate with.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
-	@Parameter
+	@Parameter(property="cicsbundle.password") 
 	private String password;
 	
 	@Parameter(property = "project", readonly = true)
