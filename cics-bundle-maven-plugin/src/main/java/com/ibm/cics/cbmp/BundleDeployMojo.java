@@ -114,6 +114,13 @@ public class BundleDeployMojo extends AbstractMojo {
 	private String username;
 	
 	/**
+	 * When connecting to the CICS bundle deployment API, do not check that the trust chain of the host certificate is valid, 
+	 * do not verify that the host name of certificate matches host name of server.
+	 */
+	@Parameter(defaultValue = "false")
+	private String insecure;
+	
+	/**
 	 * The password to authenticate with.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
@@ -136,6 +143,7 @@ public class BundleDeployMojo extends AbstractMojo {
 		if (region != null) serverConfig.setRegion(region);
 		if (username != null) serverConfig.setUsername(username);
 		if (password != null) serverConfig.setPassword(password);
+		if (insecure != null) serverConfig.setAllowSelfSignedCertificate(Boolean.parseBoolean(insecure));
 		
 		//Validate mandatory configuration
 		if (serverConfig.getEndpointUrl() == null) throw new MojoExecutionException("url must be specified either in plugin configuration or server configuration");
@@ -152,7 +160,8 @@ public class BundleDeployMojo extends AbstractMojo {
 				serverConfig.getCicsplex(),
 				serverConfig.getRegion(),
 				serverConfig.getUsername(),
-				serverConfig.getPassword()
+				serverConfig.getPassword(),
+				serverConfig.isAllowSelfSignedCertificate()
 			);
 		} catch (BundleDeployException e) {
 			throw new MojoExecutionException(e.getMessage(), e);

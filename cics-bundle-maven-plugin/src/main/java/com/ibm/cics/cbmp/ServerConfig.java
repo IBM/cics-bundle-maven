@@ -23,6 +23,7 @@ public class ServerConfig {
 	private URI endpointUrl;
 	private String username;
 	private String password;
+	private boolean allowSelfSignedCertificate;
 	
 	public String getUsername() {
 		return username;
@@ -51,7 +52,10 @@ public class ServerConfig {
 	public void setEndpointUrl(URI endpointUrl) {
 		this.endpointUrl = endpointUrl;
 	}
-
+	
+	public void setAllowSelfSignedCertificate(boolean allowSelfSignedCertificate) {
+		this.allowSelfSignedCertificate = allowSelfSignedCertificate;
+	}
 	public String getCicsplex() {
 		return cicsplex;
 	}
@@ -62,6 +66,10 @@ public class ServerConfig {
 	
 	public URI getEndpointUrl() {
 		return endpointUrl;
+	}
+	
+	public boolean isAllowSelfSignedCertificate() {
+		return allowSelfSignedCertificate;
 	}
 
 }
