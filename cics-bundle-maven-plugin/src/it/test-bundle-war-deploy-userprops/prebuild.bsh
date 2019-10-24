@@ -1,0 +1,1 @@
+context.put("wireMockServer", com.ibm.cics.cbmp.DeployPreBuild.setupWiremockWithoutBinary(Integer.parseInt(wiremockPort)));

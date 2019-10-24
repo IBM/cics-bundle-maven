@@ -44,7 +44,7 @@ public class PackageCICSBundleMojo extends AbstractAutoConfigureBundlePublisherM
 	/**
 	 * The Maven classifier to use for the generated bundle archive. 
 	 */
-	@Parameter(required = false, readonly = false)
+	@Parameter(property="cicsbundle.classifier", required = false, readonly = false)
 	private String classifier;
 
 	@Component
