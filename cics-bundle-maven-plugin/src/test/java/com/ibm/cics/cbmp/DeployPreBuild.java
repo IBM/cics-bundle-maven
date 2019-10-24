@@ -33,12 +33,32 @@ public class DeployPreBuild {
 	private static byte[] bundleBinary = getBundleBinary();
 	private static WireMockServer wireMockServer;
 	
+	public enum Protocol {
+		HTTP, HTTPS
+	}
+	
 	static WireMockServer setupWiremock(int port) {
+		
+		return setupWiremock(port, Protocol.HTTP);
+	}
+	
+	static WireMockConfiguration withProtocol(WireMockConfiguration config, Protocol protocol, int port) {
+		switch (protocol) {
+		case HTTP:
+			return config.port(port);
+		case HTTPS:
+			return config.httpsPort(port);
+		default:
+			throw new RuntimeException("Unsupported protocol " + protocol + " when starting Wiremock");
+		}
+	}
+	
+	static WireMockServer setupWiremock(int port, Protocol protocol) {
 		ClassLoader ccl = Thread.currentThread().getContextClassLoader();
 		
 		try {
 			Thread.currentThread().setContextClassLoader(WireMock.class.getClassLoader());
-			wireMockServer = new WireMockServer(WireMockConfiguration.options().port(port));
+			wireMockServer = new WireMockServer(withProtocol(WireMockConfiguration.options(), protocol, port));
 		} finally {
 			Thread.currentThread().setContextClassLoader(ccl);
 		}
