@@ -79,6 +79,16 @@ under the License.
       </configuration>
     </server>
     <server>
+      <id>secureServerId</id>
+      <username>ituser</username>
+      <password>itpassword</password>
+      <configuration>
+        <url>https://localhost:@wiremockPort@</url>
+        <cicsplex>cicsplex</cicsplex>
+        <region>region</region>
+      </configuration>
+    </server>
+    <server>
       <id>noCICSplex</id>
       <username>ituser</username>
       <password>itpassword</password>
