@@ -34,7 +34,7 @@ public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo
 	/**
 	 * The CICS JVM server that the Java code will execute in.
 	 */
-	@Parameter(required = true)
+	@Parameter(property="cicsbundle.jvmserver", required = true)
 	protected String jvmserver;
 	
 	/**
