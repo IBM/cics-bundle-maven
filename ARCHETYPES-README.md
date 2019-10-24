@@ -9,7 +9,7 @@ By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi
     * ![On command line](images/cmd.png) On command line:
     
          ```
-         mvn archetype:generate -DarchetypeGroupId=com.ibm.cics -DarchetypeArtifactId=cics-bundle-deploy-reactor-archetype -DarchetypeVersion=0.0.2-SNAPSHOT -DgroupId=<my-groupid> -DartifactId=<my-artifactId>
+         mvn archetype:generate -DarchetypeGroupId=com.ibm.cics -DarchetypeArtifactId=cics-bundle-deploy-reactor-archetype -DarchetypeVersion=1.0.0 -DgroupId=<my-groupid> -DartifactId=<my-artifactId>
          ```
          In the pom.xml file of the bundle module there will be default values for each of the following parameters which you will need to set:  
          `defaultjvmserver`, `bunddef`, `csdgroup`, `username`, `password`, `deployURL`, `cicsplex`, `region`  
@@ -22,7 +22,7 @@ By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi
     
             Archetype Group Id: `com.ibm.cics`  
             Archetype Artifact Id: `cics-bundle-deploy-reactor-archetype`              
-            Archetype Version: `0.0.2-SNAPSHOT`  
+            Archetype Version: `1.0.0`  
 
             Then hit **OK**.  
         1. From the archetype list, select `cics-bundle-deploy-reactor-archetype` and hit **Next**. 
