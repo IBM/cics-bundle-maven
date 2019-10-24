@@ -1,15 +1,23 @@
 # cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Build Status](https://travis-ci.com/IBM/cics-bundle-maven.svg?branch=master)](https://travis-ci.com/IBM/cics-bundle-maven) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~)
 
-A collection of Maven plugins and utilities that can be used to build CICS bundles, ready to be installed into CICS TS.
+A Maven plugin and related utilities that can be used to build CICS bundles, and deploy them into CICS TS.
 
 This project contains:
  - `cics-bundle-maven-plugin`, a Maven plugin that authors CICS bundles for deploying resources into CICS TS. It supports a subset of bundleparts, including Java assets. Read the [Maven doc](https://ibm.github.io/cics-bundle-maven/plugin-info.html) for information about this plugin's goals.
+
+    Using the plugin you can:
+     - [build specialist CICS bundle modules into CICS bundles](#create-a-cics-bundle-in-a-separate-module-using-cics-bundle-maven-plugin), including Java dependencies and other bundleparts (the powerful option)
+     - [package existing Java modules into CICS bundles](#create-a-cics-bundle-from-an-existing-java-module-using-cics-bundle-maven-plugin) (the lightweight option)
+     - [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)
+
  - `cics-bundle-reactor-archetype`, a Maven archetype that provides a simple reactor build that contains a CICS bundle and a Dynamic Web Project (WAR). This archetype builds and packages the WAR and CICS bundle.
+
  - `cics-bundle-deploy-reactor-archetype`, a Maven archetype that provides a simple reactor build that contains a CICS bundle and a Dynamic Web Project (WAR). This archetype packages the WAR into a CICS Bundle and installs it into CICS.
+
  - `samples`, a collection of samples that demonstrate the different ways in which to use the plugin.
 
 ## Supported bundlepart types
-The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts:
+The `cics-bundle-maven-plugin` supports building CICS bundles that contain the following bundleparts:
  - EAR
  - OSGi bundle
  - WAR
@@ -26,22 +34,24 @@ The `cics-bundle-maven-plugin` currently supports the following CICS bundleparts
  - TRANSACTION
  - URIMAP
 
+ It can deploy CICS bundles containing any bundleparts.
+
 ## Prerequisites
- To use the plugins, make sure that:
- * Maven is installed into your environment, or
- * You use a Java IDE that supports Maven, e.g. Eclipse, IntelliJ, VS Code...
+ To use the plugin to build CICS bundles, make sure that Maven is installed.
  
- The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region (consult the [CICS TS doc](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.6.0/configuring/cmci/config-bundle-api.html) for details). To use this make sure that:
+ If you are using the `deploy` goal of the plugin, there are further prerequisites. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region (consult the [CICS TS doc](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.6.0/configuring/cmci/config-bundle-api.html) for details). To use this make sure that:
  * You have a CICS region that is at CICS® TS V5.6 open beta or later
  * This region is configured to be a WUI region for the CICSplex that contains the deployment target region
- * This WUI region is configured to use the CMCI JVM server
+ * This WUI region is configured to use the CMCI JVM server, including the CICS bundle deployment API
 
 
-## Create a CICS bundle using `cics-bundle-maven-plugin`
+## Create a CICS bundle (in a separate module) using `cics-bundle-maven-plugin`
 
-The `cics-bundle-maven-plugin` contributes a new packaging type called `cics-bundle`. This is bound to a new `build` goal that will use the information in the `pom.xml` and dependencies to create a CICS bundle, ready to be stored in an artifact repository or installed into CICS.
+This way of building a CICS bundle is useful when the CICS bundle contains more than one Java bundlepart, or contains extra bundleparts like FILE or URIMAP. It uses a separate module for the CICS bundle.
 
-To use the `cics-bundle-maven-plugin`:
+The `cics-bundle-maven-plugin` contributes a new packaging type called `cics-bundle`. This is bound to the plugin's `build` goal that will use the information in the `pom.xml` and dependencies to create a CICS bundle, ready to be stored in an artifact repository or installed into CICS.
+
+To create a CICS bundle in this way:
 
 1. Create a new Maven module for the CICS bundle.
 1. Register the plugin to the `pom.xml` of the CICS bundle module:
@@ -52,13 +62,13 @@ To use the `cics-bundle-maven-plugin`:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
+          <version>0.0.2-SNAPSHOT</version>
           <extensions>true</extensions>
         </plugin>
       </plugins>
     </build>
     ```
-    Note that the version should be the latest version of this plugin, which can be found at the top of this page. This plugin uses [SNAPSHOT versions](https://maven.apache.org/guides/getting-started/index.html#What_is_a_SNAPSHOT_version) for development.
+    Note that the version should be the latest version of this plugin, which can be found at the top of this page.
     
 1. Change the packaging type of the CICS bundle module to the new CICS bundle type:
 
@@ -68,7 +78,7 @@ To use the `cics-bundle-maven-plugin`:
 
     If at this point you build the CICS bundle module, it will create a valid CICS bundle! However, it doesn't do much, because it doesn't define any bundle parts.
 
-1. In the CICS bundle module, define a dependency on another module for a Java project that [can be included](#supported-bundlepart-types) into CICS, such as an OSGi bundle, WAR, or EAR.
+1. In the CICS bundle module, define a dependency on another module for a Java project that [can be included](#supported-bundlepart-types) into CICS, such as an OSGi bundle, WAR, EAR, or EBA.
 
     ```xml
     <dependencies>
@@ -101,14 +111,48 @@ To use the `cics-bundle-maven-plugin`:
 
     The generated CICS bundle takes its bundle ID from the Maven module's `artifactId` and its version from the Maven module's `version`.
 
-1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your Maven project's resources directory, for instance `src/main/resources`. Files in your Maven project's resources directory will be included within the output CICS bundle, and supported types will have a define added to the CICS bundle's cics.xml.
+1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your Maven project's resources directory, for instance `src/main/resources`. Files in your Maven project's resources directory will be included within the output CICS bundle, and supported types will have a `<define>` element added to the CICS bundle's `cics.xml`.
 
-## Install a CICS bundle using `cics-bundle-maven-plugin`
+## Create a CICS bundle (from an existing Java module) using `cics-bundle-maven-plugin`
 
-Following the instructions above, you will now have built a CICS bundle. You can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#Prerequisites).
+This way of building a CICS bundle modifies an existing Java module to make it also build the CICS bundle. This makes it more lightweight, but it has limitations - the CICS bundle can only contain one Java bundlepart, and can't contain any extra bundleparts such as FILE or URIMAP.
 
-1. Have your system programmer create your BUNDLE definition in CSD and tell you the CSD group and BUNDLE definition name they have used.
-The bundle directory of the BUNDLE definition your system programmer creates should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`. 
+To create a CICS bundle in this way:
+
+1. Take an existing OSGi bundle, WAR, EAR or EBA module. In this case we'll use the `bundle-war` goal for a WAR module, but there are matching `bundle-osgi`, `bundle-ear` and `bundle-eba` goals for those types of module. These goals bind, by default, to the `verify` phase.
+
+1. Register the plugin to the `pom.xml` of the CICS bundle module, and add the appropriate goal as an execution, including configuration for which JVM server the CICS bundle will be installed into:
+
+  ```xml
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-bundle-maven-plugin</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>bundle-war</goal>
+            </goals>
+            <configuration>
+              <defaultjvmserver>JVMSRV1</defaultjvmserver>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  ```
+
+  Now if you build the Java module (including the `verify` phase) it will build the module as usual but then also wrap it in a CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is added to the output of the module, by default using the `cics-bundle` classifier, and is ready to be stored in an artifact repository or deployed to CICS.
+
+## Deploy a CICS bundle using `cics-bundle-maven-plugin`
+
+Following the instructions from one of the two methods above, you will have built a CICS bundle. You can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#Prerequisites).
+
+1. Ensure a BUNDLE definition for this CICS bundle has already been created in the CSD. You will need to know the CSD group and name of the definition.
+The bundle directory of the BUNDLE definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`. 
 
 1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:
 
@@ -151,7 +195,9 @@ The bundle directory of the BUNDLE definition your system programmer creates sho
    * `region` - The name of the region that the bundle should be installed to
 
   Now if you run the Maven build it will create the CICS bundle as above, and install this in CICS. 
-  Each time you make a change to the Java project and rerun the build it will redeploy the bundle and publish your changes. 
+  Each time you make a change to the Java project and rerun the build it will redeploy the bundle and publish your changes.
+
+  Typically you won't want this deployment to happen in every environment that the build is run. Placing this execution in a separate Maven profile that is only enabled in development environments is suggested.
   
 
 ## Using nightly/snapshot development builds
@@ -216,18 +262,6 @@ mvn versions:set -DnewVersion=0.0.1
 Note that this `versions:set` approach will not update dependencies (e.g. from your bundle project to your Java project) which you will need to update manually.
 
 After releasing your code, update to your next development version number, for instance `0.0.2-SNAPSHOT`.
-
-## Building the cics-bundle-maven project
-
-You shouldn't need to build the cics-bundle-maven project unless you plan to contribute code. In normal use you will automatically reference the built plugin from Maven Central.
-
-However if you do want to build this project, clone the repository and build cics-bundle-maven/pom.xml. Because this is a reactor module, all the children will also be built.
-
-To build all projects and install them into the local Maven repository, run:
-
-```
-mvn install
-```
 
 ## Contributing
 
