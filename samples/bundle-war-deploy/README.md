@@ -24,7 +24,7 @@ If you have an existing Java Maven project, add the snippet shown below to the p
 <plugin>
   <groupId>com.ibm.cics</groupId>
   <artifactId>cics-bundle-maven-plugin</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>1.0.0</version>
   <executions>
     <execution>
       <goals>
