@@ -136,7 +136,7 @@ To create a CICS bundle in this way:
               <goal>bundle-war</goal>
             </goals>
             <configuration>
-              <defaultjvmserver>JVMSRV1</defaultjvmserver>
+              <jvmserver>JVMSRV1</jvmserver>
             </configuration>
           </execution>
         </executions>
