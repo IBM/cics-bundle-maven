@@ -42,7 +42,7 @@ public class BundleValidator {
 	
 	private static final DifferenceEvaluator TIMESTAMP_EVALUATOR = new DifferenceEvaluator() {
 		
-		private static final String TIMESTAMP_PATTERN = "\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d.\\d\\d\\dZ";
+		private static final String TIMESTAMP_PATTERN = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3,6}Z";
 		
 		@Override
 		public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
