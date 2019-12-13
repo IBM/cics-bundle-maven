@@ -33,6 +33,7 @@
       <plugin>
         <groupId>org.apache.aries</groupId>
         <artifactId>eba-maven-plugin</artifactId>
+        <version>1.0.0</version>
         <extensions>true</extensions>
         <configuration>
           <generateManifest>true</generateManifest>
