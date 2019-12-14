@@ -40,7 +40,7 @@ import org.xmlunit.matchers.CompareMatcher;
 
 public class BundleValidator {
 	
-	private static final DifferenceEvaluator TIMESTAMP_EVALUATOR = new DifferenceEvaluator() {
+	public static final DifferenceEvaluator TIMESTAMP_EVALUATOR = new DifferenceEvaluator() {
 		
 		private static final String TIMESTAMP_PATTERN = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3,6}Z";
 		
@@ -87,7 +87,7 @@ public class BundleValidator {
 				.forEach(p -> {
 					BundleFileValidator validator = Arrays
 						.stream(validators)
-						.filter(v -> v.getPath().equals(p.toString()))
+						.filter(v -> v.consumesPath(p.toString()))
 						.findFirst()
 						.orElseThrow(() -> new RuntimeException("Unexpected bundle file: " + p));
 					
@@ -106,7 +106,7 @@ public class BundleValidator {
 	
 	public static interface BundleFileValidator {
 		
-		public String getPath();
+		public boolean consumesPath(String p);
 		
 		public void validate(InputStream is) throws RuntimeException;
 	}
@@ -119,12 +119,26 @@ public class BundleValidator {
 			}
 			
 			@Override
-			public String getPath() {
-				return path;
+			public boolean consumesPath(String p) {
+				return path.equals(p.toString());
 			}
 		};
 	}
-
+	
+	public static BundleFileValidator bfmv(String regex, Consumer<InputStream> validator) {
+		return new BundleFileValidator() {
+			@Override
+			public void validate(InputStream is) throws RuntimeException {
+				validator.accept(is);
+			}
+			
+			@Override
+			public boolean consumesPath(String p) {
+				return p.toString().matches(regex);
+			}
+		};
+	}
+	
 	public static BundleFileValidator manifestValidator(String expectedManifest) {
 		return bfv(
 			"/META-INF/cics.xml",
