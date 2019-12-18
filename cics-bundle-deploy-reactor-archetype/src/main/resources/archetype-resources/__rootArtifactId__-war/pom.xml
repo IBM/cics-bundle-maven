@@ -21,7 +21,7 @@
           Change to a version that matches your release of CICS TS.
           See https://repo1.maven.org/maven2/com/ibm/cics/com.ibm.cics.ts.bom/ for available versions.
         -->
-        <version>LATEST</version>
+        <version>RELEASE</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
