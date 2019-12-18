@@ -1,5 +1,4 @@
 package com.ibm.cics.cbmp;
-
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -14,90 +13,175 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-import static org.hamcrest.collection.ArrayMatching.hasItemInArray;
-import static org.hamcrest.collection.IsIn.in;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.text.MatchesPattern.matchesPattern;
-import static org.junit.Assert.assertEquals;
+import static com.ibm.cics.cbmp.BundleValidator.assertBundleContents;
+import static com.ibm.cics.cbmp.BundleValidator.bfmv;
+import static com.ibm.cics.cbmp.BundleValidator.bfv;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Path;
 
-import org.apache.commons.io.FileUtils;
-import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
+import org.w3c.dom.Attr;
+import org.xmlunit.diff.Comparison;
+import org.xmlunit.diff.Comparison.Detail;
+import org.xmlunit.diff.ComparisonResult;
+import org.xmlunit.diff.DifferenceEvaluator;
+import org.xmlunit.diff.DifferenceEvaluators;
+import org.xmlunit.matchers.CompareMatcher;
+
+import com.ibm.cics.cbmp.BundleValidator.BundleFileValidator;
 
 public class PostBuildOsgi {
 
-	private static final String CICS_XML = "cics.xml";
-	private static final String META_INF = "META-INF";
 	private static final String BND_SYMBOLIC_NAME = "test-osgi";
 	private static final String TYCHO_SYMBOLIC_NAME = "test-tycho";
 	private static final String VERSION_REGEX = "0\\.0\\.1\\.[0-9]{12}";
 	private static final String BUNDLE_PART_EXT_REGEX = "\\.osgibundle";
 	private static final String BUNDLE_EXT_REGEX = "\\.jar";
-	private static final String BND_BUNDLE_PART_REGEX = BND_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_PART_EXT_REGEX;
-	private static final String TYCHO_BUNDLE_PART_REGEX = TYCHO_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_PART_EXT_REGEX;
-	private static final String BND_BUNDLE_REGEX = BND_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_EXT_REGEX;
-	private static final String TYCHO_BUNDLE_REGEX = TYCHO_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_EXT_REGEX;
+	private static final String BND_BUNDLE_PART_REGEX = "\\/" + BND_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_PART_EXT_REGEX;
+	private static final String TYCHO_BUNDLE_PART_REGEX = "\\/" + TYCHO_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_PART_EXT_REGEX;
+	private static final String BND_BUNDLE_REGEX = "\\/" + BND_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_EXT_REGEX;
+	private static final String TYCHO_BUNDLE_REGEX = "\\/" + TYCHO_SYMBOLIC_NAME + "_" + VERSION_REGEX + BUNDLE_EXT_REGEX;
 
 	static void assertOutput(File root) throws Exception {
-		File bundleArchive = new File(root, "test-bundle/target/test-bundle-0.0.1-SNAPSHOT.zip");
+		Path cicsBundle = root.toPath().resolve("test-bundle/target/test-bundle-0.0.1-SNAPSHOT.zip");
 		
-		File tempDir = Files.createTempDirectory("cbmp").toFile();
+		assertBundleContents(
+				cicsBundle,
+				manifestWithOSGiVersionsValidator(
+					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
+					"<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\" bundleMajorVer=\"0\" bundleMicroVer=\"1\" bundleMinorVer=\"0\" bundleRelease=\"0\" bundleVersion=\"1\" id=\"test-bundle\">\n" +
+					"  <meta_directives>\n" +
+					"    <timestamp>2019-09-11T21:12:17.023Z</timestamp>\n" +
+					"  </meta_directives>\n" +
+					"  <define name=\"test-osgi_0.0.1.201912132301\" path=\"test-osgi_0.0.1.201912132301.osgibundle\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>\n" +
+					"  <define name=\"test-tycho_0.0.1.201912132301\" path=\"test-tycho_0.0.1.201912132301.osgibundle\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>\n" +
+					"</manifest>"
+				),
+				bfmv(
+					BND_BUNDLE_PART_REGEX,
+					is -> assertThat(
+						is,
+						CompareMatcher.isIdenticalTo(
+							"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+							"<osgibundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-osgi\" version=\"0.0.1.201912132301\"/>"
+						).withDifferenceEvaluator(
+							DifferenceEvaluators.chain(
+								DifferenceEvaluators.Default,
+								OSGI_VERSION_EVALUATOR
+							)
+						)
+					)
+				),
+				bfmv(
+					TYCHO_BUNDLE_PART_REGEX,
+					is -> assertThat(
+						is,
+						CompareMatcher.isIdenticalTo(
+							"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+							"<osgibundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-tycho\" version=\"0.0.1.201912132301\"/>"
+						).withDifferenceEvaluator(
+							DifferenceEvaluators.chain(
+								DifferenceEvaluators.Default,
+								OSGI_VERSION_EVALUATOR
+							)
+						)
+					)
+				),
+				bfmv(
+					BND_BUNDLE_REGEX,
+					is -> {}
+				),
+				bfmv(
+					TYCHO_BUNDLE_REGEX,
+					is -> {}
+				)
+			);
 		
-		ZipUnArchiver unArchiver = new ZipUnArchiver(bundleArchive);
-		unArchiver.setDestDirectory(tempDir);
-		unArchiver.enableLogging(new ConsoleLogger());
-		unArchiver.extract();
+	}
+	
+	private static final DifferenceEvaluator OSGI_VERSION_EVALUATOR = new DifferenceEvaluator() {
 		
-		String[] files = tempDir.list();
-		assertThat(META_INF, is(in(files)));
-		assertThat(files, hasItemInArray(matchesPattern(BND_BUNDLE_PART_REGEX)));
-		assertThat(files, hasItemInArray(matchesPattern(BND_BUNDLE_REGEX)));
-		assertThat(files, hasItemInArray(matchesPattern(TYCHO_BUNDLE_PART_REGEX)));
-		assertThat(files, hasItemInArray(matchesPattern(TYCHO_BUNDLE_REGEX)));
-		assertEquals(5, files.length);
+		private static final String OSGI_VERSION_PATTERN = "0\\.0\\.1\\.[0-9]{12}";
 		
-		{
-			String bundlePartFile = Arrays.stream(files).filter(f -> f.matches(BND_BUNDLE_PART_REGEX)).findFirst().get();
-			List<String> wbpLines = FileUtils.readLines(new File(tempDir, bundlePartFile));
-			assertEquals(2, wbpLines.size());
-			assertTrue(wbpLines.get(0).startsWith("<?xml"));
-			assertTrue(wbpLines.get(0).endsWith("?>"));
-			assertThat(wbpLines.get(1), matchesPattern("<osgibundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-osgi\" version=\"0\\.0\\.1\\.[0-9]{12}\"/>"));
+		@Override
+		public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
+			if (outcome == ComparisonResult.EQUAL) return outcome; //Only evaluate differences
+
+			if (isDefineName(comparison.getControlDetails()) && isDefineName(comparison.getTestDetails())) {
+				//return EQUAL if the values both look like OSGi versions
+				Attr control = (Attr) comparison.getControlDetails().getTarget();
+				Attr test = (Attr) comparison.getTestDetails().getTarget();
+				if (control.getValue().matches(OSGI_VERSION_PATTERN) && test.getValue().matches(OSGI_VERSION_PATTERN)) {
+					return ComparisonResult.EQUAL;
+				}
+			}
+			
+			return outcome;
 		}
-		
-		{
-			String bundlePartFile = Arrays.stream(files).filter(f -> f.matches(TYCHO_BUNDLE_PART_REGEX)).findFirst().get();
-			List<String> wbpLines = FileUtils.readLines(new File(tempDir, bundlePartFile));
-			assertEquals(2, wbpLines.size());
-			assertTrue(wbpLines.get(0).startsWith("<?xml"));
-			assertTrue(wbpLines.get(0).endsWith("?>"));
-			assertThat(wbpLines.get(1), matchesPattern("<osgibundle jvmserver=\"EYUCMCIJ\" symbolicname=\"test-tycho\" version=\"0\\.0\\.1\\.[0-9]{12}\"/>"));
+
+		protected boolean isDefineName(Detail details) {
+			return "/osgibundle[1]/@version".equals(details.getXPath());
 		}
+	};
+	
+	private static final DifferenceEvaluator OSGI_DEFINE_NAME_EVALUATOR = new DifferenceEvaluator() {
 		
-		File metaInf = new File(tempDir, META_INF);
-		files = metaInf.list();
-		assertEquals(1, files.length);
-		assertEquals(CICS_XML, files[0]);
+		private static final String OSGI_VERSION_PATTERN = "[a-zA-Z0-9_.-]+_0\\.0\\.1\\.[0-9]{12}";
 		
-		List<String> cxLines = FileUtils.readLines(new File(metaInf, CICS_XML));
-		System.out.println(cxLines);
-		assertEquals(8, cxLines.size());
-		assertTrue(cxLines.get(0).startsWith("<?xml"));
-		assertTrue(cxLines.get(0).endsWith("?>"));
-		assertEquals("<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\" bundleMajorVer=\"0\" bundleMicroVer=\"1\" bundleMinorVer=\"0\" bundleRelease=\"0\" bundleVersion=\"1\" id=\"test-bundle\">", cxLines.get(1));
-		assertEquals("  <meta_directives>", cxLines.get(2));
-		assertTrue(cxLines.get(3).matches("    <timestamp>\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d.\\d\\d\\dZ</timestamp>"));
-		assertEquals("  </meta_directives>", cxLines.get(4));
-		assertThat(cxLines.get(5), matchesPattern("  <define name=\"test-osgi_0\\.0\\.1.[0-9]{12}\" path=\"test-osgi_0\\.0\\.1\\.[0-9]{12}\\.osgibundle\" type=\"http://www\\.ibm\\.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>"));
-		assertThat(cxLines.get(6), matchesPattern("  <define name=\"test-tycho_0\\.0\\.1.[0-9]{12}\" path=\"test-tycho_0\\.0\\.1\\.[0-9]{12}\\.osgibundle\" type=\"http://www\\.ibm\\.com/xmlns/prod/cics/bundle/OSGIBUNDLE\"/>"));
-		assertEquals("</manifest>", cxLines.get(7));
+		@Override
+		public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
+			if (outcome == ComparisonResult.EQUAL) return outcome; //Only evaluate differences
+
+			//return EQUAL if the values both look like OSGi symbolicName_versions
+			Attr control = (Attr) comparison.getControlDetails().getTarget();
+			Attr test = (Attr) comparison.getTestDetails().getTarget();
+			if (control.getValue().matches(OSGI_VERSION_PATTERN) && test.getValue().matches(OSGI_VERSION_PATTERN)) {
+				return ComparisonResult.EQUAL;
+			}
+			
+			return outcome;
+		}
+
+	};
+	
+	private static final DifferenceEvaluator OSGI_DEFINE_PATH_EVALUATOR = new DifferenceEvaluator() {
+		
+		private static final String OSGI_PATH_PATTERN = "[a-zA-Z0-9_.-]+_0\\.0\\.1\\.[0-9]{12}\\.osgibundle";
+		
+		@Override
+		public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
+			if (outcome == ComparisonResult.EQUAL) return outcome; //Only evaluate differences
+
+			//return EQUAL if the values both look like OSGi bundlepart paths
+			Attr control = (Attr) comparison.getControlDetails().getTarget();
+			Attr test = (Attr) comparison.getTestDetails().getTarget();
+			if (control.getValue().matches(OSGI_PATH_PATTERN) && test.getValue().matches(OSGI_PATH_PATTERN)) {
+				return ComparisonResult.EQUAL;
+			}
+			
+			return outcome;
+		}
+
+	};
+
+	
+	public static BundleFileValidator manifestWithOSGiVersionsValidator(String expectedManifest) {
+		return bfv(
+			"/META-INF/cics.xml",
+			is -> assertThat(is, CompareMatcher
+				.isIdenticalTo(
+					expectedManifest
+				).withDifferenceEvaluator(
+					DifferenceEvaluators.chain(
+						DifferenceEvaluators.Default,
+						BundleValidator.TIMESTAMP_EVALUATOR,
+						OSGI_DEFINE_NAME_EVALUATOR,
+						OSGI_DEFINE_PATH_EVALUATOR
+					)
+				)
+			)
+		);
 	}
 	
 }

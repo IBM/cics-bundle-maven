@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.cics.server.Task;
+
 @WebServlet("/hello")
 public class HelloServlet extends HttpServlet {
 
@@ -18,7 +20,7 @@ public class HelloServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("application/json");
 
-		response.getWriter().print("{\"message\": \"Hello World! This message is provided by HelloServlet.\"}");
+		response.getWriter().print("{\"message\": \"Hello World! This message is provided by HelloServlet, running on CICS task " + Task.getTask().getTaskNumber() + ".\"}");
 	}
 
 }

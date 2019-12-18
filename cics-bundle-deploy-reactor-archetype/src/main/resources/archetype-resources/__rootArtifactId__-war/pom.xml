@@ -12,13 +12,33 @@
   <packaging>war</packaging>
   <name>Example web application</name>
 
-  <dependencies>
+  <dependencyManagement>
+    <dependencies>
       <dependency>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
-          <version>3.1.0</version>
-          <scope>provided</scope>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>com.ibm.cics.ts.bom</artifactId>
+        <!--
+          Change to a version that matches your release of CICS TS.
+          See https://repo1.maven.org/maven2/com/ibm/cics/com.ibm.cics.ts.bom/ for available versions.
+        -->
+        <version>RELEASE</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>com.ibm.cics.server</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
