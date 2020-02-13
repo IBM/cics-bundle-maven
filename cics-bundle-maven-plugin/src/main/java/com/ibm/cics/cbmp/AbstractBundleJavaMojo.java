@@ -17,6 +17,7 @@ package com.ibm.cics.cbmp;
 import java.io.File;
 import java.nio.file.Path;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
@@ -65,11 +66,12 @@ public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		BundlePublisher bundlePublisher = getBundlePublisher();
 		
-		org.apache.maven.artifact.Artifact artifact = project.getArtifact();
+		Artifact artifact = project.getArtifact();
 		
 		try {
-			AbstractJavaBundlePartBinding bundlePartBinding = getBundlePartBinding(artifact);
-			bundlePublisher.addResource(bundlePartBinding.toBundlePart(artifact, this));
+			AbstractJavaBundlePartBinding bundlePartBinding = getBundlePartBinding();
+			bundlePartBinding.setResolvedArtifact(artifact);
+			bundlePublisher.addResource(bundlePartBinding.toBundlePart(this));
 			bundlePublisher.publishResources();
 		} catch (PublishException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
@@ -90,6 +92,6 @@ public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo
 		return workDir.toPath();
 	}
 
-	protected abstract AbstractJavaBundlePartBinding getBundlePartBinding(org.apache.maven.artifact.Artifact artifact) throws MojoExecutionException;
+	protected abstract AbstractJavaBundlePartBinding getBundlePartBinding();
 
 }

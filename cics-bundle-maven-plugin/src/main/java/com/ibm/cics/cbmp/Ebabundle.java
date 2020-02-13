@@ -1,6 +1,5 @@
 package com.ibm.cics.cbmp;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import com.ibm.cics.bundle.parts.EbaBundlePart;
@@ -19,14 +18,14 @@ import com.ibm.cics.bundle.parts.EbaBundlePart;
  * #L%
  */
 
-public class Ebabundle extends AbstractNameableJavaBundlePartBinding {
+public class Ebabundle extends AbstractJavaBundlePartBinding {
 	
 	@Override
-	public EbaBundlePart toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
+	public EbaBundlePart toBundlePartImpl() throws MojoExecutionException {
 		return new EbaBundlePart(
 			getName(),
 			getJvmserver(),
-			artifact.getFile()
+			resolvedArtifact.getFile()
 		);
 	}
 

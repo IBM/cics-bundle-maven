@@ -1,9 +1,7 @@
 package com.ibm.cics.cbmp;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import com.ibm.cics.bundle.parts.OsgiBundlePart;
@@ -24,25 +22,43 @@ import com.ibm.cics.bundle.parts.OsgiBundlePart;
 
 public class Osgibundle extends AbstractJavaBundlePartBinding {
 	
+	protected String symbolicName;
+	protected String osgiVersion;
+	
 	@Override
-	public OsgiBundlePart toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
-		File osgiBundle = artifact.getFile();
+	protected void applyDefaults(DefaultsProvider defaults) throws MojoExecutionException {
+		super.applyDefaults(defaults);
 		
-		String osgiVersion;
 		try {
-			osgiVersion = OsgiBundlePart.getBundleVersion(osgiBundle);
+			/**
+			 * For other bundle parts, symbolic name can be anything, but osgi bundle parts must use the symbolic name
+			 * that is in the manifest. This is mandatory so fail if not found in manifest.
+			 */
+			symbolicName = OsgiBundlePart.getBundleSymbolicName(resolvedArtifact.getFile());
+			if (symbolicName == null) {
+				throw new MojoExecutionException("Error reading Bundle-SymbolicName from OSGi manifest file");
+			}
+
+			/**
+			 * OSGi version is optional, so use default value if not found in manifest.
+			 */
+			osgiVersion = OsgiBundlePart.getBundleVersion(resolvedArtifact.getFile());
+			if (osgiVersion == null) {
+				osgiVersion = "0.0.0";
+			}
 		} catch (IOException e) {
-			throw new MojoExecutionException("Error reading OSGi bundle version", e);
+			throw new MojoExecutionException("Error reading headers from OSGi manifest file", e);
 		}
-		if (osgiVersion == null) {
-			osgiVersion = OsgiBundlePart.convertMavenVersionToOSGiVersion(artifact.getVersion());
-		}
-		
+	}
+	
+	@Override
+	public OsgiBundlePart toBundlePartImpl() throws MojoExecutionException {
 		return new OsgiBundlePart(
-			artifact.getArtifactId(),
+			getName(),
+			symbolicName,
 			osgiVersion,
 			getJvmserver(),
-			osgiBundle
+			resolvedArtifact.getFile()
 		);
 	}
 

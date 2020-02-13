@@ -21,8 +21,8 @@
   <packaging>pom</packaging>
   
   <modules>
-    <module>jar1</module>
-    <module>jar2</module>
+    <module>war1</module>
+    <module>war2</module>
     <module>bundle</module>
   </modules>
   

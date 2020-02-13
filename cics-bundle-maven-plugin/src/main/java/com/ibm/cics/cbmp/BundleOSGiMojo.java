@@ -14,8 +14,6 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
@@ -28,7 +26,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class BundleOSGiMojo extends AbstractBundleJavaMojo {
 
 	@Override
-	protected AbstractJavaBundlePartBinding getBundlePartBinding(Artifact artifact) throws MojoExecutionException {
+	protected AbstractJavaBundlePartBinding getBundlePartBinding() {
 		return new Osgibundle();
 	}
 
