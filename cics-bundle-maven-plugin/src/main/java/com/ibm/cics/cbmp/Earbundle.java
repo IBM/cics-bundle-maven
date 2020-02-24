@@ -1,6 +1,5 @@
 package com.ibm.cics.cbmp;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import com.ibm.cics.bundle.parts.EarBundlePart;
@@ -19,14 +18,14 @@ import com.ibm.cics.bundle.parts.EarBundlePart;
  * #L%
  */
 
-public class Earbundle extends AbstractNameableJavaBundlePartBinding {
+public class Earbundle extends AbstractJavaBundlePartBinding {
 	
 	@Override
-	public EarBundlePart toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
+	public EarBundlePart toBundlePartImpl() throws MojoExecutionException {
 		return new EarBundlePart(
 			getName(),
 			getJvmserver(),
-			artifact.getFile()
+			resolvedArtifact.getFile()
 		);
 	}
 }

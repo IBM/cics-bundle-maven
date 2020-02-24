@@ -14,10 +14,10 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-public class EbabundleTest extends AbstractNameableJavaBundlePartBindingTestCase {
+public class EbabundleTest extends AbstractJavaBundlePartBindingTestCase {
 
 	@Override
-	protected AbstractNameableJavaBundlePartBinding createBinding() {
+	protected AbstractJavaBundlePartBinding createBinding() {
 		return new Ebabundle();
 	}
 

@@ -14,6 +14,13 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
+/**
+ * Maven will automatically instantiate this class and populate its fields
+ * using the values in the pom.xml that are provided by the user when they
+ * explicitly configure a bundle part using a <bundleParts> entry. These values
+ * will then be used to resolve the Maven artifact that the <bundleParts> entry
+ * is referring to.
+ */
 public class Artifact {
 	
 	private String groupId;
@@ -23,14 +30,6 @@ public class Artifact {
 	private String classifier;
 	
 	public Artifact() {
-	}
-	
-	public Artifact(org.apache.maven.artifact.Artifact a) {
-		artifactId = a.getArtifactId();
-		groupId = a.getGroupId();
-		type = a.getType();
-		version = a.getBaseVersion();
-		classifier = a.getClassifier();
 	}
 	
 	public String getClassifier() {

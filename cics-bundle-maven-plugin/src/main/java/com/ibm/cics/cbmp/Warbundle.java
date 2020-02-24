@@ -1,6 +1,5 @@
 package com.ibm.cics.cbmp;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import com.ibm.cics.bundle.parts.WarBundlePart;
@@ -19,14 +18,14 @@ import com.ibm.cics.bundle.parts.WarBundlePart;
  * #L%
  */
 
-public class Warbundle extends AbstractNameableJavaBundlePartBinding {
-	
+public class Warbundle extends AbstractJavaBundlePartBinding {
+
 	@Override
-	public WarBundlePart toBundlePartImpl(Artifact artifact) throws MojoExecutionException {
+	public WarBundlePart toBundlePartImpl() throws MojoExecutionException {
 		return new WarBundlePart(
 			getName(),
 			getJvmserver(),
-			artifact.getFile()
+			resolvedArtifact.getFile()
 		);
 	}
 

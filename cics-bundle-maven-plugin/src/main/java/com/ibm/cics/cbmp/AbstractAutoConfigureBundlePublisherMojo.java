@@ -135,10 +135,10 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 		}
 	}
 
-	private void addBundleResourceForArtifact(BundlePublisher bundlePublisher, Artifact artifact,
-			BundlePartBinding binding) throws MojoExecutionException {
+	private void addBundleResourceForArtifact(BundlePublisher bundlePublisher, Artifact artifact, BundlePartBinding binding) throws MojoExecutionException {
 		try {
-			bundlePublisher.addResource(binding.toBundlePart(artifact, this));
+			binding.setResolvedArtifact(artifact);
+			bundlePublisher.addResource(binding.toBundlePart(this));
 			logBundlePartAdded(artifact, binding);
 		} catch (PublishException e) {
 			throw new MojoExecutionException("Error adding bundle resource for artifact " + artifact.toString() + ": " + e.getMessage());

@@ -15,14 +15,19 @@ package com.ibm.cics.cbmp;
  */
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
 public abstract class AbstractJavaBundlePartBinding extends BundlePartBinding {
 
-	private String jvmserver;
+	protected String name;
+	protected String jvmserver;
 	
-	public AbstractJavaBundlePartBinding() {
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getJvmserver() {
@@ -32,12 +37,18 @@ public abstract class AbstractJavaBundlePartBinding extends BundlePartBinding {
 	public void setJvmserver(String jvmserver) {
 		this.jvmserver = jvmserver;
 	}
+	
 	@Override
-	protected void applyDefaults(Artifact artifact, DefaultsProvider defaults) throws MojoExecutionException {
+	protected void applyDefaults(DefaultsProvider defaults) throws MojoExecutionException {
+		
+		if (StringUtils.isEmpty(name)) {
+			name = resolvedArtifact.getArtifactId() + "-" + resolvedArtifact.getBaseVersion();
+		}
+		
 		if (StringUtils.isEmpty(jvmserver)) {
 			String defaultJVMServer = defaults.getJVMServer();
 			if (StringUtils.isEmpty(defaultJVMServer)) {
-				throw new MojoExecutionException("Bundle part for artifact " + artifact + " did not specify a JVM server explicitly, and no default was configured");
+				throw new MojoExecutionException("Bundle part for artifact " + resolvedArtifact + " did not specify a JVM server explicitly, and no default was configured");
 			} else {
 				jvmserver = defaultJVMServer;
 			}
