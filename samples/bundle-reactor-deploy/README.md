@@ -25,6 +25,6 @@ To build all projects, install them into your local Maven repository, and deploy
 mvn clean install
 ```
 
-If you run into an `unable to find valid certification path to requested target` error, uncomment the `<insecure>true</insecure>` line in the bundle's `pom.xml` for a quick fix, or refer to [Troubleshooting](https://github.com/IBM/cics-bundle-maven#troubleshooting) for more solutions.
+If you run into an `unable to find valid certification path to requested target` error, uncommenting the `<insecure>true</insecure>` line in the bundle's `pom.xml` is a quick fix but it poses security concerns by disabling TLS/SSL checking for certificates. For recommended solutions in real use, refer to [Troubleshooting](https://github.com/IBM/cics-bundle-maven#troubleshooting). 
 
 If the build runs successfully, visit the servlet (`http://yourcicsurl.com:9080/demo-war-0.0.1-SNAPSHOT`) to see what you published

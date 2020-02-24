@@ -271,18 +271,19 @@ You may run into this error when deploying your CICS bundle.
 ```
 sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
 ```
-It indicates an issue with establishing a trusted connection over SSL to the remote server (CICS Bundle Deployment API). It may happen when you are using a self-signed certificate or a certificate that's issued by an internal certificate authority, or that the certificate is not added to the trusted certificate list of your JVM server.
+It indicates an issue with establishing a trusted connection over TLS/SSL to the remote server (CICS Bundle Deployment API). It may happen when you are using a self-signed certificate or a certificate that's issued by an internal certificate authority, or that the certificate is not added to the trusted certificate list of your JVM server.
 
 **How to resolve it?**  
 You have two ways of resolving this issue:
-1. Disable SSL certificate checking:  
-Add `<insecure>true</insecure>` to the `<configuration/>` block for the deploy goal in the bundle's `pom.xml` (See snippet in Step 2 in [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)). Note that trusting all certificates can pose a security issue for your environment.
-
-1. Obtain the server certificate(s) and add it/them to the trusted certificate list to your JVM server:  
-For security consideration, you may still want the SSL checking to be enabled. In this case, follow the instructions in [How do I import a certificate into the truststore](https://backstage.forgerock.com/knowledge/kb/article/a94909995) to trust the server's certificate, supplying your server's information. More information about the command involved is listed below:
+1. **Recommended** Obtain the server certificate(s) and add it/them to the trusted certificate list to your JVM server:  
+For security consideration, you may still want the TLS/SSL checking to be enabled. In this case, follow the instructions in [How do I import a certificate into the truststore](https://backstage.forgerock.com/knowledge/kb/article/a94909995) to trust the server's certificate, supplying your server's information. More information about the command involved is listed below:
   * [openssl s_client](https://www.openssl.org/docs/man1.1.0/man1/openssl-s_client.html)
   * [openssl x509](https://www.openssl.org/docs/man1.1.0/man1/openssl-x509.html)
   * [Certificate encoding & extensions](https://support.ssl.com/Knowledgebase/Article/View/19/0/der-vs-crt-vs-cer-vs-pem-certificates-and-how-to-convert-them)
+
+1. Disable TLS/SSL certificate checking:  
+Add `<insecure>true</insecure>` to the `<configuration/>` block for the deploy goal in the bundle's `pom.xml` (See snippet in Step 2 in [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)).  
+**Note:** Trusting all certificates can pose a security issue for your environment.
 
 ## Contributing
 
