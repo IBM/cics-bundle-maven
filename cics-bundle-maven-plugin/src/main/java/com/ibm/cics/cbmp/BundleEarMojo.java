@@ -1,4 +1,4 @@
-	package com.ibm.cics.cbmp;
+package com.ibm.cics.cbmp;
 
 /*-
  * #%L
@@ -26,7 +26,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class BundleEarMojo extends AbstractBundleJavaMojo {
 	
 	@Override
-	protected AbstractJavaBundlePartBinding getBundlePartBinding(org.apache.maven.artifact.Artifact artifact) {
+	protected AbstractJavaBundlePartBinding getBundlePartBinding() {
 		return new Earbundle();
 	}
 

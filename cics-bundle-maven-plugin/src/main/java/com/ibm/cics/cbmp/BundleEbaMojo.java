@@ -1,7 +1,5 @@
 package com.ibm.cics.cbmp;
 
-import org.apache.maven.plugin.MojoExecutionException;
-
 /*-
  * #%L
  * CICS Bundle Maven Plugin
@@ -28,7 +26,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class BundleEbaMojo extends AbstractBundleJavaMojo {
 	
 	@Override
-	protected AbstractJavaBundlePartBinding getBundlePartBinding(org.apache.maven.artifact.Artifact artifact) throws MojoExecutionException {
+	protected AbstractJavaBundlePartBinding getBundlePartBinding() {
 		return new Ebabundle();
 	}
 

@@ -14,10 +14,10 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-public class EarbundleTest extends AbstractNameableJavaBundlePartBindingTestCase {
+public class EarbundleTest extends AbstractJavaBundlePartBindingTestCase {
 
 	@Override
-	protected AbstractNameableJavaBundlePartBinding createBinding() {
+	protected AbstractJavaBundlePartBinding createBinding() {
 		return new Earbundle();
 	}
 

@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Consumer;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Text;
 import org.xmlunit.diff.Comparison;
 import org.xmlunit.diff.Comparison.Detail;
@@ -155,4 +156,28 @@ public class BundleValidator {
 		);
 	}
 
+	public static final DifferenceEvaluator OSGI_VERSION_EVALUATOR = new DifferenceEvaluator() {
+		
+		private static final String OSGI_VERSION_PATTERN = "0\\.0\\.1\\.[0-9]{12}";
+		
+		@Override
+		public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
+			if (outcome == ComparisonResult.EQUAL) return outcome; //Only evaluate differences
+
+			if (isDefineName(comparison.getControlDetails()) && isDefineName(comparison.getTestDetails())) {
+				//return EQUAL if the values both look like OSGi versions
+				Attr control = (Attr) comparison.getControlDetails().getTarget();
+				Attr test = (Attr) comparison.getTestDetails().getTarget();
+				if (control.getValue().matches(OSGI_VERSION_PATTERN) && test.getValue().matches(OSGI_VERSION_PATTERN)) {
+					return ComparisonResult.EQUAL;
+				}
+			}
+			
+			return outcome;
+		}
+
+		protected boolean isDefineName(Detail details) {
+			return "/osgibundle[1]/@version".equals(details.getXPath());
+		}
+	};
 }

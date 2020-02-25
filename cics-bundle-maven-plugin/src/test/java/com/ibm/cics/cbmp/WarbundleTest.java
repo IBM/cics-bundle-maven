@@ -14,10 +14,10 @@ package com.ibm.cics.cbmp;
  * #L%
  */
 
-public class WarbundleTest extends AbstractNameableJavaBundlePartBindingTestCase {
+public class WarbundleTest extends AbstractJavaBundlePartBindingTestCase {
 
 	@Override
-	protected AbstractNameableJavaBundlePartBinding createBinding() {
+	protected AbstractJavaBundlePartBinding createBinding() {
 		return new Warbundle();
 	}
 

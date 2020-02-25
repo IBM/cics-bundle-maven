@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.maven.artifact.Artifact;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -35,15 +36,15 @@ import com.ibm.cics.bundle.parts.BundleResource;
 
 public abstract class AbstractJavaBundlePartBindingTestCase {
 
-	public static final String COM_EXAMPLE = "com.example";
+	public static final String GROUP_ID = "com.example";
 	public static final String ARTIFACT_ID = "the-artifact-id";
-	public static final String GROUP_ID = "1.0.0-SNAPSHOT";
+	public static final String VERSION = "1.0.0-SNAPSHOT";
 
 	private AbstractAutoConfigureBundlePublisherMojo mojo;
 
 	private Map<String, String> defineAttributes = new HashMap<>();
 	
-	protected org.apache.maven.artifact.Artifact artifact;
+	protected Artifact artifact;
 	protected AbstractJavaBundlePartBinding binding;
 	
 	protected abstract AbstractJavaBundlePartBinding createBinding();
@@ -51,14 +52,20 @@ public abstract class AbstractJavaBundlePartBindingTestCase {
 	
 	@Before
 	public void setUp() {
-		binding = createBinding();
+		artifact = mock(Artifact.class);
 		mojo = mock(AbstractAutoConfigureBundlePublisherMojo.class);
 		
-		artifact = mock(org.apache.maven.artifact.Artifact.class);
+		binding = createBinding();
+		binding.setResolvedArtifact(artifact);
 		
 		when(artifact.getArtifactId()).thenReturn(ARTIFACT_ID);
-		when(artifact.getVersion()).thenReturn(GROUP_ID);
-		when(artifact.getGroupId()).thenReturn(COM_EXAMPLE);
+		when(artifact.getBaseVersion()).thenReturn(VERSION);
+		when(artifact.getGroupId()).thenReturn(GROUP_ID);
+	}
+	
+	@Before
+	public void defaultName() {
+		setExpectedSymbolicName(artifact.getArtifactId() + "-" + artifact.getBaseVersion());
 	}
 	
 	@Before
@@ -79,13 +86,13 @@ public abstract class AbstractJavaBundlePartBindingTestCase {
 		this.defineAttributes.putAll(otherAttributes);
 	}
 	
-	protected void setArtifact(org.apache.maven.artifact.Artifact artifact) {
+	protected void setArtifact(Artifact artifact) {
 		this.artifact = artifact;
 	}
 	
 	protected void assertBundleResources() throws Exception {
 		//assert bundle part
-		BundleResource br = binding.toBundlePart(artifact, mojo);
+		BundleResource br = binding.toBundlePart(mojo);
 		DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document actualBundlePart = documentBuilder.parse(br.getContent());
 		
@@ -113,6 +120,14 @@ public abstract class AbstractJavaBundlePartBindingTestCase {
 	
 	@Test
 	public void defaults() throws Exception {
+		assertBundleResources();
+	}
+	
+	@Test
+	public void nameOverride() throws Exception {
+		binding.setName("bananas");
+		setExpectedSymbolicName("bananas");
+		
 		assertBundleResources();
 	}
 	
