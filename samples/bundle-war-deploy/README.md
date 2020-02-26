@@ -8,14 +8,14 @@ Your system programmer should create a BUNDLE definition in CSD and tell you the
 The BUNDLEDIR of the BUNDLE definition your system programmer creates should be set as follows: `<bundles-directory>/<bundle_id>_<bundle_version>`.  So for this sample, if your system programmer configured `bundles-directory` as `/u/someuser/bundles/`, the BUNDLEDIR would be `/u/someuser/bundles/demo-war_0.0.1`.
 
 ## Using the sample
-There are 2 ways to use this sample. 
+There are 2 ways to use this sample.
 Option 1 is to use the whole sample as-is, for example, if you want to try this out before using it with an existing Maven project.
-Option 2 is to extend an existing Maven project of packaging type `war`, which you'd like to package and install as a CICS bundle. 
+Option 2 is to extend an existing Maven project of packaging type `war`, which you'd like to package and install as a CICS bundle.
 
 ### Option 1: Using the full sample
 [Clone the repository](https://github.com/IBM/cics-bundle-maven.git) and import the sample, samples/bundle-war-deploy into your preferred IDE.
 
-Edit the variables from the configuration section in demo-war/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and BUNDLE definition name for your environment. 
+Edit the variables from the configuration section in demo-war/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and BUNDLE definition name for your environment.
 
 ### Option 2: Add to an existing Maven project
 If you have an existing Java Maven project, add the snippet shown below to the plugins section of your pom.xml and edit the configuration variables. Your Maven project should now resemble the sample.
@@ -54,4 +54,7 @@ To build all projects, install them into your local Maven repository, and deploy
 ```
 mvn clean install
 ```
-Visit the servlet (http://yourcicsurl.com:9080/demo-war-0.0.1-SNAPSHOT if you used our sample as-is) to see what you published
+
+If you run into an `unable to find valid certification path to requested target` error, uncommenting the `<insecure>true</insecure>` line in the bundle's `pom.xml` is a quick fix but it poses security concerns by disabling TLS/SSL checking for certificates. For recommended solutions in real use, refer to [Troubleshooting](https://github.com/IBM/cics-bundle-maven#troubleshooting). 
+
+If the build runs successfully, visit the servlet (http://yourcicsurl.com:9080/demo-war-0.0.1-SNAPSHOT if you used our sample as-is) to see what you published

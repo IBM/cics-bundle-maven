@@ -38,7 +38,7 @@ The `cics-bundle-maven-plugin` supports building CICS bundles that contain the f
 
 ## Prerequisites
  To use the plugin to build CICS bundles, make sure that Maven is installed.
- 
+
  If you are using the `deploy` goal of the plugin, there are further prerequisites. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region (consult the [CICS TS doc](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.6.0/configuring/cmci/config-bundle-api.html) for details). To use this make sure that:
  * You have a CICS region that is at CICS® TS V5.6 open beta or later
  * This region is configured to be a WUI region for the CICSplex that contains the deployment target region
@@ -69,7 +69,7 @@ To create a CICS bundle in this way:
     </build>
     ```
     Note that the version should be the latest version of this plugin, which can be found at the top of this page.
-    
+
 1. Change the packaging type of the CICS bundle module to the new CICS bundle type:
 
     ```xml
@@ -152,7 +152,7 @@ To create a CICS bundle in this way:
 Following the instructions from one of the two methods above, you will have built a CICS bundle. You can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#Prerequisites).
 
 1. Ensure a BUNDLE definition for this CICS bundle has already been created in the CSD. You will need to know the CSD group and name of the definition.
-The bundle directory of the BUNDLE definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`. 
+The bundle directory of the BUNDLE definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.
 
 1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:
 
@@ -194,11 +194,12 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
    * `cicsplex` - The name of  the CICSplex that the target region belongs to
    * `region` - The name of the region that the bundle should be installed to
 
-  Now if you run the Maven build it will create the CICS bundle as above, and install this in CICS. 
+  Now if you run the Maven build it will create the CICS bundle as above, and install this in CICS. If you run into an `unable to find valid certification path to requested target` error during deployment, see [Troubleshooting](#troubleshooting) for a fix.
+
   Each time you make a change to the Java project and rerun the build it will redeploy the bundle and publish your changes.
 
   Typically you won't want this deployment to happen in every environment that the build is run. Placing this execution in a separate Maven profile that is only enabled in development environments is suggested.
-  
+
 
 ## Using nightly/snapshot development builds
 
@@ -228,21 +229,21 @@ Snapshot builds are published to the Sonatype OSS Maven snapshots repository whi
 
 ## Samples
 
-Use of this plugin will vary depending on what you're starting with and the structure of your project. We have included some samples to demonstrate the different methods. 
+Use of this plugin will vary depending on what you're starting with and the structure of your project. We have included some samples to demonstrate the different methods.
 
 [Reactor sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-reactor-deploy)  
-This sample is the best starting place if you don't already have a Java project you want to build and want to have a go at building and deploying straight away. This is a reactor project with one module including the source for a web page (including a JCICS call), which will be packaged into a WAR. It has a second module, which creates the bundle and installs this in CICS. 
+This sample is the best starting place if you don't already have a Java project you want to build and want to have a go at building and deploying straight away. This is a reactor project with one module including the source for a web page (including a JCICS call), which will be packaged into a WAR. It has a second module, which creates the bundle and installs this in CICS.
 Further information can be found [here](samples/bundle-reactor-deploy/README.md)
 
 [WAR sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-war-deploy)  
-This sample shows how you can add to the pom of an existing Java Maven project, to build it into a bundle and install it in CICS. 
+This sample shows how you can add to the pom of an existing Java Maven project, to build it into a bundle and install it in CICS.
 Further information can be found [here](samples/bundle-war-deploy/README.md)
 
 
 ## Archetypes
 
-Another way to get started with the plugin is to use one of the provided archetypes. Maven archetypes provide parameterized templates for how a module could, or should, be structured. 
-There are two archetypes, one which builds and packages a WAR into a CICS Bundle, and another which then installs this bundle to CICS using the CICS bundle deployment API. 
+Another way to get started with the plugin is to use one of the provided archetypes. Maven archetypes provide parameterized templates for how a module could, or should, be structured.
+There are two archetypes, one which builds and packages a WAR into a CICS Bundle, and another which then installs this bundle to CICS using the CICS bundle deployment API.
 Further details on how to use the archetypes can be found [here](ARCHETYPES-README.md).
 
 ## Versioning your Maven-build CICS bundles
@@ -262,6 +263,27 @@ mvn versions:set -DnewVersion=0.0.1
 Note that this `versions:set` approach will not update dependencies (e.g. from your bundle project to your Java project) which you will need to update manually.
 
 After releasing your code, update to your next development version number, for instance `0.0.2-SNAPSHOT`.
+
+## Troubleshooting
+### `unable to find valid certification path to requested target` during deployment
+**Why does it happen?**  
+You may run into this error when deploying your CICS bundle.
+```
+sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+```
+It indicates an issue with establishing a trusted connection over TLS/SSL to the remote server (CICS Bundle Deployment API). It may happen when you are using a self-signed certificate or a certificate that's issued by an internal certificate authority, or that the certificate is not added to the trusted certificate list of your JVM.
+
+**How to resolve it?**  
+You have two ways of resolving this issue:
+1. **Recommended** Obtain the server certificate(s) and add it/them to the trusted certificate list to your JVM:  
+For security consideration, you may still want the TLS/SSL checking to be enabled. In this case, follow the instructions in [How do I import a certificate into the truststore](https://backstage.forgerock.com/knowledge/kb/article/a94909995) to trust the server's certificate, supplying your server's information. More information about the command involved is listed below:
+    * [openssl s_client](https://www.openssl.org/docs/man1.1.0/man1/openssl-s_client.html)
+    * [openssl x509](https://www.openssl.org/docs/man1.1.0/man1/openssl-x509.html)
+    * [Certificate encoding & extensions](https://support.ssl.com/Knowledgebase/Article/View/19/0/der-vs-crt-vs-cer-vs-pem-certificates-and-how-to-convert-them)
+
+1. Disable TLS/SSL certificate checking:  
+Add `<insecure>true</insecure>` to the `<configuration/>` block for the deploy goal in the bundle's `pom.xml` (See snippet in Step 2 in [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)).  
+**Note:** Trusting all certificates can pose a security issue for your environment.
 
 ## Contributing
 

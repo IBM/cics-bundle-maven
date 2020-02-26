@@ -50,6 +50,9 @@
             <configuration>
               <!-- Set the transport, hostname, and port for your CMCI -->
               <url>http://localhost:9080</url>
+              <!-- Uncomment the line below to disable ssl check for certificates-->
+              <!--<insecure>true</insecure>-->
+
               <!-- Use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
               <username>${cics-user-id}</username>
               <password>${cics-password}</password>
