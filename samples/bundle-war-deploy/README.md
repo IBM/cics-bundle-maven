@@ -33,7 +33,7 @@ If you have an existing Java Maven project, add the snippet shown below to the p
       </goals>
       <configuration>
         <classifier>cics-bundle</classifier>
-        <jvmserver>JVMSRV1</jvmserver>
+        <jvmserver>DFHWLP</jvmserver>
         <url>http://yourcicsurl.com:9080</url>
         <username>${cics-user-id}</username>
         <password>${cics-password}</password>
@@ -55,6 +55,6 @@ To build all projects, install them into your local Maven repository, and deploy
 mvn clean install
 ```
 
-If you run into an `unable to find valid certification path to requested target` error, uncommenting the `<insecure>true</insecure>` line in the bundle's `pom.xml` is a quick fix but it poses security concerns by disabling TLS/SSL checking for certificates. For recommended solutions in real use, refer to [Troubleshooting](https://github.com/IBM/cics-bundle-maven#troubleshooting). 
+If you run into an `unable to find valid certification path to requested target` error, uncommenting the `<insecure>true</insecure>` line in the bundle's `pom.xml` is a quick fix but it poses security concerns by disabling TLS/SSL checking for certificates. For recommended solutions in real use, refer to [Troubleshooting](https://github.com/IBM/cics-bundle-maven#troubleshooting).
 
 If the build runs successfully, visit the servlet (http://yourcicsurl.com:9080/demo-war-0.0.1-SNAPSHOT if you used our sample as-is) to see what you published
