@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>demo-bundle</artifactId>
-  
+
   <!-- Tell Maven to build a CICS bundle -->
   <packaging>cics-bundle</packaging>
 
@@ -35,17 +35,17 @@
 
         <!-- Set the JVM server that the application will be installed into by default, This goes into the CICS bundle's manifest -->
         <configuration>
-          <defaultjvmserver>JVMSRV1</defaultjvmserver>
+          <defaultjvmserver>DFHWLP</defaultjvmserver>
         </configuration>
         <executions>
           <execution>
-          
+
             <!-- This declares that we want to run the deploy goal and we want this to happen during the verify phase of the lifecycle -->
             <goals>
               <goal>deploy</goal>
             </goals>
             <phase>verify</phase>
-            
+
             <!-- The below configuration is used to deploy the built bundle to CICS. -->
             <configuration>
               <!-- Set the transport, hostname, and port for your CMCI -->

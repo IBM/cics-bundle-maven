@@ -101,7 +101,7 @@ To create a CICS bundle in this way:
           <version>1.0.0</version>
           <extensions>true</extensions>
           <configuration>
-            <defaultjvmserver>JVMSRV1</defaultjvmserver>
+            <defaultjvmserver>DFHWLP</defaultjvmserver>
           </configuration>
         </plugin>
       </plugins>
@@ -136,7 +136,7 @@ To create a CICS bundle in this way:
               <goal>bundle-war</goal>
             </goals>
             <configuration>
-              <jvmserver>JVMSRV1</jvmserver>
+              <jvmserver>DFHWLP</jvmserver>
             </configuration>
           </execution>
         </executions>
@@ -170,7 +170,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
               <goal>deploy</goal>
             </goals>
             <configuration>
-              <defaultjvmserver>JVMSRV1</defaultjvmserver>
+              <defaultjvmserver>DFHWLP</defaultjvmserver>
               <url>http://yourcicsurl.com:9080</url>
               <username>${cics-user-id}</username>
               <password>${cics-password}</password>

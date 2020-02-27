@@ -53,7 +53,7 @@
           <target>1.8</target>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>com.ibm.cics</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
@@ -70,19 +70,19 @@
             <configuration>
               <!-- The bundle classifier indicates that the war should be packaged into a CICS bundle -->
               <classifier>cics-bundle</classifier>
-      
+
               <!-- Update the default JVM server that the application will be installed into by default, This is used when creating the bundle, and goes into the CICS bundle's manifest -->
-              <jvmserver>JVMSRV1</jvmserver>
-              
+              <jvmserver>DFHWLP</jvmserver>
+
               <!-- Set the transport, hostname, and port for your CMCI -->
               <url>http://localhost:9080</url>
               <!-- Uncomment the line below to disable ssl check for certificates-->
               <!--<insecure>true</insecure>-->
-              
+
               <!-- Use Maven's password encryption, or supply your credentials using environment variables or properties, as shown here. -->
               <username>${cics-user-id}</username>
               <password>${cics-password}</password>
-              
+
               <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSplex you want to deploy to -->
               <bunddef>DEMOBUNDLE</bunddef>
               <csdgroup>BAR</csdgroup>
@@ -95,4 +95,3 @@
     </plugins>
   </build>
 </project>
-
