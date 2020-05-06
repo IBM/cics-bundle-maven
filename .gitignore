@@ -7,3 +7,4 @@ target/
 .factorypath
 .idea
 **/*.iml
+.scans/
