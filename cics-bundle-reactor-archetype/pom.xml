@@ -4,7 +4,7 @@
   <parent>
   	<groupId>com.ibm.cics</groupId>
     <artifactId>cics-bundle-maven</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
   </parent>
   
   <artifactId>cics-bundle-reactor-archetype</artifactId>
