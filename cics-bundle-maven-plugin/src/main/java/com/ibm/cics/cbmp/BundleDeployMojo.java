@@ -37,6 +37,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import com.ibm.cics.bundle.deploy.BundleDeployException;
 import com.ibm.cics.bundle.deploy.BundleDeployHelper;
+import com.ibm.websphere.crypto.PasswordUtil;
 
 /**
  * <p>This mojo deploys a CICS bundle to the specified CICS region using the CICS bundle deployment API. A matching bundle definition must be provided in the CSD in advance.</p>
@@ -142,7 +143,7 @@ public class BundleDeployMojo extends AbstractMojo {
 		if (cicsplex != null) serverConfig.setCicsplex(cicsplex);
 		if (region != null) serverConfig.setRegion(region);
 		if (username != null) serverConfig.setUsername(username);
-		if (password != null) serverConfig.setPassword(password);
+		if (password != null) serverConfig.setPassword(getPasswordAsChars(password));
 		serverConfig.setAllowSelfSignedCertificate(insecure);
 		
 		//Validate mandatory configuration
@@ -171,10 +172,10 @@ public class BundleDeployMojo extends AbstractMojo {
 		getLog().info("Bundle deployed");
 	}
 	
-	private AuthenticationInfo getAuthenticationInfo(Server server) {
+	private AuthenticationInfo getAuthenticationInfo(Server server) throws MojoExecutionException {
 		AuthenticationInfo authInfo = new AuthenticationInfo();
 		authInfo.setUsername(server.getUsername());
-		authInfo.setPassword(server.getPassword());
+		authInfo.setPassword(getPasswordAsChars(server.getPassword()));
 		authInfo.setPrivateKey(server.getPrivateKey());
 		authInfo.setPassphrase(server.getPassphrase());
 		return authInfo;
@@ -260,6 +261,31 @@ public class BundleDeployMojo extends AbstractMojo {
 				throw new MojoExecutionException("CICS bundle not found");
 			}
 		}
+	}
+    
+	/*
+	 * Current best practice is to avoid putting strings containing passwords onto
+	 *  the heap or interning the strings containing them, hence using char[] where possible
+	 */
+	public char[] getPasswordAsChars(String encryptedPassword) throws MojoExecutionException {
+		char[] password = new char[0];
+		
+		if (encryptedPassword != null && !encryptedPassword.isEmpty()) {
+			if (isEncrypted(encryptedPassword)) {
+				try {
+					password = PasswordUtil.passwordDecode(encryptedPassword).toCharArray();
+				} catch (Exception e) {
+					throw new MojoExecutionException("Failed to decode encrypted password", e);
+				}
+			} else {
+				password = encryptedPassword.toCharArray();
+			}
+		}
+		return password;
+	}
+	
+	public static boolean isEncrypted(String password) {
+		return '{' == password.charAt(0) && password.contains("}");
 	}
 
 }

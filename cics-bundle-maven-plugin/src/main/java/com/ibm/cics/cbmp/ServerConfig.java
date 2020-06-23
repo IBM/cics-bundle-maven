@@ -22,7 +22,7 @@ public class ServerConfig {
 	private String region;
 	private URI endpointUrl;
 	private String username;
-	private String password;
+	private char[] password;
 	private boolean allowSelfSignedCertificate;
 	
 	public String getUsername() {
@@ -33,11 +33,11 @@ public class ServerConfig {
 		this.username = username;
 	}
 
-	public String getPassword() {
+	public char[] getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(char[] password) {
 		this.password = password;
 	}
 

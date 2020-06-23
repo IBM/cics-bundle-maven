@@ -17,7 +17,7 @@ package com.ibm.cics.cbmp;
 public class AuthenticationInfo {
 	
 	private String username;
-	private String password;
+	private char[] password;
 	private String privateKey;
 	private String passphrase;
 	
@@ -25,7 +25,7 @@ public class AuthenticationInfo {
 		this.username = username;
 	}
 	
-	public void setPassword(String password) {
+	public void setPassword(char[] password) {
 		this.password = password;
 	}
 	
@@ -41,7 +41,7 @@ public class AuthenticationInfo {
 		return username;
 	}
 	
-	public String getPassword() {
+	public char[] getPassword() {
 		return password;
 	}
 	

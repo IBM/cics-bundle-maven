@@ -63,6 +63,13 @@
       <scope>provided</scope><!-- annotations are needed only to build the plugin -->
     </dependency>
 
+    <dependency>
+      <groupId>com.ibm.websphere.appserver.spi</groupId>
+      <artifactId>com.ibm.websphere.appserver.spi.kernel.service</artifactId>
+      <version>1.5.39</version>
+      <scope>provided</scope>
+    </dependency>
+    
     <!-- test -->
     <dependency>
       <groupId>junit</groupId>
