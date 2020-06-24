@@ -21,7 +21,7 @@
     <dependency>
       <groupId>com.ibm.cics</groupId>
       <artifactId>cics-bundle-common</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.3-SNAPSHOT</version>
     </dependency>
     
     <dependency>
