@@ -142,7 +142,7 @@ public class BundleDeployMojo extends AbstractMojo {
 		if (cicsplex != null) serverConfig.setCicsplex(cicsplex);
 		if (region != null) serverConfig.setRegion(region);
 		if (username != null) serverConfig.setUsername(username);
-		if (password != null) serverConfig.setPassword(password);
+		if (password != null) serverConfig.setPassword(getPasswordAsChars(password));
 		serverConfig.setAllowSelfSignedCertificate(insecure);
 		
 		//Validate mandatory configuration
@@ -171,10 +171,10 @@ public class BundleDeployMojo extends AbstractMojo {
 		getLog().info("Bundle deployed");
 	}
 	
-	private AuthenticationInfo getAuthenticationInfo(Server server) {
+	private AuthenticationInfo getAuthenticationInfo(Server server) throws MojoExecutionException {
 		AuthenticationInfo authInfo = new AuthenticationInfo();
 		authInfo.setUsername(server.getUsername());
-		authInfo.setPassword(server.getPassword());
+		authInfo.setPassword(getPasswordAsChars(server.getPassword()));
 		authInfo.setPrivateKey(server.getPrivateKey());
 		authInfo.setPassphrase(server.getPassphrase());
 		return authInfo;
@@ -262,4 +262,16 @@ public class BundleDeployMojo extends AbstractMojo {
 		}
 	}
 
+	/*
+	 * Current best practice is to avoid putting strings containing passwords onto
+	 *  the heap or interning the strings containing them, hence using char[] where possible
+	 */
+	public char[] getPasswordAsChars(String password) {
+		if (password != null && !password.isEmpty()) {
+			return password.toCharArray();
+		} else {
+			return new char[0];
+		}
+	}
+	
 }
