@@ -40,7 +40,7 @@ The `cics-bundle-maven-plugin` supports building CICS bundles that contain the f
  To use the plugin to build CICS bundles, make sure that Maven is installed.
 
  If you are using the `deploy` goal of the plugin, there are further prerequisites. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region (consult the [CICS TS doc](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.6.0/configuring/cmci/config-bundle-api.html) for details). To use this make sure that:
- * You have a CICS region that is at CICS® TS V5.6 open beta or later
+ * You have a CICS region that is at CICS® TS V5.6 or later
  * This region is configured to be a WUI region for the CICSplex that contains the deployment target region
  * This WUI region is configured to use the CMCI JVM server, including the CICS bundle deployment API
 
