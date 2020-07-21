@@ -48,6 +48,14 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 	 */
 	@Parameter(required = false)
 	protected List<BundlePartBinding> bundleParts = Collections.emptyList();
+	
+	/**
+	 * The directory containing bundle parts to be included in the CICS bundle. 
+	 * This path is relative to `src/main/`
+	 * Specifying this parameter overrides the default path of `bundleParts`.
+	 */
+	@Parameter(property = "cicsbundle.bundlePartsDirectory", defaultValue = "bundleParts", required = false)
+	private String bundlePartsDirectory;
 
 	@Override
 	public String getJVMServer() {
@@ -65,7 +73,7 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 	private void addStaticBundleResources(BundlePublisher bundlePublisher) throws MojoExecutionException {
 		//Add bundle parts for any resources
 		Path basePath = baseDir.toPath();
-		Path bundlePartSource = basePath.resolve("src/main/bundleParts");
+		Path bundlePartSource = basePath.resolve("src/main/" + bundlePartsDirectory);
 		getLog().info("Gathering bundle parts from " + basePath.relativize(bundlePartSource));
 		
 		if (Files.exists(bundlePartSource)) {
@@ -94,6 +102,7 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 			}
 		} else {
 			//Ignore if it doesn't exist
+			getLog().info("No non-Java-based bundle parts to add, because bundle parts directory '" + bundlePartsDirectory + "' does not exist");
 		}
 	}
 

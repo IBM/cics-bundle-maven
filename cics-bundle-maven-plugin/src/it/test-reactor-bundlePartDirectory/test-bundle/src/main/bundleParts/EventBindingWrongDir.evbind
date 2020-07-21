@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:eventBinding CICSEPSchemaVersion="2" CICSEPSchemaRelease="0" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/cics/eventprocessing/eventbinding CicsEventBinding.xsd " xmlns:ns2="http://www.ibm.com/xmlns/prod/cics/eventprocessing/eventbinding" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <description></description>
+    <userTag></userTag>
+    <eventAdapterName></eventAdapterName>
+</ns2:eventBinding>
