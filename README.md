@@ -111,7 +111,7 @@ To create a CICS bundle in this way:
 
     The generated CICS bundle takes its bundle ID from the Maven module's `artifactId` and its version from the Maven module's `version`.
 
-1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your Maven project's resources directory, for instance `src/main/resources`. Files in your Maven project's resources directory will be included within the output CICS bundle, and supported types will have a `<define>` element added to the CICS bundle's `cics.xml`.
+1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your bundle Maven module's bundleParts directory, for instance `src/main/bundleParts`. Files in your Maven module's bundleParts directory will be included within the output CICS bundle, and supported types will have a `<define>` element added to the CICS bundle's `cics.xml`.
 
 ## Create a CICS bundle (from an existing Java module) using `cics-bundle-maven-plugin`
 

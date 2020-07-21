@@ -65,7 +65,7 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 	private void addStaticBundleResources(BundlePublisher bundlePublisher) throws MojoExecutionException {
 		//Add bundle parts for any resources
 		Path basePath = baseDir.toPath();
-		Path bundlePartSource = basePath.resolve("src/main/resources");
+		Path bundlePartSource = basePath.resolve("src/main/bundleParts");
 		getLog().info("Gathering bundle parts from " + basePath.relativize(bundlePartSource));
 		
 		if (Files.exists(bundlePartSource)) {
@@ -83,14 +83,14 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 								() -> Files.newInputStream(toAdd)
 							);
 						} catch (PublishException e) {
-							throw new MojoExecutionException("Failure adding static resource " + toAdd + ": " + e.getMessage(), e);
+							throw new MojoExecutionException("Failure adding static bundle parts " + toAdd + ": " + e.getMessage(), e);
 						}
 					}
 				} catch (IOException e) {
-					throw new MojoExecutionException("Failure adding static resources", e);
+					throw new MojoExecutionException("Failure adding static bundle parts", e);
 				}
 			} else {
-				throw new MojoExecutionException("Static bundle resources directory " + bundlePartSource + "wasn't a directory");
+				throw new MojoExecutionException("Static bundle parts directory " + bundlePartSource + "wasn't a directory");
 			}
 		} else {
 			//Ignore if it doesn't exist
