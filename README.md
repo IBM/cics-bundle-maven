@@ -62,7 +62,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.1</version>
+          <version>1.0.2</version>
           <extensions>true</extensions>
         </plugin>
       </plugins>
@@ -98,7 +98,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.1</version>
+          <version>1.0.2</version>
           <extensions>true</extensions>
           <configuration>
             <defaultjvmserver>DFHWLP</defaultjvmserver>
@@ -130,7 +130,7 @@ To create a CICS bundle in this way:
       <plugin>
         <groupId>com.ibm.cics</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <executions>
           <execution>
             <goals>
@@ -163,7 +163,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
       <plugin>
         <groupId>com.ibm.cics</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <executions>
           <execution>
             <goals>
