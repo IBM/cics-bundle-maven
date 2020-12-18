@@ -1,6 +1,33 @@
+<!--
+
+Editing notes:
+
+The table of contents is manually created and relies on the wording of the headings. Check for broken links when updating headings.
+
+-->
+
 # cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Build Status](https://travis-ci.com/IBM/cics-bundle-maven.svg?branch=master)](https://travis-ci.com/IBM/cics-bundle-maven) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~)
 
-A Maven plugin and related utilities that can be used to build CICS bundles, and deploy them into CICS TS.
+
+ - [About this project](#about-this-project)
+ - The `cics-bundle-maven-plugin`
+   - [Supported bundlepart types](#supported-bundlepart-types)
+   - [Prerequisites](#prerequisites)
+   - [Create a CICS bundle (in a separate module)](#create-a-cics-bundle-in-a-separate-module-using-cics-bundle-maven-plugin)
+   - [Create a CICS bundle (from an existing Java module)](#create-a-cics-bundle-from-an-existing-java-module-using-cics-bundle-maven-plugin)
+   - [Deploy a CICS bundle](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)
+   - [Using nightly/snapshot development builds](#using-nightlysnapshot-development-builds)
+   - [Samples](#samples)
+   - [Archetypes](#archetypes)
+   - [Versioning your Maven-built CICS bundles](#versioning-your-maven-built-cics-bundles)
+   - [Troubleshooting](#troubleshooting)
+ - [Contributing](#contributing)
+ - [License](#license)
+
+
+## About this project
+
+This is a Maven plugin and related utilities that can be used to build CICS bundles, and deploy them into CICS TS.
 
 This project contains:
  - `cics-bundle-maven-plugin`, a Maven plugin that authors CICS bundles for deploying resources into CICS TS. It supports a subset of bundleparts, including Java assets. Read the [Maven doc](https://ibm.github.io/cics-bundle-maven/plugin-info.html) for information about this plugin's goals.
@@ -232,11 +259,11 @@ Snapshot builds are published to the Sonatype OSS Maven snapshots repository whi
 
 Use of this plugin will vary depending on what you're starting with and the structure of your project. We have included some samples to demonstrate the different methods.
 
-[Reactor sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-reactor-deploy)  
+- [Reactor sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-reactor-deploy)  
 This sample is the best starting place if you don't already have a Java project you want to build and want to have a go at building and deploying straight away. This is a reactor project with one module including the source for a web page (including a JCICS call), which will be packaged into a WAR. It has a second module, which creates the bundle and installs this in CICS.
 Further information can be found [here](samples/bundle-reactor-deploy/README.md)
 
-[WAR sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-war-deploy)  
+- [WAR sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-war-deploy)  
 This sample shows how you can add to the pom of an existing Java Maven project, to build it into a bundle and install it in CICS.
 Further information can be found [here](samples/bundle-war-deploy/README.md)
 
@@ -247,7 +274,7 @@ Another way to get started with the plugin is to use one of the provided archety
 There are two archetypes, one which builds and packages a WAR into a CICS Bundle, and another which then installs this bundle to CICS using the CICS bundle deployment API.
 Further details on how to use the archetypes can be found [here](ARCHETYPES-README.md).
 
-## Versioning your Maven-build CICS bundles
+## Versioning your Maven-built CICS bundles
 
 Maven best practice is to version your code `<version>-SNAPSHOT` during development (for instance `0.0.1-SNAPSHOT` or `1.0.0-SNAPSHOT` - for more information see the Maven doc about [SNAPSHOT versions](https://maven.apache.org/guides/getting-started/index.html#What_is_a_SNAPSHOT_version)).
 
@@ -290,6 +317,6 @@ Add `<insecure>true</insecure>` to the `<configuration/>` block for the deploy g
 
 We welcome contributions! Find out how in our [contribution guide](CONTRIBUTING.md).
 
-## Licence
+## License
 
 This project is licensed under the Eclipse Public License, Version 2.0.
