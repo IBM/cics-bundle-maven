@@ -6,7 +6,7 @@ The table of contents is manually created and relies on the wording of the headi
 
 -->
 
-# cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Build Status](https://travis-ci.com/IBM/cics-bundle-maven.svg?branch=master)](https://travis-ci.com/IBM/cics-bundle-maven) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~)
+# cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Build Status](https://travis-ci.com/IBM/cics-bundle-maven.svg?branch=main)](https://travis-ci.com/IBM/cics-bundle-maven) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~)
 
 
  - [About this project](#about-this-project)
@@ -261,11 +261,11 @@ Snapshot builds are published to the Sonatype OSS Maven snapshots repository whi
 
 Use of this plugin will vary depending on what you're starting with and the structure of your project. We have included some samples to demonstrate the different methods.
 
-- [Reactor sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-reactor-deploy)  
+- [Reactor sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/bundle-reactor-deploy)  
 This sample is the best starting place if you don't already have a Java project you want to build and want to have a go at building and deploying straight away. This is a reactor project with one module including the source for a web page (including a JCICS call), which will be packaged into a WAR. It has a second module, which creates the bundle and installs this in CICS.
 Further information can be found [here](samples/bundle-reactor-deploy/README.md)
 
-- [WAR sample](https://github.com/IBM/cics-bundle-maven/tree/master/samples/bundle-war-deploy)  
+- [WAR sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/bundle-war-deploy)  
 This sample shows how you can add to the pom of an existing Java Maven project, to build it into a bundle and install it in CICS.
 Further information can be found [here](samples/bundle-war-deploy/README.md)
 
