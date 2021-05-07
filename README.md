@@ -22,6 +22,7 @@ The table of contents is manually created and relies on the wording of the headi
    - [Versioning your Maven-built CICS bundles](#versioning-your-maven-built-cics-bundles)
    - [Troubleshooting](#troubleshooting)
  - [Contributing](#contributing)
+ - [Support](#support)
  - [License](#license)
 
 
