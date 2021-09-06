@@ -71,7 +71,7 @@ The plugin builds CICS bundles for any in-service version of CICS Transaction Se
 
 However, if you are using the `deploy` goal of the plugin to deploy bundles to CICS, you must enable the CICS bundle deployment API. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region or a single CICS region to turn it into an SMSS. See the [CICS TS doc](https://www.ibm.com/docs/en/cics-ts/6.1_beta?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) for details. To use the `deploy` goal, make sure that:
  * For a CICSPlex SM environment, set up the CMCI JVM server in the WUI region of the CICSplex that contains the deployment target region. The WUI region must be at CICS TS 5.6 or later.  
- * For a single CICS region environment, set up the CMCI JVM server in the deployment target region. The region must be at CICS TS open beta or later. 
+ * For a single CICS region environment (SMSS), set up the CMCI JVM server in the deployment target region. The region must be at CICS TS open beta or later. 
 
 
 ## Create a CICS bundle (in a separate module) using `cics-bundle-maven-plugin`
@@ -264,11 +264,11 @@ Use of this plugin will vary depending on what you're starting with and the stru
 
 - [Reactor sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/bundle-reactor-deploy)  
 This sample is the best starting place if you don't already have a Java project you want to build and want to have a go at building and deploying straight away. This is a reactor project with one module including the source for a web page (including a JCICS call), which will be packaged into a WAR. It has a second module, which creates the bundle and installs this in CICS.
-Further information can be found [here](samples/bundle-reactor-deploy/README.md)
+Further information can be found [here](samples/bundle-reactor-deploy/README.md).
 
 - [WAR sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/bundle-war-deploy)  
 This sample shows how you can add to the pom of an existing Java Maven project, to build it into a bundle and install it in CICS.
-Further information can be found [here](samples/bundle-war-deploy/README.md)
+Further information can be found [here](samples/bundle-war-deploy/README.md).
 
 
 ## Archetypes
