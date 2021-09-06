@@ -15,10 +15,10 @@ Option 2 is to extend an existing Maven project of packaging type `war`, which y
 ### Option 1: Using the full sample
 [Clone the repository](https://github.com/IBM/cics-bundle-maven.git) and import the sample, samples/bundle-war-deploy into your preferred IDE.
 
-Edit the variables from the configuration section in demo-war/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and BUNDLE definition name for your environment.
+Edit the variables from the configuration section in demo-war/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and BUNDLE definition name for your environment. If you're deploying the bunlde into a single region environment (SMSS), remove the `<cicsplex>` and `<region>` fields.
 
 ### Option 2: Add to an existing Maven project
-If you have an existing Java Maven project, add the snippet shown below to the plugins section of your pom.xml and edit the configuration variables. Your Maven project should now resemble the sample.
+If you have an existing Java Maven project, add the snippet shown below to the plugins section of your pom.xml and edit the configuration variables. If you're deploying the bunlde into a single region environment (SMSS), remove the `<cicsplex>` and `<region>` fields. Your Maven project should now resemble the sample. 
 
 ```xml
 <plugin>
