@@ -73,6 +73,7 @@ public class BundleDeployMojo extends AbstractMojo {
 	private String serverId;
 	
 	/**
+	 * Required for a CICSPlex SM environment.
 	 * The name of the CICSplex the bundle should be installed into.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
@@ -80,6 +81,7 @@ public class BundleDeployMojo extends AbstractMojo {
 	private String cicsplex;
 	
 	/**
+	 * Required for a CICSPlex SM environment.
 	 * The name of the region the bundle should be installed into.
 	 * Specifying this parameter overrides any value provided within a Maven settings server entry.
 	 */
