@@ -69,10 +69,9 @@ To use the plugin to build CICS bundles, make sure that Maven is installed.
 
 The plugin builds CICS bundles for any in-service version of CICS Transaction Server for z/OS (version 5.3 and later at the time of writing).
 
-However, if you are using the `deploy` goal of the plugin to deploy bundles to CICS, you must enable the CICS bundle deployment API. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region (consult the [CICS TS doc](https://www.ibm.com/docs/en/cics-ts/5.6?topic=succs-configuring-cmci-jvm-server-cics-bundle-deployment-api) for details). To use the `deploy` goal, make sure that:
- * You have a CICS region that is at CICS® TS V5.6 or later
- * This region is configured to be a WUI region for the CICSplex that contains the deployment target region
- * This WUI region is configured to use the CMCI JVM server, including the CICS bundle deployment API
+However, if you are using the `deploy` goal of the plugin to deploy bundles to CICS, you must enable the CICS bundle deployment API. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region or a single CICS region. See the [CICS TS doc](https://www.ibm.com/docs/en/cics-ts/6.1_beta?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) for details. To use the `deploy` goal, make sure that:
+ * For a CICSPlex SM environment, set up the CMCI JVM server in the WUI region of the CICSplex that contains the deployment target region. The WUI region must be at CICS TS 5.6 or later.  
+ * For a single CICS region environment (SMSS), set up the CMCI JVM server in the deployment target region. The region must be at CICS TS open beta or later. 
 
 
 ## Create a CICS bundle (in a separate module) using `cics-bundle-maven-plugin`
@@ -154,27 +153,27 @@ To create a CICS bundle in this way:
 
 1. Register the plugin to the `pom.xml` of the CICS bundle module, and add the appropriate goal as an execution, including configuration for which JVM server the CICS bundle will be installed into:
 
-  ```xml
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.ibm.cics</groupId>
-        <artifactId>cics-bundle-maven-plugin</artifactId>
-        <version>1.0.2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>bundle-war</goal>
-            </goals>
-            <configuration>
-              <jvmserver>DFHWLP</jvmserver>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-  ```
+    ```xml
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.ibm.cics</groupId>
+          <artifactId>cics-bundle-maven-plugin</artifactId>
+          <version>1.0.2</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>bundle-war</goal>
+              </goals>
+              <configuration>
+                <jvmserver>DFHWLP</jvmserver>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+    ```
 
   Now if you build the Java module (including the `verify` phase) it will build the module as usual but then also wrap it in a CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is added to the output of the module, by default using the `cics-bundle` classifier, and is ready to be stored in an artifact repository or deployed to CICS.
 
@@ -185,37 +184,38 @@ Following the instructions from one of the two methods above, you will have buil
 1. Ensure a BUNDLE definition for this CICS bundle has already been created in the CSD. You will need to know the CSD group and name of the definition.
 The bundle directory of the BUNDLE definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.
 
-1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:
+1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:  
 
-  ```xml
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.ibm.cics</groupId>
-        <artifactId>cics-bundle-maven-plugin</artifactId>
-        <version>1.0.2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>bundle-war</goal>
-              <goal>deploy</goal>
-            </goals>
-            <configuration>
-              <defaultjvmserver>DFHWLP</defaultjvmserver>
-              <url>http://yourcicsurl.com:9080</url>
-              <username>${cics-user-id}</username>
-              <password>${cics-password}</password>
-              <bunddef>DEMOBUNDLE</bunddef>
-              <csdgroup>BAR</csdgroup>
-              <cicsplex>CICSEX56</cicsplex>
-              <region>IYCWEMW2</region>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-  ```
+    ```xml
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.ibm.cics</groupId>
+          <artifactId>cics-bundle-maven-plugin</artifactId>
+          <version>1.0.2</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>bundle-war</goal>
+                <goal>deploy</goal>
+              </goals>
+              <configuration>
+                <defaultjvmserver>DFHWLP</defaultjvmserver>
+                <url>http://yourcicsurl.com:9080</url>
+                <username>${cics-user-id}</username>
+                <password>${cics-password}</password>
+                <bunddef>DEMOBUNDLE</bunddef>
+                <csdgroup>BAR</csdgroup>
+                <cicsplex>CICSEX56</cicsplex>
+                <region>IYCWEMW2</region>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+    ```
+    **Note:** If you're deploying the bundle into a single CICS region environment (SMSS), remove the `<cicsplex>` and `<region>` fields.
 
 1. Edit the values in the configuration section to match your CICS configuration.
    * `url` - Set the transport, hostname, and port for your CMCI
@@ -264,11 +264,11 @@ Use of this plugin will vary depending on what you're starting with and the stru
 
 - [Reactor sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/bundle-reactor-deploy)  
 This sample is the best starting place if you don't already have a Java project you want to build and want to have a go at building and deploying straight away. This is a reactor project with one module including the source for a web page (including a JCICS call), which will be packaged into a WAR. It has a second module, which creates the bundle and installs this in CICS.
-Further information can be found [here](samples/bundle-reactor-deploy/README.md)
+Further information can be found [here](samples/bundle-reactor-deploy/README.md).
 
 - [WAR sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/bundle-war-deploy)  
 This sample shows how you can add to the pom of an existing Java Maven project, to build it into a bundle and install it in CICS.
-Further information can be found [here](samples/bundle-war-deploy/README.md)
+Further information can be found [here](samples/bundle-war-deploy/README.md).
 
 
 ## Archetypes
