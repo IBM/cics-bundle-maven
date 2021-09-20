@@ -17,8 +17,8 @@ package com.ibm.cics.cbmp;
 /**
  * Maven will automatically instantiate this class and populate its fields
  * using the values in the pom.xml that are provided by the user when they
- * explicitly configure a bundle part using a <bundleParts> entry. These values
- * will then be used to resolve the Maven artifact that the <bundleParts> entry
+ * explicitly configure a bundle part using a &lt;bundleParts&gt; entry. These values
+ * will then be used to resolve the Maven artifact that the &lt;bundleParts&gt; entry
  * is referring to.
  */
 public class Artifact {

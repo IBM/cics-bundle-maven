@@ -102,9 +102,8 @@
           <version>1.6</version>
           <configuration>
             <gpgArguments>
-              <gpgArgument>--batch</gpgArgument>
-              <gpgArgument>--yes</gpgArgument>
-              <gpgArgument>--no-tty</gpgArgument>
+              <arg>--pinentry-mode</arg>
+              <arg>loopback</arg>
             </gpgArguments>
           </configuration>
           <executions>
