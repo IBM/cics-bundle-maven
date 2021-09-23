@@ -15,7 +15,7 @@ The BUNDLEDIR of the BUNDLE definition your system programmer creates should be 
 ## Using the sample
 [Clone the repository](https://github.com/IBM/cics-bundle-maven.git) and import the sample, samples/bundle-reactor-deploy into your preferred IDE.
 
-Edit the variables in demo-bundle/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and BUNDLE definition name for your environment. If you're deploying the bunlde into a single region environment (SMSS), remove the `<cicsplex>` and `<region>` fields.
+Edit the variables in demo-bundle/pom.xml to match the correct CMCI URL, CSD group, CICSplex, region and BUNDLE definition name for your environment. If you're deploying the bundle into a single region environment (SMSS), remove the `<cicsplex>` and `<region>` fields.
 
 The project is built as a reactor project. By running the parent project's build (bundle-reactor-deploy/pom.xml), all the children will also be built.
 
