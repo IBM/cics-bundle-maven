@@ -1,0 +1,31 @@
+name: Scheduled Build
+on:
+  schedule:
+    - cron:  '*/0 2 * * 0'    # Every Sunday at 2am
+jobs:
+
+  build:
+    name: Maven Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: bjhargrave/setup-java@a1600c1f88a7741e2420b0a657f2838cec4f09c5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      
+      - name: Build with Maven
+        run: mvn -Dstyle.color=always -B -U verify
+
+      - name: Build site
+        run: mvn -Dstyle.color=always -B -U site site:stage post-site
