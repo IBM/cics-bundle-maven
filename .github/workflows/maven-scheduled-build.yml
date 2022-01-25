@@ -1,7 +1,7 @@
 name: Scheduled Build
 on:
   schedule:
-    - cron:  '*/0 2 * * 0'    # Every Sunday at 2am
+    - cron:  '0 2 * * 0'    # Every Sunday at 2am
 jobs:
 
   build:
