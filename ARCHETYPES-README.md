@@ -4,12 +4,12 @@ Another way to get started with the plugin is to use one of the provided archety
 By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi-module build) module, containing a CICS bundle module and a dynamic Web (WAR) module. The CICS bundle is preconfigured to depend on the WAR module. Building the reactor module builds both the children, so you end up with a CICS bundle that contains the built WAR file. If you use the `cics-bundle-deploy-reactor-archetype` archetype, this is extended to install the CICS bundle in CICS using the CICS bundle deployment API. 
 
 
-1. Create a Maven module by referring to the either the [`com.ibm.cics:cics-bundle-reactor-archetype`](https://search.maven.org/artifact/com.ibm.cics/cics-bundle-reactor-archetype/1.0.2/maven-archetype) or [`com.ibm.cics:cics-bundle-deploy-reactor-archetype`](https://search.maven.org/artifact/com.ibm.cics/cics-bundle-deploy-reactor-archetype/1.0.2/maven-archetype) artifact:
+1. Create a Maven module by referring to the either the [`com.ibm.cics:cics-bundle-reactor-archetype`](https://search.maven.org/artifact/com.ibm.cics/cics-bundle-reactor-archetype/1.0.3/maven-archetype) or [`com.ibm.cics:cics-bundle-deploy-reactor-archetype`](https://search.maven.org/artifact/com.ibm.cics/cics-bundle-deploy-reactor-archetype/1.0.3/maven-archetype) artifact:
 
     * ![On command line](images/cmd.png) On command line:
     
          ```
-         mvn archetype:generate -DarchetypeGroupId=com.ibm.cics -DarchetypeArtifactId=cics-bundle-deploy-reactor-archetype -DarchetypeVersion=1.0.2 -DgroupId=<my-groupid> -DartifactId=<my-artifactId>
+         mvn archetype:generate -DarchetypeGroupId=com.ibm.cics -DarchetypeArtifactId=cics-bundle-deploy-reactor-archetype -DarchetypeVersion=1.0.3 -DgroupId=<my-groupid> -DartifactId=<my-artifactId>
          ```
          In the pom.xml file of the bundle module there will be default values for each of the following parameters which you will need to set:  
          `defaultjvmserver`, `bunddef`, `csdgroup`, `username`, `password`, `deployURL`, `cicsplex`, `region`  
@@ -22,7 +22,7 @@ By using `cics-bundle-reactor-archetype`, you are provided with a reactor (multi
     
             Archetype Group Id: `com.ibm.cics`  
             Archetype Artifact Id: `cics-bundle-deploy-reactor-archetype`              
-            Archetype Version: `1.0.2`  
+            Archetype Version: `1.0.3`  
 
             Then hit **OK**.  
         1. From the archetype list, select `cics-bundle-deploy-reactor-archetype` and hit **Next**. 
