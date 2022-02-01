@@ -77,18 +77,96 @@ public class DeployPreBuild {
 							.withName("region")
 							.withBody(equalTo("region")))
 					.withMultipartRequestBody(
-							aMultipart()
-								.withName("bunddef")
-								.withBody(equalTo("bundle")))
+						aMultipart()
+							.withName("bunddef")
+							.withBody(equalTo("bundle")))
 					.withMultipartRequestBody(
-							aMultipart()
-								.withName("csdgroup")
-								.withBody(equalTo("BAR")))
+						aMultipart()
+							.withName("csdgroup")
+							.withBody(equalTo("BAR")))
 					.withMultipartRequestBody(
-							aMultipart()
-								.withName("bundle")
-								.withBody(WireMock.binaryEqualTo(bundleBinary))) 
+						aMultipart()
+							.withName("bundle")
+							.withBody(WireMock.binaryEqualTo(bundleBinary)))
 					.willReturn(
+						aResponse()
+							.withStatus(200)
+							.withHeader("Content-Type", "text/plain")
+							.withBody("Some content")
+					)
+			);
+
+		return wireMockServer;
+	}
+
+	static WireMockServer setupWiremockNoCICSplexRegion(int port) {
+		ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+
+		try {
+			Thread.currentThread().setContextClassLoader(WireMock.class.getClassLoader());
+			wireMockServer = new WireMockServer(WireMockConfiguration.options().port(port));
+		} finally {
+			Thread.currentThread().setContextClassLoader(ccl);
+		}
+
+		wireMockServer.start();
+
+		wireMockServer
+			.stubFor(
+				post(urlEqualTo("/managedcicsbundles"))
+					.withMultipartRequestBody(
+						aMultipart()
+							.withName("bunddef")
+							.withBody(equalTo("bundle")))
+					.withMultipartRequestBody(
+						aMultipart()
+							.withName("csdgroup")
+							.withBody(equalTo("BAR")))
+					.withMultipartRequestBody(
+						aMultipart()
+							.withName("bundle")
+							.withBody(WireMock.binaryEqualTo(bundleBinary)))
+					.willReturn(
+						aResponse()
+							.withStatus(400)
+							.withHeader("Content-Type", "text/plain")
+							.withBody("com.ibm.cics.bundle.deploy.BundleDeployException: Some of the supplied parameters were invalid:\n" +
+									"   - cicsplex: CICSplex  could not be found")
+					)
+		);
+
+		return wireMockServer;
+	}
+
+
+	static WireMockServer setupSMSSWiremock(int port) {
+		ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+
+		try {
+			Thread.currentThread().setContextClassLoader(WireMock.class.getClassLoader());
+			wireMockServer = new WireMockServer(WireMockConfiguration.options().port(port));
+		} finally {
+			Thread.currentThread().setContextClassLoader(ccl);
+		}
+
+		wireMockServer.start();
+
+		wireMockServer
+			.stubFor(
+				post(urlEqualTo("/managedcicsbundles"))
+					.withMultipartRequestBody(
+						aMultipart()
+							.withName("bunddef")
+							.withBody(equalTo("bundle")))
+				.withMultipartRequestBody(
+						aMultipart()
+							.withName("csdgroup")
+							.withBody(equalTo("BAR")))
+				.withMultipartRequestBody(
+						aMultipart()
+							.withName("bundle")
+							.withBody(WireMock.binaryEqualTo(bundleBinary)))
+				.willReturn(
 						aResponse()
 							.withStatus(200)
 							.withHeader("Content-Type", "text/plain")
@@ -97,7 +175,8 @@ public class DeployPreBuild {
 			);
 		return wireMockServer;
 	}
-	
+
+
 	/*
 	 * Used by test-reactor-war-deploy which builds the bundle and then tests deploying it, so we can't check for a specific binary for the bundle
 	 */

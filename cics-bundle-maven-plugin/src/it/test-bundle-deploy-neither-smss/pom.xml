@@ -14,14 +14,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
  
-  <groupId>com.ibm.cics.test-bundle-deploy-neither</groupId>
-  <artifactId>test-bundle-deploy-neither</artifactId>
+  <groupId>com.ibm.cics.test-bundle-deploy-neither-smss</groupId>
+  <artifactId>test-bundle-deploy-neither-smss</artifactId>
   <name>Example CICS bundle</name>
   <version>0.0.1-SNAPSHOT</version>
   
   <build>
     <plugins>
-    <!-- Test the build fails when calling a CPSM endpoint (without region or cicsplex specified) with a 400 response -->
+    <!-- Test the build succeeds when calling an SMSS endpoint (without a cicsplex or region specified) with a 200 response -->
 	  <plugin>
         <groupId>@project.groupId@</groupId>
         <artifactId>@project.artifactId@</artifactId>
