@@ -21,7 +21,8 @@
   
   <build>
     <plugins>
-    <!-- Test the build succeeds when calling the endpoint with a 200 response -->
+    <!-- Test the build fails when calling the endpoint with just region but no CICSplex -->
+    <!-- This applies to both SMSS and CPSM so this tests CPSM, noRegion tests SMSS -->
 	  <plugin>
         <groupId>@project.groupId@</groupId>
         <artifactId>@project.artifactId@</artifactId>
@@ -35,8 +36,7 @@
               <goal>deploy</goal>
             </goals>
             <configuration>
-              <cicsplex>cicsplex</cicsplex>
-              <serverId>serverId</serverId>
+              <serverId>noCICSplex</serverId>
               <bunddef>bundle</bunddef>
               <csdgroup>BAR</csdgroup>
               <bundle>${basedir}/test-app-bundle-0.0.1-SNAPSHOT.zip</bundle>
