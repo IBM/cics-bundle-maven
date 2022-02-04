@@ -71,7 +71,7 @@ The plugin builds CICS bundles for any in-service version of CICS Transaction Se
 
 However, if you are using the `deploy` goal of the plugin to deploy bundles to CICS, you must enable the CICS bundle deployment API. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region or a single CICS region. See the [CICS TS doc](https://www.ibm.com/docs/en/cics-ts/6.1_beta?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) for details. To use the `deploy` goal, make sure that:
  * For a CICSPlex SM environment, set up the CMCI JVM server in the WUI region of the CICSplex that contains the deployment target region. The WUI region must be at CICS TS 5.6 or later.  
- * For a single CICS region environment (SMSS), set up the CMCI JVM server in the deployment target region. The region must be at CICS TS open beta or later. 
+ * For a single CICS region environment (SMSS), set up the CMCI JVM server in the deployment target region. The region must be at CICS TS 5.6 with APAR PH35122 applied, or later. 
 
 
 ## Create a CICS bundle (in a separate module) using `cics-bundle-maven-plugin`
@@ -91,7 +91,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.2</version>
+          <version>1.0.3</version>
           <extensions>true</extensions>
         </plugin>
       </plugins>
@@ -127,7 +127,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.2</version>
+          <version>1.0.3</version>
           <extensions>true</extensions>
           <configuration>
             <defaultjvmserver>DFHWLP</defaultjvmserver>
@@ -159,7 +159,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.2</version>
+          <version>1.0.3</version>
           <executions>
             <execution>
               <goals>
@@ -192,7 +192,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.2</version>
+          <version>1.0.3</version>
           <executions>
             <execution>
               <goals>
@@ -200,6 +200,10 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
                 <goal>deploy</goal>
               </goals>
               <configuration>
+                <!-- if you are deploying a Java module that also builds the CICS bundle,
+                     you must specify the artifact with the cics-bundle classifier to be deployed.
+                <classifier>cics-bundle</classifier>
+                -->
                 <defaultjvmserver>DFHWLP</defaultjvmserver>
                 <url>http://yourcicsurl.com:9080</url>
                 <username>${cics-user-id}</username>
@@ -222,8 +226,8 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
    * `username` & `password` - These are your credentials for CICS. Use Maven's password encryption, or supply your credentials using environment variables or properties
    * `bunddef` - The name of the BUNDLE definition to be installed
    * `csdgroup` - The name of the CSD group that contains the BUNDLE definition
-   * `cicsplex` - The name of  the CICSplex that the target region belongs to
-   * `region` - The name of the region that the bundle should be installed to
+   * `cicsplex` - The name of the CICSplex that the target region belongs to. This value is ignored in a single CICS region environment (SMSS).
+   * `region` - The name of the region that the bundle should be installed to. This value is ignored in a single CICS region environment (SMSS).
 
   Now if you run the Maven build it will create the CICS bundle as above, and install this in CICS. If you run into an `unable to find valid certification path to requested target` error during deployment, see [Troubleshooting](#troubleshooting) for a fix.
 
