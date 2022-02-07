@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.ibm.cics</groupId>
     <artifactId>cics-bundle-maven</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
   </parent>
   
   <dependencies>
