@@ -6,8 +6,11 @@ The table of contents is manually created and relies on the wording of the headi
 
 -->
 
-# cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Build Status](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml/badge.svg?branch=main)](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~)
+# cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~) [![Build Status](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml/badge.svg?branch=main)](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml)
 
+Also see the [Generated Maven plugin documentation ↗](https://ibm.github.io/cics-bundle-maven/plugin-info.html)
+
+---
 
  - [About this project](#about-this-project)
  - The `cics-bundle-maven-plugin`
@@ -31,7 +34,7 @@ The table of contents is manually created and relies on the wording of the headi
 This is a Maven plugin and related utilities that can be used to build CICS bundles, and deploy them into CICS TS.
 
 This project contains:
- - `cics-bundle-maven-plugin`, a Maven plugin that authors CICS bundles for deploying resources into CICS TS. It supports a subset of bundleparts, including Java assets. Read the [Maven doc](https://ibm.github.io/cics-bundle-maven/plugin-info.html) for information about this plugin's goals.
+ - `cics-bundle-maven-plugin`, a Maven plugin that authors CICS bundles for deploying resources into CICS TS. It supports a subset of bundleparts, including Java assets. Read the [generated plugin documentation](https://ibm.github.io/cics-bundle-maven/plugin-info.html) for information about this plugin's goals.
 
     Using the plugin you can:
      - [build specialist CICS bundle modules into CICS bundles](#create-a-cics-bundle-in-a-separate-module-using-cics-bundle-maven-plugin), including Java dependencies and other bundleparts (the powerful option)
@@ -140,7 +143,7 @@ To create a CICS bundle in this way:
 
     The generated CICS bundle takes its bundle ID from the Maven module's `artifactId` and its version from the Maven module's `version`.
 
-1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your bundle Maven module's bundle parts directory, for instance `src/main/bundleParts`. Files in your Maven module's bundle parts directory will be included within the output CICS bundle, and supported types will have a `<define>` element added to the CICS bundle's `cics.xml`. 
+1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your bundle Maven module's bundle parts directory, which defaults to `src/main/bundleParts`. Files in your Maven module's bundle parts directory will be included within the output CICS bundle, and supported types will have a `<define>` element added to the CICS bundle's `cics.xml`. 
 The location of the bundle parts directory can be configured by using the `<bundlePartsDirectory>` property. The configured directory is relative to `src/main/`.
 
 ## Create a CICS bundle (from an existing Java module) using `cics-bundle-maven-plugin`
