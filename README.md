@@ -323,13 +323,34 @@ For security consideration, you may still want the TLS/SSL checking to be enable
 Add `<insecure>true</insecure>` to the `<configuration/>` block for the deploy goal in the bundle's `pom.xml` (See snippet in Step 2 in [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)).  
 **Note:** Trusting all certificates can pose a security issue for your environment.
 
+### `internal server error` during deployment  
+You might see this error in the Maven log when you deploy a CICS bundle:  
+```
+com.ibm.cics.bundle.deploy.BundleDeployException: An internal server error occurred. Please contact your system administrator
+```  
+**Why does it happen?**  
+It indicates errors on the CMCI JVM server side.  
+**How to resolve it?**  
+Contact your system administrator to check the `messages.log` file of the CMCI JVM server. For more information about how to resolve CMCI JVM server errors, see [Troubleshooting CMCI JVM server](https://www.ibm.com/docs/en/cics-ts/5.6?topic=troubleshooting-cmci-jvm-server) in CICS documentation.  
+
+### `Error creating directory` during deployment
+You might see this message in the Maven log when deploying a CICS bundle:  
+```
+[ERROR]  - Error creating directory '<directory>'.
+```
+**Why does it happen?**  
+The error occurs because the user ID that deploys the bundle doesn't have access to the bundles directory.  
+**How to resolve it?**  
+Contact your system administrator to make sure the `deploy_userid` configured for the CICS bundle deployment API has WRITE access to the bundles directory. The bundles directory is specified on the `com.ibm.cics.jvmserver.cmci.bundles.dir` option in the JVM profile of the CMCI JVM server.  
+For instructions on how to specify the bundles directory and grant access to `deploy_userid`, see [Configuring the CMCI JVM server for the CICS bundle deployment API](https://www.ibm.com/docs/en/cics-ts/5.6?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) in CICS documentation.
+
 ## Contributing
 
 We welcome contributions! Find out how in our [contribution guide](CONTRIBUTING.md).
 
 ## Support
 
-The CICS bundle Gradle plugin is supported as part of the CICS Transaction Server for z/OS license. Problems can be raised as [IBM Support cases](https://www.ibm.com/mysupport/), and requests for enhancement can use the [RFE site](https://www.ibm.com/support/pages/open-and-vote-cics-rfe-request-enhancement).
+The CICS bundle Maven plugin is supported as part of the CICS Transaction Server for z/OS license. Problems can be raised as [IBM Support cases](https://www.ibm.com/mysupport/), and requests for enhancement can use the [RFE site](https://www.ibm.com/support/pages/open-and-vote-cics-rfe-request-enhancement).
 
 Equally, problems and enhancement requests can be raised here on GitHub, as [new issues](https://github.com/IBM/cics-bundle-maven/issues/new).
 
