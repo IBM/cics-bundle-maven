@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Java
-        uses: bjhargrave/setup-java@a1600c1f88a7741e2420b0a657f2838cec4f09c5
+        uses: actions/setup-java@v2
         with:
           java-version: '8'
           distribution: 'temurin'
