@@ -15,8 +15,10 @@ package com.ibm.cics.cbmp;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -64,6 +66,18 @@ public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		
+		if (workDir.exists()) {
+			getLog().debug("Deleting " + workDir);
+			try {
+				FileUtils.deleteDirectory(workDir);
+			} catch (IOException e) {
+				throw new MojoExecutionException("Unable to delete CICS bundle output directory " + workDir, e);
+			}
+		}
+		
+		workDir.mkdirs();
+		
 		BundlePublisher bundlePublisher = getBundlePublisher();
 		
 		Artifact artifact = project.getArtifact();
