@@ -84,7 +84,7 @@
               <password>${cics-password}</password>
 
               <!-- Identify which bundle definition you're going to use from the CSD and which region and CICSplex you want to deploy to -->
-              <bunddef>DEMOBUNDLE</bunddef>
+              <bunddef>DEMOBUND</bunddef>
               <csdgroup>BAR</csdgroup>
               <cicsplex>CICSEX56</cicsplex>
               <region>IYCWEMW2</region>
