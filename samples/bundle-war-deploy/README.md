@@ -37,7 +37,7 @@ If you have an existing Java Maven project, add the snippet shown below to the p
         <url>http://yourcicsurl.com:9080</url>
         <username>${cics-user-id}</username>
         <password>${cics-password}</password>
-        <bunddef>DEMOBUNDLE</bunddef>
+        <bunddef>DEMOBUND</bunddef>
         <csdgroup>BAR</csdgroup>
         <cicsplex>CICSEX56</cicsplex>
         <region>IYCWEMW2</region>

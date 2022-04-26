@@ -211,7 +211,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
                 <url>http://yourcicsurl.com:9080</url>
                 <username>${cics-user-id}</username>
                 <password>${cics-password}</password>
-                <bunddef>DEMOBUNDLE</bunddef>
+                <bunddef>DEMOBUND</bunddef>
                 <csdgroup>BAR</csdgroup>
                 <cicsplex>CICSEX56</cicsplex>
                 <region>IYCWEMW2</region>
@@ -222,7 +222,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
       </plugins>
     </build>
     ```
-    **Note:** If you're deploying the bundle into a single CICS region environment (SMSS), remove the `<cicsplex>` and `<region>` fields.
+    **Note:** If you're deploying the bundle into a single CICS region environment (SMSS), omit the `<cicsplex>` and `<region>` fields.
 
 1. Edit the values in the configuration section to match your CICS configuration.
    * `url` - Set the transport, hostname, and port for your CMCI
