@@ -63,7 +63,8 @@ The `cics-bundle-maven-plugin` supports building CICS bundles that contain the f
  - PROGRAM
  - TCPIPSERVICE
  - TRANSACTION
- - URIMAP
+ - URIMAP  
+**Note:** [Enterprise Bundle Archive (EBA) support is stabilized in CICS TS](https://www.ibm.com/docs/en/cics-ts/latest?topic=releases-stabilization-notices).
 
 It can deploy CICS bundles containing any bundleparts.
 
