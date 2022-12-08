@@ -58,8 +58,18 @@ public class Osgibundle extends AbstractJavaBundlePartBinding {
 			symbolicName,
 			osgiVersion,
 			getJvmserver(),
-			resolvedArtifact.getFile()
+			resolvedArtifact.getFile(),
+			getVersionrange()
 		);
+	}
+
+	public String getVersionrange() {
+		if(resolvedArtifact.getVersionRange().toString().contains(",")) {
+			return resolvedArtifact.getVersionRange().toString();
+		} else {
+			return "";
+		}
+
 	}
 
 }
