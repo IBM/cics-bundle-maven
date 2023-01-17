@@ -3,7 +3,7 @@ package com.ibm.cics.cbmp;
  * #%L
  * CICS Bundle Maven Plugin
  * %%
- * Copyright (C) 2019 IBM Corp.
+ * Copyright (C) 2019, 2023 IBM Corp.
  * %%
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,6 @@ public class PostBuildOsgi {
 	private static final String TYCHO_SYMBOLIC_NAME = "test-tycho";
 	private static final String BND_SYMBOLIC_NAME_VR= "test-osgi-versionrange";
 	private static final String VERSION = "0.0.1-SNAPSHOT";
-	private static final String VERSION_NOSNAP = "1.0";
 	private static final String BUNDLE_PART_EXT_REGEX = "\\.osgibundle";
 	private static final String BUNDLE_EXT_REGEX = "\\.jar";
 	private static final String BND_VR_BUNDLE_REGEX = "\\/" + BND_SYMBOLIC_NAME_VR + "-" + VERSION + BUNDLE_PART_EXT_REGEX;
