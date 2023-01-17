@@ -53,23 +53,23 @@ public class Osgibundle extends AbstractJavaBundlePartBinding {
 	
 	@Override
 	public OsgiBundlePart toBundlePartImpl() throws MojoExecutionException {
-		return new OsgiBundlePart(
+		OsgiBundlePart bundlePart = new OsgiBundlePart(
 			getName(),
 			symbolicName,
 			osgiVersion,
 			getJvmserver(),
-			resolvedArtifact.getFile(),
-			getVersionrange()
+			resolvedArtifact.getFile()
 		);
+		bundlePart.setVersionRange(getVersionRange());
+		return bundlePart;
 	}
 
-	public String getVersionrange() {
-		if(resolvedArtifact.getVersionRange().toString().contains(",")) {
+	public String getVersionRange() {
+		if(resolvedArtifact.getVersionRange() != null && resolvedArtifact.getVersionRange().toString().contains(",")) {
 			return resolvedArtifact.getVersionRange().toString();
 		} else {
 			return "";
 		}
-
 	}
 
 }
