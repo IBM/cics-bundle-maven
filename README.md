@@ -119,6 +119,8 @@ To create a CICS bundle in this way:
         <groupId>my.group.id</groupId>
         <artifactId>my-web-project</artifactId>
         <version>1.0.0</version>
+        <!-- Version ranges are also supported CICS phase in support with OSGi bundles i.e. -->
+        <!-- <version>[1.0.0,2.0.0)</version> -->
         <type>war</type>
       </dependency>
     </dependencies>
