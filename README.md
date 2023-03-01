@@ -71,7 +71,7 @@ It can deploy CICS bundles containing any bundleparts.
 ## Prerequisites
 To use the plugin to build CICS bundles, make sure that Maven is installed.
 
-Make sure any required bundles or projects are installed on the system correctly using `maven install` if they are not available in an online repository. This will copy the files to the local .m2 repository.
+Make sure any required bundles or projects are installed into your local maven repository (.m2 cache) correctly using `mvn install` if they are not available in an online repository.
 
 The plugin builds CICS bundles for any in-service version of CICS Transaction Server for z/OS (version 5.3 and later at the time of writing).
 
@@ -142,7 +142,7 @@ To create a CICS bundle in this way:
       </plugins>
     </build>
     ```
-    Now if you build the CICS bundle (`mvn clean verify` or `mvn clean install`) it will pull in the dependency, add it into the CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is ready to be stored in an artifact repository (done automatically for the local .m2 repo is using `install`) or deployed to CICS.
+    Now if you build the CICS bundle (`mvn clean verify` or `mvn clean install`) it will pull in the dependency, add it into the CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is ready to be deployed to CICS or stored in an artifact repository (if you use `mvn clean install` the CICS bundle is installed into your local .m2 repository at the end of the build).
 
     The generated CICS bundle takes its bundle ID from the Maven module's `artifactId` and its version from the Maven module's `version`.
 
@@ -181,7 +181,7 @@ To create a CICS bundle in this way:
     </build>
     ```
 
-  Now if you build the Java module with a later phase than or at verify, i.e. `mvn clean verify` to avoid installing the artifact locally or `mvn clean install` to install it locally in your .m2 directory, it will build the module as usual but then also wrap it in a CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is added to the output of the module, by default using the `cics-bundle` classifier, and is ready to be stored in an artifact repository or deployed to CICS.
+  Now if you build the Java module with verify phase or later, i.e. `mvn clean verify` to avoid installing the artifact locally or `mvn clean install` to install it locally in your .m2 directory, it will build the module as usual but then also wrap it in a CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is added to the output of the module, by default using the `cics-bundle` classifier, and is ready to be stored in an artifact repository or deployed to CICS.
 
 ## Deploy a CICS bundle using `cics-bundle-maven-plugin`
 
