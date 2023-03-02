@@ -351,7 +351,7 @@ We welcome contributions! Find out how in our [contribution guide](CONTRIBUTING.
 
 ## Support
 
-The CICS bundle Maven plugin is supported as part of the CICS Transaction Server for z/OS license. Problems can be raised as [IBM Support cases](https://www.ibm.com/mysupport/), and requests for enhancement can use the [RFE site](https://www.ibm.com/support/pages/open-and-vote-cics-rfe-request-enhancement).
+The CICS bundle Maven plugin is supported as part of the CICS Transaction Server for z/OS license. Problems can be raised as [IBM Support cases](https://www.ibm.com/mysupport/), and requests for enhancement can use the [Idea site](https://ibm-z-software-portal.ideas.ibm.com/), for product CICS Transaction Server for z/OS.
 
 Equally, problems and enhancement requests can be raised here on GitHub, as [new issues](https://github.com/IBM/cics-bundle-maven/issues/new).
 
