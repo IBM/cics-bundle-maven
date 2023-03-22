@@ -71,6 +71,8 @@ It can deploy CICS bundles containing any bundleparts.
 ## Prerequisites
 To use the plugin to build CICS bundles, make sure that Maven is installed.
 
+Make sure any required bundles or projects are installed into your local maven repository (.m2 cache) correctly using `mvn install` if they are not available in an online repository.
+
 The plugin builds CICS bundles for any in-service version of CICS Transaction Server for z/OS (version 5.3 and later at the time of writing).
 
 However, if you are using the `deploy` goal of the plugin to deploy bundles to CICS, you must enable the CICS bundle deployment API. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region or a single CICS region. See the [CICS TS doc](https://www.ibm.com/docs/en/cics-ts/6.1_beta?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) for details. To use the `deploy` goal, make sure that:
@@ -142,7 +144,7 @@ To create a CICS bundle in this way:
       </plugins>
     </build>
     ```
-    Now if you build the CICS bundle it will pull in the dependency, add it into the CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is ready to be stored in an artifact repository or deployed to CICS.
+    Now if you build the CICS bundle (`mvn clean verify` or `mvn clean install`) it will pull in the dependency, add it into the CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is ready to be deployed to CICS or stored in an artifact repository (if you use `mvn clean install` the CICS bundle is installed into your local .m2 repository at the end of the build).
 
     The generated CICS bundle takes its bundle ID from the Maven module's `artifactId` and its version from the Maven module's `version`.
 
@@ -181,7 +183,7 @@ To create a CICS bundle in this way:
     </build>
     ```
 
-  Now if you build the Java module (including the `verify` phase) it will build the module as usual but then also wrap it in a CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is added to the output of the module, by default using the `cics-bundle` classifier, and is ready to be stored in an artifact repository or deployed to CICS.
+  Now if you build the Java module with verify phase or later, i.e. `mvn clean verify` to avoid installing the artifact locally or `mvn clean install` to install it locally in your .m2 directory, it will build the module as usual but then also wrap it in a CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is added to the output of the module, by default using the `cics-bundle` classifier, and is ready to be stored in an artifact repository or deployed to CICS.
 
 ## Deploy a CICS bundle using `cics-bundle-maven-plugin`
 
@@ -239,7 +241,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
 
   Each time you make a change to the Java project and rerun the build it will redeploy the bundle and publish your changes.
 
-  Typically you won't want this deployment to happen in every environment that the build is run. Placing this execution in a separate Maven profile that is only enabled in development environments is suggested.
+  Typically, you won't want this deployment to happen in every environment that the build is run. Placing this execution in a separate Maven profile that is only enabled in development environments is suggested.
 
 
 ## Using nightly/snapshot development builds
@@ -353,7 +355,7 @@ We welcome contributions! Find out how in our [contribution guide](CONTRIBUTING.
 
 ## Support
 
-The CICS bundle Maven plugin is supported as part of the CICS Transaction Server for z/OS license. Problems can be raised as [IBM Support cases](https://www.ibm.com/mysupport/), and requests for enhancement can use the [RFE site](https://www.ibm.com/support/pages/open-and-vote-cics-rfe-request-enhancement).
+The CICS bundle Maven plugin is supported as part of the CICS Transaction Server for z/OS license. Problems can be raised as [IBM Support cases](https://www.ibm.com/mysupport/), and requests for enhancement can use the [Ideas site](https://ibm-z-software-portal.ideas.ibm.com/), for product CICS Transaction Server for z/OS.
 
 Equally, problems and enhancement requests can be raised here on GitHub, as [new issues](https://github.com/IBM/cics-bundle-maven/issues/new).
 
