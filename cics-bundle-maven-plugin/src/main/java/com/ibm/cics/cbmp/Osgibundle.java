@@ -10,7 +10,7 @@ import com.ibm.cics.bundle.parts.OsgiBundlePart;
  * #%L
  * CICS Bundle Maven Plugin
  * %%
- * Copyright (C) 2019 IBM Corp.
+ * Copyright (C) 2019 - 2023 IBM Corp.
  * %%
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -53,13 +53,23 @@ public class Osgibundle extends AbstractJavaBundlePartBinding {
 	
 	@Override
 	public OsgiBundlePart toBundlePartImpl() throws MojoExecutionException {
-		return new OsgiBundlePart(
+		OsgiBundlePart bundlePart = new OsgiBundlePart(
 			getName(),
 			symbolicName,
 			osgiVersion,
 			getJvmserver(),
 			resolvedArtifact.getFile()
 		);
+		bundlePart.setVersionRange(getVersionRange());
+		return bundlePart;
+	}
+
+	public String getVersionRange() {
+		if(resolvedArtifact.getVersionRange() != null && resolvedArtifact.getVersionRange().toString().contains(",")) {
+			return resolvedArtifact.getVersionRange().toString();
+		} else {
+			return "";
+		}
 	}
 
 }
