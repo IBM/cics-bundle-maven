@@ -192,7 +192,7 @@ Following the instructions from one of the two methods above, you will have buil
 1. Ensure a BUNDLE definition for this CICS bundle has already been created in the CSD. You will need to know the CSD group and name of the definition.
 The bundle directory of the BUNDLE definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.
 
-The USERID defined in the pom.xml is the developer’s credentials which need to have access to the appropriate profile_prefix.CMCI.DEPLOYER EJBROLE. Credentials, such as a username and password, should not be directly placed into the pom.xml file. Instead, variables for the credentials should be referenced in the pom.xml file.
+The username defined in the pom.xml is the developer’s credentials which need to have access to the appropriate RACF profile_prefix.CMCI.DEPLOYER EJBROLE. Credentials, such as a username and password, should not be directly placed into the pom.xml file. Instead, variables for the credentials should be referenced in the pom.xml file.
 
 1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:  
 
@@ -346,7 +346,7 @@ You might see this message in the Maven log when deploying a CICS bundle:
 [ERROR]  - Error creating directory '<directory>'.
 ```
 **Why does it happen?**  
-The error occurs because the user ID that deploys the bundle doesn't have access to the bundles directory.  
+The error occurs because the credential that deploys the bundle doesn't have access to the bundles directory.  
 **How to resolve it?**  
 Contact your system administrator to make sure the `deploy_userid` configured for the CICS bundle deployment API has WRITE access to the bundles directory. The bundles directory is specified on the `com.ibm.cics.jvmserver.cmci.bundles.dir` option in the JVM profile of the CMCI JVM server.  
 For instructions on how to specify the bundles directory and grant access to `deploy_userid`, see [Configuring the CMCI JVM server for the CICS bundle deployment API](https://www.ibm.com/docs/en/cics-ts/5.6?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) in CICS documentation.
