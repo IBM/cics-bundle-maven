@@ -15,7 +15,7 @@
     <dependency>
       <groupId>com.ibm.cics</groupId>
       <artifactId>cics-bundle-maven-plugin</artifactId>
-      <version>1.0.3</version>
+      <version>1.0.4</version>
     </dependency>
   </dependencies>
   
