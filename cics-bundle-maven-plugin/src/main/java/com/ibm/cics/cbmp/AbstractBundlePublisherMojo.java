@@ -64,8 +64,7 @@ public abstract class AbstractBundlePublisherMojo extends AbstractMojo {
 			project.getArtifactId(),
 			v.getMajor(),
 			v.getMinor(),
-			v.getPatch(),
-			v.getBuildNumber()
+			v.getPatch()
 		);
 		
 		//Notify the build context of file changes
