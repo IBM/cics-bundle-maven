@@ -1,4 +1,4 @@
-package test_osgi;
+package test_tycho;
 
 /*-
  * #%L

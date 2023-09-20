@@ -13,14 +13,10 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.ibm.cics.test-bundle-eba</groupId>
-    <artifactId>test-bundle-eba</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  
-  <artifactId>test-osgi</artifactId>
-  <packaging>jar</packaging>
+  <groupId>com.ibm.cics.test-bundle-war-bundle-parts</groupId>
+  <artifactId>test-bundle-war-bundle-parts</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
   
   <dependencies>
     <!-- provided -->
@@ -35,26 +31,16 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>biz.aQute.bnd</groupId>
-        <artifactId>bnd-maven-plugin</artifactId>
-        <version>4.2.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>bnd-process</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.3</version>
         <configuration>
-          <archive>
-            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-          </archive>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <packagingExcludes>pom.xml</packagingExcludes>
+          <warName>test-war</warName>
         </configuration>
       </plugin>
+      
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
@@ -62,6 +48,22 @@
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>bundle-war</goal>
+            </goals>
+            <configuration>
+              <jvmserver>EYUCMCIJ</jvmserver>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

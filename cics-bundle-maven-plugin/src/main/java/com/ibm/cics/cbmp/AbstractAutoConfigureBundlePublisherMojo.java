@@ -48,14 +48,6 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 	 */
 	@Parameter(required = false)
 	protected List<BundlePartBinding> bundleParts = Collections.emptyList();
-	
-	/**
-	 * The directory containing bundle parts to be included in the CICS bundle. 
-	 * This path is relative to `src/main/`
-	 * Specifying this parameter overrides the default path of `bundleParts`.
-	 */
-	@Parameter(property = "cicsbundle.bundlePartsDirectory", defaultValue = "bundleParts", required = false)
-	private String bundlePartsDirectory;
 
 	@Override
 	public String getJVMServer() {
@@ -64,46 +56,10 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 	
 	@Override
 	protected void initBundlePublisher(BundlePublisher bundlePublisher) throws MojoExecutionException {
+		super.initBundlePublisher(bundlePublisher);
 		ArrayList<Artifact> artifacts = new ArrayList<>(project.getDependencyArtifacts());
 		addExplicitBundleParts(bundlePublisher, artifacts);
 		addAutoBundleParts(bundlePublisher, artifacts);
-		addStaticBundleResources(bundlePublisher);
-	}
-
-	private void addStaticBundleResources(BundlePublisher bundlePublisher) throws MojoExecutionException {
-		//Add bundle parts for any resources
-		Path basePath = baseDir.toPath();
-		Path bundlePartSource = basePath.resolve("src/main/" + bundlePartsDirectory);
-		getLog().info("Gathering bundle parts from " + basePath.relativize(bundlePartSource));
-		
-		if (Files.exists(bundlePartSource)) {
-			if (Files.isDirectory(bundlePartSource)) {
-				try {
-					List<Path> paths = Files
-						.walk(bundlePartSource)
-						.filter(Files::isRegularFile)
-						.collect(Collectors.toList());
-					
-					for (Path toAdd : paths) {
-						try {
-							bundlePublisher.addStaticResource(
-								bundlePartSource.relativize(toAdd),
-								() -> Files.newInputStream(toAdd)
-							);
-						} catch (PublishException e) {
-							throw new MojoExecutionException("Failure adding static bundle parts " + toAdd + ": " + e.getMessage(), e);
-						}
-					}
-				} catch (IOException e) {
-					throw new MojoExecutionException("Failure adding static bundle parts", e);
-				}
-			} else {
-				throw new MojoExecutionException("Static bundle parts directory " + bundlePartSource + "wasn't a directory");
-			}
-		} else {
-			//Ignore if it doesn't exist
-			getLog().info("No non-Java-based bundle parts to add, because bundle parts directory '" + bundlePartsDirectory + "' does not exist");
-		}
 	}
 
 	private void addAutoBundleParts(BundlePublisher bundlePublisher, ArrayList<Artifact> artifacts)
