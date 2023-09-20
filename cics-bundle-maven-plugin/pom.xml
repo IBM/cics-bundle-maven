@@ -190,6 +190,7 @@
           <addTestClassPath>true</addTestClassPath>
           <goals>install</goals>
           <mergeUserSettings>true</mergeUserSettings>
+          <pomIncludes>test-bundle-war-final-name/pom.xml</pomIncludes>
           <scriptVariables>
             <wiremockPort>${wiremockPort}</wiremockPort>
           </scriptVariables>
