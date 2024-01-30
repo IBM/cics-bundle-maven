@@ -46,6 +46,12 @@ public class PackageCICSBundleMojo extends AbstractAutoConfigureBundlePublisherM
 	 */
 	@Parameter(property="cicsbundle.classifier", required = false, readonly = false)
 	private String classifier;
+	
+	/**
+	 * The base name to use for the generated bundle archive. 
+	 */
+	@Parameter(property="project.build.finalName", required = true, readonly = true)
+	private String finalName;
 
 	@Component
 	private MavenProjectHelper projectHelper;
@@ -62,6 +68,7 @@ public class PackageCICSBundleMojo extends AbstractAutoConfigureBundlePublisherM
 			bundlePublisher,
 			classifier,
 			project,
+			finalName,
 			projectHelper
 		);
 		
@@ -75,13 +82,15 @@ public class PackageCICSBundleMojo extends AbstractAutoConfigureBundlePublisherM
 			BundlePublisher bundlePublisher,
 			String classifier,
 			MavenProject project,
+			String finalName,
 			MavenProjectHelper projectHelper) throws MojoExecutionException {
 		try {
 			bundlePublisher.publishDynamicResources();
 			
 			ZipArchiver zipArchiver = new ZipArchiver();
 			zipArchiver.addDirectory(workDir);
-			File cicsBundle = new File(outputDir, project.getArtifactId() + "-" + project.getVersion() + (classifier != null ? "-" + classifier : "") + "." + CICS_BUNDLE_EXTENSION);
+			
+			File cicsBundle = new File(outputDir, finalName + (classifier != null ? "-" + classifier : "") + "." + CICS_BUNDLE_EXTENSION);
 			zipArchiver.setDestFile(cicsBundle);
 			zipArchiver.createArchive();
 		

@@ -31,9 +31,6 @@ import com.ibm.cics.bundle.parts.BundlePublisher.PublishException;
 
 public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo implements DefaultsProvider {
 
-	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}-cics-bundle.zip", required = true, readonly = true)
-	private File cicsBundleArchive;
-	
 	/**
 	 * The CICS JVM server that the Java code will execute in.
 	 */
@@ -51,6 +48,12 @@ public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo
 	
 	@Parameter(defaultValue = "${project.build.directory}", required = true, readonly = true)
 	private File buildDir;
+	
+	/**
+	 * The base name to use for the generated bundle archive. 
+	 */
+	@Parameter(property="project.build.finalName", required = true, readonly = true)
+	private String finalName;
 	
 	@Component
 	private MavenProjectHelper projectHelper;
@@ -97,6 +100,7 @@ public abstract class AbstractBundleJavaMojo extends AbstractBundlePublisherMojo
 			bundlePublisher,
 			classifier,
 			project,
+			finalName,
 			projectHelper
 		);
 	}
