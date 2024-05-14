@@ -155,12 +155,12 @@ public class BundleDeployMojo extends AbstractMojo {
 		if (cicsplexSpecified && !regionSpecified || regionSpecified && !cicsplexSpecified) {
 			throw new MojoExecutionException("Specify both or neither of cicsplex and region in plugin configuration or server configuration");
 		}
-
-		getLog().info("Deploying bundle to " + serverConfig.getEndpointUrl().toASCIIString() + " into region " + serverConfig.getCicsplex() + "/" + serverConfig.getRegion());
+		File file = getBundle();
+		getLog().info("Deploying " + file.getName() + " to " + serverConfig.getEndpointUrl().toASCIIString() + " into region " + serverConfig.getCicsplex() + "/" + serverConfig.getRegion());
 		try {
 			BundleDeployHelper.deployBundle(
 				serverConfig.getEndpointUrl(),
-				getBundle(),
+				file,
 				bunddef,
 				csdgroup,
 				serverConfig.getCicsplex(),
