@@ -7,7 +7,13 @@
   <packaging>pom</packaging>
 
   <name>CICS Bundle Maven Parent</name>
-
+  <description>A Maven plugin to build CICS bundles, and deploy them into CICS TS</description>
+  <licenses>
+    <license>
+      <name>EPL-2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
   <organization>
     <name>IBM Corp.</name>
   </organization>
