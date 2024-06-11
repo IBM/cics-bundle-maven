@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.ibm.cics</groupId>
     <artifactId>cics-bundle-maven</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.6</version>
   </parent>
   <artifactId>cics-bundle-maven-site</artifactId>
   <packaging>pom</packaging>
