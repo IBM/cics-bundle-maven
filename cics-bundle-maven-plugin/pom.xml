@@ -12,6 +12,14 @@
 
   <name>CICS Bundle Maven Plugin</name>
 
+  <description>A Maven plugin to build CICS bundles, and deploy them into CICS TS.</description>
+  <licenses>
+    <license>
+      <name>EPL-2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

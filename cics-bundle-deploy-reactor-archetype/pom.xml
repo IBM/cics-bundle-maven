@@ -10,6 +10,15 @@
   <artifactId>cics-bundle-deploy-reactor-archetype</artifactId>
   <packaging>maven-archetype</packaging>
   <name>CICS Bundle Deploy Reactor Archetype</name>
+
+  <description>An archetype demonstrating how to use the cics-bundle-maven-plugin to build and deploy a CICS bundle using a build with a Maven reactor.</description>
+  <licenses>
+    <license>
+      <name>EPL-2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
+  
   <build>
   
     <resources>

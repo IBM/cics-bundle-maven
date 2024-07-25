@@ -8,6 +8,14 @@
 
   <name>CICS Bundle Maven Parent</name>
 
+  <description>Supporting artifacts for the cics-bundle-maven-plugin.</description>
+  <licenses>
+    <license>
+      <name>EPL-2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
+
   <organization>
     <name>IBM Corp.</name>
   </organization>
