@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.ibm.cics</groupId>
     <artifactId>cics-bundle-maven</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.6</version>
   </parent>
 
   <artifactId>cics-bundle-maven-plugin</artifactId>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.ibm.cics</groupId>
       <artifactId>cics-bundle-common</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.sonatype.plexus</groupId>
@@ -261,7 +261,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.6.4</version>
       </plugin>
     </plugins>
   </reporting>
