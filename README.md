@@ -97,7 +97,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.3</version>
+          <version>1.0.7</version>
           <extensions>true</extensions>
         </plugin>
       </plugins>
@@ -135,7 +135,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.3</version>
+          <version>1.0.7</version>
           <extensions>true</extensions>
           <configuration>
             <defaultjvmserver>DFHWLP</defaultjvmserver>
@@ -167,7 +167,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.3</version>
+          <version>1.0.7</version>
           <executions>
             <execution>
               <goals>
@@ -202,7 +202,7 @@ The username defined in the pom.xml is the developer’s credentials which need 
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.3</version>
+          <version>1.0.7</version>
           <executions>
             <execution>
               <goals>
@@ -351,7 +351,7 @@ The error occurs because the credential that deploys the bundle doesn't have acc
 Contact your system administrator to make sure the `deploy_userid` configured for the CICS bundle deployment API has WRITE access to the bundles directory. The bundles directory is specified on the `com.ibm.cics.jvmserver.cmci.bundles.dir` option in the JVM profile of the CMCI JVM server.  
 For instructions on how to specify the bundles directory and grant access to `deploy_userid`, see [Configuring the CMCI JVM server for the CICS bundle deployment API](https://www.ibm.com/docs/en/cics-ts/5.6?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) in CICS documentation.
 
-### Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:1.0.1-SNAPSHOT:deploy (default) on project standalone-war: Some of the supplied parameters were invalid
+### Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:1.0.7:deploy (default) on project standalone-war: Some of the supplied parameters were invalid
 **Why does it happen?**
 When you are using a bundle-war, bundle-ear, or bundle-osgi goal, the deploy goal must be configured with a cics-bundle classifier specifically.
 **How to resolve it?** 
