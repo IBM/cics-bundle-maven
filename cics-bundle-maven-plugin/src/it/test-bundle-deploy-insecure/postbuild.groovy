@@ -21,14 +21,14 @@ assert buildLog.exists()
 // Deployment with <insecure> set
 assert buildLog.text.contains("""\
 (deploy-with-insecure) @ test-bundle-deploy-insecure ---
-[INFO] Deploying bundle to https://localhost:${wiremockPort} into region cicsplex/region
+[INFO] Deploying test-app-bundle-0.0.1-SNAPSHOT.zip to https://localhost:${wiremockPort} into region cicsplex/region
 [INFO] Bundle deployed
 """)
 
 // Deployment without <insecure> set
 assert buildLog.text.contains("""\
 (deploy-and-fail-because-self-signed) @ test-bundle-deploy-insecure ---
-[INFO] Deploying bundle to https://localhost:${wiremockPort} into region cicsplex/region
+[INFO] Deploying test-app-bundle-0.0.1-SNAPSHOT.zip to https://localhost:${wiremockPort} into region cicsplex/region
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 """)

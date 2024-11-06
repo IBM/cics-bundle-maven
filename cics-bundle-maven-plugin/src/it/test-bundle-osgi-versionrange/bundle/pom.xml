@@ -34,6 +34,9 @@
                 <artifactId>@project.artifactId@</artifactId>
                 <version>@project.version@</version>
                 <extensions>true</extensions>
+                <configuration>
+                  <defaultjvmserver>HELLO</defaultjvmserver>
+                </configuration>
             </plugin>
         </plugins>
     </build>
