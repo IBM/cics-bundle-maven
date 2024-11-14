@@ -203,9 +203,9 @@
           <addTestClassPath>true</addTestClassPath>
           <goals>install</goals>
           <mergeUserSettings>true</mergeUserSettings>
-          <pomIncludes>test-bundle-war-final-name/pom.xml</pomIncludes>
           <scriptVariables>
             <wiremockPort>${wiremockPort}</wiremockPort>
+            <pluginString>${project.groupId}:${project.artifactId}:${project.version}</pluginString>
           </scriptVariables>
           <streamLogs>true</streamLogs>
           <!--  mavenOpts>-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y</mavenOpts -->

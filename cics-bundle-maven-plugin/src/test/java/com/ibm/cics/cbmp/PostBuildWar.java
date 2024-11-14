@@ -30,7 +30,7 @@ public class PostBuildWar {
 	private static final String WAR_BUNDLE = BASE_NAME + ".war";
 
 	static void assertOutput(File root) throws Exception {
-		Path cicsBundle = root.toPath().resolve("test-bundle/target/test-bundle-0.0.1-SNAPSHOT.zip");
+		Path cicsBundle = root.toPath().resolve("target/test-bundle-0.0.1-SNAPSHOT.zip");
 		
 		assertBundleContents(
 				cicsBundle,

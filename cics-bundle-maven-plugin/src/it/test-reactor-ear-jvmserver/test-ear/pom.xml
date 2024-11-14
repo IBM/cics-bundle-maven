@@ -1,0 +1,55 @@
+<!--
+  #%L
+  CICS Bundle Maven Plugin
+  %%
+  Copyright (C) 2019 IBM Corp.
+  %%
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+  #L%
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>test-reactor-ear-jvmserver</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>test-ear</artifactId>
+  <packaging>ear</packaging>
+  
+  <dependencies>
+    <!-- provided -->
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>test-war</artifactId>
+      <version>1.0.0</version>      
+      <type>war</type>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ear-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <packagingExcludes>pom.xml</packagingExcludes>
+          <earName>test-ear</earName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>

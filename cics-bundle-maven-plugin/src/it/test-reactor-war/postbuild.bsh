@@ -1,1 +1,1 @@
-com.ibm.cics.cbmp.PostBuildWar.assertOutput(basedir);
+com.ibm.cics.cbmp.PostBuildWar.assertOutput(new File(basedir, "test-bundle"));

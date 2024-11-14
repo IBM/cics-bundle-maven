@@ -45,7 +45,7 @@ public class PostBuildTestBundleOSGiVersionRange {
 					is,
 					CompareMatcher.isIdenticalTo(
 						"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
-						"<osgibundle jvmserver=\"MYJVMS\" symbolicname=\"com.ibm.cics.test-bundle-osgi-versionrange.osgi\" version= \"\" versionRange=\"[1.0,2.0)\"/>"
+						"<osgibundle jvmserver=\"HELLO\" symbolicname=\"com.ibm.cics.test-bundle-osgi-versionrange.osgi\" version= \"\" versionRange=\"[1.0,2.0)\"/>"
 					).withDifferenceEvaluator(
 						DifferenceEvaluators.chain(
 							DifferenceEvaluators.Default,

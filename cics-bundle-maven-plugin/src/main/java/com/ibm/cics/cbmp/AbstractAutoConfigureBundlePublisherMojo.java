@@ -37,7 +37,7 @@ public abstract class AbstractAutoConfigureBundlePublisherMojo extends AbstractB
 	/**
 	 * The default fallback value for the CICS JVM server that will be used for any Java-based artifacts that don't have a JVM server specified.
 	 */
-	@Parameter(property="cicsbundle.defaultjvmserver", defaultValue = "MYJVMS", required = false, readonly = false)
+	@Parameter(property="cicsbundle.defaultjvmserver", required = false, readonly = false)
 	private String defaultjvmserver;
 	
 	@Parameter(defaultValue = "${project.build.directory}/${project.artifactId}-${project.version}", required = true, readonly = true)
