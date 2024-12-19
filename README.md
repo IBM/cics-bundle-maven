@@ -357,6 +357,21 @@ When you are using a bundle-war, bundle-ear, or bundle-osgi goal, the deploy goa
 **How to resolve it?** 
 Use the <classifier>cics-bundle</classifier> configuration option to select the bundle, in the case where you're deploying a bundle-war-built bundle.
 
+
+### Error reading Bundle-SymbolicName from OSGi manifest file
+**Why does it happen?**  
+You may run into this error when building an OSGi bundle.
+
+The build goal of the Maven Bundle Plugin is bound to the compile phase, but the manifest generation occurs in the process-classes phase, which runs after compile. As a result, if other processes or plugins expect the manifest data during the compile phase, it won't be available yet, leading to errors like "Error reading Bundle-SymbolicName from OSGi manifest file."
+
+**How to resolve it?**  
+
+In Maven Bundle Plugin version 2.0.0 we moved the binding of the build goal from the compile phase to the package phase. This change ensures that the bundle is built as late as possible in the reactor build process, allowing all necessary class files and resources to be fully processed before the manifest is generated.
+
+**Action you must take when upgrading**
+
+If your project uses the cics-bundle packaging type to build any bundle part and you previously used the mvn compile command, you must now use mvn package instead.This change ensures that your bundle parts are packaged correctly with version 2.0.0.
+
 ## Contributing
 
 We welcome contributions! Find out how in our [contribution guide](CONTRIBUTING.md).
