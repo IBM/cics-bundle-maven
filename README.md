@@ -261,7 +261,7 @@ Snapshot builds are published to the Sonatype OSS Maven snapshots repository whi
     <pluginRepository>
       <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
