@@ -59,7 +59,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.14.0</version>
+      <version>3.18.0</version>
     </dependency>
 
     <!--  force a newer version of Guava than in the dependency hierarchy for maven-core-3.5.0 (20.0) to avoid CVE-2018-10237 -->
