@@ -192,7 +192,7 @@ Following the instructions from one of the two methods above, you will have buil
 1. Ensure a BUNDLE definition for this CICS bundle has already been created in the CSD. You will need to know the CSD group and name of the definition.
 The bundle directory of the BUNDLE definition should be set as follows: `<bundle_deploy_root>/<bundle_id>_<bundle_version>`.
 
-The username defined in the pom.xml is the developer’s credentials which need to have access to the appropriate RACF profile_prefix.CMCI.DEPLOYER EJBROLE. Credentials, such as a username and password, should not be directly placed into the pom.xml file. Instead, variables for the credentials should be referenced in the pom.xml file.
+    `<bundle_deploy_root>` **must** match the bundles directory specified by `-Dcom.ibm.cics.jvmserver.cmci.bundles.dir` in the JVM profile for your CMCI JVM server.
 
 1. In the `pom.xml`, extend the plugin configuration to include the extra parameters below:  
 
@@ -229,6 +229,9 @@ The username defined in the pom.xml is the developer’s credentials which need 
       </plugins>
     </build>
     ```
+
+    The username defined in the pom.xml is the developer’s credentials which need to have access to the appropriate RACF profile_prefix.CMCI.DEPLOYER EJBROLE. Credentials, such as a username and password, should not be directly placed into the pom.xml file. Instead, variables for the credentials should be referenced in the pom.xml file.
+
     **Note:** If you're deploying the bundle into a single CICS region environment (SMSS), omit the `<cicsplex>` and `<region>` fields.
 
 1. Edit the values in the configuration section to match your CICS configuration.
@@ -258,7 +261,7 @@ Snapshot builds are published to the Sonatype OSS Maven snapshots repository whi
     <pluginRepository>
       <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>

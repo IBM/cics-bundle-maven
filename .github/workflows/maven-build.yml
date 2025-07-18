@@ -8,10 +8,10 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '8'
           distribution: 'temurin'
@@ -23,7 +23,7 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
       
       - name: Build and deploy with Maven
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/1.x'
         run: mvn -Dstyle.color=always -B -U -P sign deploy
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -31,14 +31,14 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       
       - name: Build with Maven
-        if: github.ref != 'refs/heads/main'
+        if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/1.x'
         run: mvn -Dstyle.color=always -B -U verify
 
       - name: Build site
         run: mvn -Dstyle.color=always -B -U site site:stage post-site
 
       - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: target/staging/cics-bundle-maven-plugin
 
@@ -59,4 +59,4 @@ jobs:
     steps:
       - name: Deploy site to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
