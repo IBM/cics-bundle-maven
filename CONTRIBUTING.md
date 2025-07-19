@@ -18,7 +18,7 @@ Please request new features via the issue tracker. When requesting features, try
 
 ## Contributing code
 
-### Before you start...
+### Before you start…
 
 If you're thinking of fixing a bug or adding new features, be sure to open an issue first. This gives us a place to have a discussion about the work.
 
@@ -30,7 +30,7 @@ However if you do want to build this project, clone the repository and build `ci
 
 To build all projects and install them into the local Maven repository, run:
 
-```
+```sh
 mvn install
 ```
 
@@ -38,7 +38,7 @@ mvn install
 
 All code must have an EPL v2.0 header. To save you the menial work of getting the header right, you can let the Maven build do so by using the `add-licences` profile:
 
-```
+```sh
 mvn -Padd-licences process-sources
 ```
 
@@ -48,7 +48,7 @@ When you've run this, you'll find that new files have had headers added. Always 
 
 You must declare that you wrote the code that you contribute, or that you have the right to contribute someone else's code. To do so, you must sign the [Developer Certificate of Origin](https://developercertificate.org) (DCO):
 
-```
+```text
 Developer Certificate of Origin
 Version 1.1
 
@@ -88,10 +88,9 @@ By making a contribution to this project, I certify that:
     this project or the open source license(s) involved.
 ```
 
-
 If you can certify the above, then sign off each Git commit at the bottom of the commit message with the following:
 
-```
+```text
 Signed-off-by: My Name <my.name@example.com>
 ```
 
