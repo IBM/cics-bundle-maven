@@ -6,7 +6,7 @@ The table of contents is manually created and relies on the wording of the headi
 
 -->
 
-# cics-bundle-maven [![Maven Central Latest](https://maven-badges.herokuapp.com/maven-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://search.maven.org/search?q=g:com.ibm.cics%20AND%20a:cics-bundle-maven-plugin) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~) [![Build Status](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml/badge.svg?branch=main)](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml)
+# cics-bundle-maven [![Maven Central Latest](https://maven-badges.sml.io/sonatype-central/com.ibm.cics/cics-bundle-maven-plugin/badge.svg)](https://central.sonatype.com/artifact/com.ibm.cics/cics-bundle-maven-plugin) [![Nexus Snapshots](https://img.shields.io/nexus/s/com.ibm.cics/cics-bundle-maven.svg?server=https%3A%2F%2Foss.sonatype.org&label=snapshot&color=success)](https://oss.sonatype.org/#nexus-search;gav~com.ibm.cics~cics-bundle-maven-plugin~~~) [![Build Status](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml/badge.svg?branch=main)](https://github.com/IBM/cics-bundle-maven/actions/workflows/maven-build.yml)
 
 Also see the [Generated Maven plugin documentation ↗](https://ibm.github.io/cics-bundle-maven/plugin-info.html)
 
@@ -101,7 +101,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.8</version>
+          <version>2.0.0</version>
           <extensions>true</extensions>
         </plugin>
       </plugins>
@@ -141,7 +141,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.8</version>
+          <version>2.0.0</version>
           <extensions>true</extensions>
           <configuration>
             <defaultjvmserver>DFHWLP</defaultjvmserver>
@@ -174,7 +174,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.8</version>
+          <version>2.0.0</version>
           <executions>
             <execution>
               <goals>
@@ -209,7 +209,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.8</version>
+          <version>2.0.0</version>
           <executions>
             <execution>
               <goals>
@@ -375,7 +375,7 @@ The error occurs because the credential that deploys the bundle doesn't have acc
 Contact your system administrator to make sure the `deploy_userid` configured for the CICS bundle deployment API has WRITE access to the bundles directory. The bundles directory is specified on the `com.ibm.cics.jvmserver.cmci.bundles.dir` option in the JVM profile of the CMCI JVM server.
 For instructions on how to specify the bundles directory and grant access to `deploy_userid`, see [Configuring the CMCI JVM server for the CICS bundle deployment API](https://www.ibm.com/docs/en/cics-ts/5.6?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) in CICS documentation.
 
-### Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:1.0.7:deploy (default) on project standalone-war: Some of the supplied parameters were invalid
+### Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:2.0.0:deploy (default) on project standalone-war: Some of the supplied parameters were invalid
 
 **Why does it happen?**  
 When you are using a `bundle-war`, `bundle-ear`, or `bundle-osgi` goal, the `deploy` goal must be configured with a `cics-bundle` classifier specifically.
