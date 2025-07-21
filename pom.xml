@@ -7,8 +7,24 @@
   <packaging>pom</packaging>
 
   <name>CICS Bundle Maven Parent</name>
-
+  <url>https://github.com/IBM/cics-bundle-maven</url>
   <description>Supporting artifacts for the cics-bundle-maven-plugin.</description>
+
+  <scm>
+    <connection>scm:git:git://github.com/IBM/cics-bundle-maven.git</connection>
+    <developerConnection>scm:git:ssh://github.com:IBM/cics-bundle-maven.git</developerConnection>
+    <url>http://github.com/IBM/cics-bundle-maven/tree/master</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <name>IBM</name>
+      <email>noreply@ibm.com</email>
+      <organization>IBM</organization>
+      <organizationUrl>https://www.ibm.com</organizationUrl>
+    </developer>
+  </developers>
+
   <licenses>
     <license>
       <name>EPL-2.0</name>
