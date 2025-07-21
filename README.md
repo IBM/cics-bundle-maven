@@ -101,7 +101,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.7</version>
+          <version>1.0.8</version>
           <extensions>true</extensions>
         </plugin>
       </plugins>
@@ -141,7 +141,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.7</version>
+          <version>1.0.8</version>
           <extensions>true</extensions>
           <configuration>
             <defaultjvmserver>DFHWLP</defaultjvmserver>
@@ -174,7 +174,7 @@ To create a CICS bundle in this way:
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.7</version>
+          <version>1.0.8</version>
           <executions>
             <execution>
               <goals>
@@ -209,7 +209,7 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
         <plugin>
           <groupId>com.ibm.cics</groupId>
           <artifactId>cics-bundle-maven-plugin</artifactId>
-          <version>1.0.7</version>
+          <version>1.0.8</version>
           <executions>
             <execution>
               <goals>
@@ -378,20 +378,20 @@ For instructions on how to specify the bundles directory and grant access to `de
 ### Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:1.0.7:deploy (default) on project standalone-war: Some of the supplied parameters were invalid
 
 **Why does it happen?**  
-When you are using a `bundle-war`, `bundle-ear`, or `bundle-osgi` goal, the `deploy` goal must be configured with a cics-bundle classifier specifically.
+When you are using a `bundle-war`, `bundle-ear`, or `bundle-osgi` goal, the `deploy` goal must be configured with a `cics-bundle` classifier specifically.
 
 **How to resolve it?**  
-Use the `<classifier>cics-bundle</classifier>` configuration option to select the bundle, in the case where you're deploying a bundle-war-built bundle.
+Use the `<classifier>cics-bundle</classifier>` configuration option to select the bundle, in the case where you're deploying a `bundle-war`-built bundle.
 
 ### Error reading Bundle-SymbolicName from OSGi manifest file
 
 You may run into this error when building an OSGi bundle.
 
 **Why does it happen?**  
-The `build` goal of the Maven Bundle Plugin is bound to the compile phase, but the manifest generation occurs in the process-classes phase, which runs after compile. As a result, if other processes or plugins expect the manifest data during the compile phase, it won't be available yet, leading to errors like "Error reading Bundle-SymbolicName from OSGi manifest file."
+In CICS bundle Maven plugin version 1.x the `build` goal of the plugin is bound to the `compile` phase, but the manifest generation occurs in the `process-classes` phase, which runs after `compile`. As a result, if other processes or plugins expect the manifest data during the `compile` phase, it won't be available yet, leading to errors like "Error reading Bundle-SymbolicName from OSGi manifest file."
 
 **How to resolve it?**  
-In Maven Bundle Plugin version 2.0.0 we moved the binding of the `build` goal from the compile phase to the package phase. This change ensures that the bundle is built as late as possible in the reactor build process, allowing all necessary class files and resources to be fully processed before the manifest is generated.
+In CICS bundle Maven plugin version 2.0.0 we moved the binding of the `build` goal from the `compile` phase to the `package` phase. This change ensures that the bundle is built as late as possible in the reactor build process, allowing all necessary class files and resources to be fully processed before the manifest is generated.
 
 ## Migration to v2
 
