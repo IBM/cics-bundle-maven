@@ -13,7 +13,7 @@
   <scm>
     <connection>scm:git:git://github.com/IBM/cics-bundle-maven.git</connection>
     <developerConnection>scm:git:ssh://github.com:IBM/cics-bundle-maven.git</developerConnection>
-    <url>http://github.com/IBM/cics-bundle-maven/tree/master</url>
+    <url>http://github.com/IBM/cics-bundle-maven/tree/main</url>
   </scm>
 
   <developers>
