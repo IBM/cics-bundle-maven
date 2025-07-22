@@ -117,40 +117,48 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- These Maven-provided libraries don't need a version, but this is done to keep Sonatype Portal happy -->
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-model</artifactId>
         <scope>provided</scope>
+        <version>3.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-settings</artifactId>
         <scope>provided</scope>
+        <version>3.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-builder-support</artifactId>
         <scope>provided</scope>
+        <version>3.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-artifact</artifactId>
         <scope>provided</scope>
+        <version>3.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
         <scope>provided</scope>
+        <version>3.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-model-builder</artifactId>
         <scope>provided</scope>
+        <version>3.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-compat</artifactId>
         <scope>provided</scope>
+        <version>3.9.11</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
