@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application id="test-ear" name="test-ear" type="ear" location="test-ear-1.0.0.ear">
+    <application-bnd>
+        <security-role name="Administrator">
+            <user name="admin" />
+        </security-role>
+    </application-bnd>
+</application>
