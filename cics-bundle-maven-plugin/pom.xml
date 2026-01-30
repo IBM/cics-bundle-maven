@@ -215,6 +215,10 @@
           <addTestClassPath>true</addTestClassPath>
           <goals>install</goals>
           <mergeUserSettings>true</mergeUserSettings>
+          <filterProperties>
+            <tycho-version>2.7.5</tycho-version>
+            <bnd-version>6.4.0</bnd-version>
+          </filterProperties>
           <scriptVariables>
             <wiremockPort>${wiremockPort}</wiremockPort>
             <pluginString>${project.groupId}:${project.artifactId}:${project.version}</pluginString>

@@ -161,14 +161,110 @@ The location of the bundle parts directory can be configured by using the `<bund
 
 ### Configuring bundle part properties
 
-To configure properties of a specific bundle part beyond the `<defaultjvmserver>`, use `<bundleParts>` in the plugin configuration. Each `<bundlePart>` entry must specify an `implementation` attribute for the bundle part type and an `<artifact>` element to identify the matching dependency.
+When building a CICS bundle with Java artifacts (WAR, EAR, OSGi bundle, or EBA), you can configure specific properties for each bundle part by using the `<bundleParts>` configuration element. Each `<bundlePart>` entry must specify an `implementation` attribute for the bundle part type and an `<artifact>` element to identify the matching dependency.
+
+#### Common properties for all Java bundle parts
 
 All Java bundle parts support the following properties:
 
-- `jvmserver` - The name of the JVM server where the application will run (defaults to `<defaultjvmserver>`)
 - `name` - The name of the bundle part (optional, defaults to `artifactId-version`)
+- `jvmserver` - The name of the JVM server where the application will run (defaults to the value of `<defaultjvmserver>` in the plugin configuration)
 
-The `name` property controls the filenames of the bundle part entries within the CICS bundle ZIP (e.g. `my-web-app.warbundle` and `my-web-app.war`). For WAR and EAR bundle parts deployed to a Liberty JVM server, the name is also used as the default HTTP context root — so setting `name` to `my-web-app` means the application will be accessible at `/my-web-app`. This gives you a convenient way to control the context root at build time without modifying the application itself.
+The `name` property controls the filenames of the bundle part entries within the CICS bundle ZIP (e.g. `my-web-app.warbundle` and `my-web-app.war`). For WAR bundle parts deployed to a Liberty JVM server, the file name is also used as the default HTTP context root — so setting `name` to `my-web-app` means the application will be accessible at `/my-web-app`. This gives you a convenient way to control the context root at build time without modifying the application itself.
+
+The `jvmserver` property specifies the name of the JVM server where the application will run:
+
+```xml
+<configuration>
+  <bundleParts>
+    <bundlePart implementation="com.ibm.cics.cbmp.Warbundle">
+      <artifact>
+        <artifactId>my-web-app</artifactId>
+      </artifact>
+      <jvmserver>MYJVMSRV</jvmserver>
+    </bundlePart>
+  </bundleParts>
+</configuration>
+```
+
+If you don't specify a `jvmserver` for a bundle part, it will use the `<defaultjvmserver>` value from the plugin configuration.
+
+#### WAR bundle part properties
+
+WAR bundle parts (`com.ibm.cics.cbmp.Warbundle`) additionally support the following properties:
+
+- `addCicsAllAuthenticatedRole` - Whether to add the CICS all-authenticated role (boolean, defaults to `true`)
+- `libertyAppConfigFile` - Path to a Liberty server.xml configuration file to include in the bundle (File, optional)
+
+Example with all properties:
+
+```xml
+<configuration>
+  <bundleParts>
+    <bundlePart implementation="com.ibm.cics.cbmp.Warbundle">
+      <artifact>
+        <artifactId>my-web-app</artifactId>
+      </artifact>
+      <jvmserver>DFHWLP</jvmserver>
+      <addCicsAllAuthenticatedRole>false</addCicsAllAuthenticatedRole>
+      <libertyAppConfigFile>server.xml</libertyAppConfigFile>
+    </bundlePart>
+  </bundleParts>
+</configuration>
+```
+
+The `libertyAppConfigFile` path is relative to the bundle module's base directory. The file will be included in the CICS bundle and referenced in the WAR bundle part definition.
+
+#### EAR bundle part properties
+
+EAR bundle parts (`com.ibm.cics.cbmp.Earbundle`) support the same properties as WAR bundle parts:
+
+- `jvmserver` - The name of the JVM server (defaults to `<defaultjvmserver>`)
+- `addCicsAllAuthenticatedRole` - Whether to add the CICS all-authenticated role (boolean, defaults to `true`)
+- `libertyAppConfigFile` - Path to a Liberty server.xml configuration file to include in the bundle (File, optional)
+
+Example:
+
+```xml
+<configuration>
+  <bundleParts>
+    <bundlePart implementation="com.ibm.cics.cbmp.Earbundle">
+      <artifact>
+        <artifactId>my-enterprise-app</artifactId>
+      </artifact>
+      <jvmserver>DFHWLP</jvmserver>
+      <addCicsAllAuthenticatedRole>false</addCicsAllAuthenticatedRole>
+      <libertyAppConfigFile>liberty-config/server.xml</libertyAppConfigFile>
+    </bundlePart>
+  </bundleParts>
+</configuration>
+```
+
+#### OSGi bundle part properties
+
+OSGi bundle parts (`com.ibm.cics.cbmp.Osgibundle`) support:
+
+- `jvmserver` - The name of the JVM server (defaults to `<defaultjvmserver>`)
+
+Example:
+
+```xml
+<configuration>
+  <bundleParts>
+    <bundlePart implementation="com.ibm.cics.cbmp.Osgibundle">
+      <artifact>
+        <artifactId>my-osgi-bundle</artifactId>
+      </artifact>
+      <jvmserver>DFHOSGI</jvmserver>
+    </bundlePart>
+  </bundleParts>
+</configuration>
+```
+
+#### Multiple bundle parts example
+
+You can configure multiple bundle parts in a single CICS bundle, each with their own properties:
+>>>>>>> 3741a8a (Add Liberty server.xml and auth role support for WAR/EAR bundles)
 
 ```xml
 <configuration>
@@ -176,15 +272,27 @@ The `name` property controls the filenames of the bundle part entries within the
   <bundleParts>
     <bundlePart implementation="com.ibm.cics.cbmp.Warbundle">
       <artifact>
-        <artifactId>my-web-project</artifactId>
+        <artifactId>frontend-app</artifactId>
       </artifact>
-      <name>my-web-app</name>
+      <name>frontend-app</name>
+      <libertyAppConfigFile>frontend-server.xml</libertyAppConfigFile>
+    </bundlePart>
+    <bundlePart implementation="com.ibm.cics.cbmp.Warbundle">
+      <artifact>
+        <artifactId>backend-api</artifactId>
+      </artifact>
+      <jvmserver>APIJVM</jvmserver>
+      <addCicsAllAuthenticatedRole>false</addCicsAllAuthenticatedRole>
+    </bundlePart>
+    <bundlePart implementation="com.ibm.cics.cbmp.Osgibundle">
+      <artifact>
+        <artifactId>shared-services</artifactId>
+      </artifact>
+      <jvmserver>DFHOSGI</jvmserver>
     </bundlePart>
   </bundleParts>
 </configuration>
 ```
-
-If `name` is not specified, it defaults to `artifactId-version` (e.g. `my-web-project-1.0.0`).
 
 ## Create a CICS bundle (from an existing Java module) using `cics-bundle-maven-plugin`
 
