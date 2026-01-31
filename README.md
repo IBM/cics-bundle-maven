@@ -319,6 +319,42 @@ To create a CICS bundle in this way:
 
   Now if you build the Java module with verify phase or later, i.e. `mvn clean verify` to avoid installing the artifact locally or `mvn clean install` to install it locally in your .m2 directory, it will build the module as usual but then also wrap it in a CICS bundle, and define it in the CICS bundle's manifest. The CICS bundle is added to the output of the module, by default using the `cics-bundle` classifier, and is ready to be stored in an artifact repository or deployed to CICS.
 
+### Configuring properties for bundle-war and bundle-ear goals
+
+When using the `bundle-war` or `bundle-ear` goals to package an existing Java module into a CICS bundle, you can configure additional properties beyond the required `jvmserver`. Both goals support the same configuration properties:
+
+- `jvmserver` - The name of the JVM server where the application will run (required)
+- `addCicsAllAuthenticatedRole` - Whether to add the CICS all-authenticated role (boolean, defaults to `true`)
+- `libertyAppConfigFile` - Path to a Liberty server.xml configuration file to include in the bundle (File, optional)
+
+Example configuration:
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>cics-bundle-maven-plugin</artifactId>
+      <version>2.0.0</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>bundle-war</goal>
+          </goals>
+          <configuration>
+            <jvmserver>DFHWLP</jvmserver>
+            <addCicsAllAuthenticatedRole>false</addCicsAllAuthenticatedRole>
+            <libertyAppConfigFile>src/main/liberty/server.xml</libertyAppConfigFile>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+```
+
+The `libertyAppConfigFile` path is relative to the module's base directory. The file will be included in the CICS bundle and referenced in the bundle part definition.
+
 ## Deploy a CICS bundle using `cics-bundle-maven-plugin`
 
 Following the instructions from one of the two methods above, you will have built a CICS bundle. You can use the `cics-bundle-maven-plugin` to install this into CICS by using the CICS bundle deployment API. This requires some setup in CICS as a [prerequisite](#prerequisites).
