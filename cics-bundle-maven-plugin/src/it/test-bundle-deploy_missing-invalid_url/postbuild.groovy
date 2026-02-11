@@ -21,5 +21,5 @@ File buildLog = new File(basedir, 'build.log')
 assert buildLog.exists()
 
 assert buildLog.text.contains("[ERROR] Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:")
-assert buildLog.text.contains("Unknown host invalid:")
-assert buildLog.text.contains("Caused by: org.apache.maven.plugin.MojoExecutionException: invalid:")
+assert buildLog.text.contains("Unknown host invalid:") || buildLog.text.contains("No such host is known (invalid)")
+assert buildLog.text.contains("Caused by: org.apache.maven.plugin.MojoExecutionException: invalid:") || buildLog.text.contains("Caused by: org.apache.maven.plugin.MojoExecutionException: No such host is known (invalid)")
