@@ -14,17 +14,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.ibm.cics.test-reactor-osgi</groupId>
-    <artifactId>test-reactor-osgi</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.ibm.cics</groupId>
+    <artifactId>setup-test-artifacts</artifactId>
+    <version>1.0.0</version>
   </parent>
-  
-  <artifactId>test-tycho</artifactId>
-  <packaging>eclipse-plugin</packaging>
-  
-  <properties>
-    <tycho-version>@tycho-version@</tycho-version>
-  </properties>
+ 
+  <artifactId>test-war</artifactId>
+  <packaging>war</packaging>
   
   <dependencies>
     <!-- provided -->
@@ -35,14 +31,26 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-
+  
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <extensions>true</extensions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.3</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <packagingExcludes>pom.xml</packagingExcludes>
+          <warName>test-war</warName>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
       </plugin>
     </plugins>
   </build>

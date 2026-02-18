@@ -1,0 +1,54 @@
+<!--
+  #%L
+  CICS Bundle Maven Plugin
+  %%
+  Copyright (C) 2026 IBM Corp.
+  %%
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+  #L%
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>test-reactor-ear-liberty-full</groupId>
+  <artifactId>test-bundle</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>cics-bundle</packaging>
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>test-ear</artifactId>
+      <version>1.0.0</version>
+      <type>ear</type>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <extensions>true</extensions>
+        <configuration>
+          <bundleParts>
+            <bundlePart implementation="com.ibm.cics.cbmp.Earbundle">
+              <artifact>
+                <artifactId>test-ear</artifactId>
+              </artifact>
+              <jvmserver>EYUCMCIJ</jvmserver>
+              <addCicsAllAuthenticatedRole>false</addCicsAllAuthenticatedRole>
+              <libertyAppConfigFile>${project.basedir}/server.xml</libertyAppConfigFile>
+            </bundlePart>
+          </bundleParts>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
