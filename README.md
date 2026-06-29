@@ -73,7 +73,7 @@ It can deploy CICS bundles containing any bundleparts.
 
 ## Prerequisites
 
-To use the plugin to build CICS bundles, make sure that Maven is installed.
+To use the plugin to build CICS bundles, make sure that Maven 3.6.3 or later is installed.
 
 Make sure any required bundles or projects are installed into your local maven repository (.m2 cache) correctly using `mvn install` if they are not available in an online repository.
 
