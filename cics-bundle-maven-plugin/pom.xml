@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.ibm.cics</groupId>
     <artifactId>cics-bundle-maven</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.2</version>
   </parent>
 
   <artifactId>cics-bundle-maven-plugin</artifactId>
@@ -268,10 +268,12 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <!-- maven-plugin-plugin 3.8.2+ breaks the site build when the current
+           project version is not yet published to a remote repository. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.15.2</version>
+        <version>3.8.1</version>
       </plugin>
     </plugins>
   </reporting>
