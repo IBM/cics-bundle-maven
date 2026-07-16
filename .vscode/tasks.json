@@ -1,0 +1,64 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "mvn -B verify 2>&1 | tee build.log",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "env": {
+                    "JAVA_HOME": "${input:javaHome}"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$javac"
+        },
+        {
+            "label": "Build (skip tests)",
+            "type": "shell",
+            "command": "mvn -B verify -DskipTests 2>&1 | tee build.log",
+            "group": "build",
+            "options": {
+                "env": {
+                    "JAVA_HOME": "${input:javaHome}"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$javac"
+        },
+        {
+            "label": "Build site",
+            "type": "shell",
+            "command": "mvn -B site site:stage post-site 2>&1 | tee build-site.log",
+            "group": "build",
+            "options": {
+                "env": {
+                    "JAVA_HOME": "${input:javaHome}"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "javaHome",
+            "type": "promptString",
+            "description": "JAVA_HOME path (Java 11 or later required)",
+            "default": "${env:JAVA_HOME}"
+        }
+    ]
+}
