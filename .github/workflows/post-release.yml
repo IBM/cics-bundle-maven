@@ -1,0 +1,73 @@
+name: Post Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - pom.xml
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  post-release:
+    name: Create GitHub Release and open next-dev PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read current version
+        id: version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "current=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Exit if this is a SNAPSHOT commit
+        if: contains(steps.version.outputs.current, '-SNAPSHOT')
+        run: echo "SNAPSHOT version — nothing to do." && exit 0
+
+      - name: Create GitHub Release
+        if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ steps.version.outputs.current }}" \
+            --title "v${{ steps.version.outputs.current }}" \
+            --generate-notes
+
+      - name: Compute next SNAPSHOT version
+        if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
+        id: next
+        run: |
+          VERSION=${{ steps.version.outputs.current }}
+          MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          MINOR=$(echo "$VERSION" | cut -d. -f2)
+          PATCH=$(echo "$VERSION" | cut -d. -f3)
+          NEXT_PATCH=$((PATCH + 1))
+          echo "version=${MAJOR}.${MINOR}.${NEXT_PATCH}-SNAPSHOT" >> "$GITHUB_OUTPUT"
+
+      - name: Update pom.xml files
+        if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
+        run: mvn -B versions:set -DnewVersion=${{ steps.next.outputs.version }} -DgenerateBackupPoms=false -DprocessAllModules=true
+
+      - name: Open next-dev PR
+        if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="develop/${{ steps.next.outputs.version }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add $(git diff --name-only)
+          git commit -m "develop ${{ steps.next.outputs.version }}"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "Develop ${{ steps.next.outputs.version }}" \
+            --body  "Bumps version to \`${{ steps.next.outputs.version }}\` following the \`${{ steps.version.outputs.current }}\` release." \
+            --base  main \
+            --head  "$BRANCH"
