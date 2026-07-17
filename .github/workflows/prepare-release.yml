@@ -35,9 +35,17 @@ jobs:
 
       - name: Update plugin version in samples
         run: |
-          # These sample POMs hardcode the plugin version directly and are not updated by versions:set
-          find samples -name "pom.xml" -exec \
-            sed -i "/<artifactId>cics-bundle-maven-plugin<\/artifactId>/{n;s|<version>.*-SNAPSHOT<\/version>|<version>${{ steps.version.outputs.release }}<\/version>|;}" {} \;
+          for POM in samples samples/bundle-war-deploy/demo-war/pom.xml; do
+            mvn -B versions:set-property \
+              -Dproperty=cics-bundle-maven-plugin.version \
+              -DnewVersion=${{ steps.version.outputs.release }} \
+              -DgenerateBackupPoms=false \
+              -f "$POM"
+          done
+          # demo-bundle uses cics-bundle packaging so Maven can't load it without the plugin installed;
+          # update its property directly
+          sed -i "s|<cics-bundle-maven-plugin.version>.*</cics-bundle-maven-plugin.version>|<cics-bundle-maven-plugin.version>${{ steps.version.outputs.release }}</cics-bundle-maven-plugin.version>|" \
+            samples/bundle-reactor-deploy/demo-bundle/pom.xml
 
       - name: Open PR
         env:
