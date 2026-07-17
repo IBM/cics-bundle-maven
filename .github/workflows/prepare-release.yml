@@ -1,0 +1,51 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare-release:
+    name: Strip -SNAPSHOT and open PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read current version
+        id: version
+        run: |
+          SNAPSHOT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          RELEASE_VERSION=${SNAPSHOT_VERSION%-SNAPSHOT}
+          echo "snapshot=$SNAPSHOT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "release=$RELEASE_VERSION"   >> "$GITHUB_OUTPUT"
+
+      - name: Fail if not a SNAPSHOT version
+        if: steps.version.outputs.snapshot == steps.version.outputs.release
+        run: |
+          echo "Current version is not a SNAPSHOT: ${{ steps.version.outputs.snapshot }}"
+          exit 1
+
+      - name: Update pom.xml files
+        run: mvn -B versions:set -DnewVersion=${{ steps.version.outputs.release }} -DgenerateBackupPoms=false -DprocessAllModules=true
+
+      - name: Open PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="release/${{ steps.version.outputs.release }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add $(git diff --name-only)
+          git commit -m "ship ${{ steps.version.outputs.release }}"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "Release ${{ steps.version.outputs.release }}" \
+            --body  "Strips \`-SNAPSHOT\` from \`pom.xml\` to release \`${{ steps.version.outputs.release }}\`. Merging this will trigger the deploy to OSSRH." \
+            --base  main \
+            --head  "$BRANCH"
