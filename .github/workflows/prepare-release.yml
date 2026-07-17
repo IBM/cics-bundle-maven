@@ -33,6 +33,12 @@ jobs:
       - name: Update pom.xml files
         run: mvn -B versions:set -DnewVersion=${{ steps.version.outputs.release }} -DgenerateBackupPoms=false -DprocessAllModules=true
 
+      - name: Update plugin version in samples
+        run: |
+          # These sample POMs hardcode the plugin version directly and are not updated by versions:set
+          find samples -name "pom.xml" -exec \
+            sed -i "/<artifactId>cics-bundle-maven-plugin<\/artifactId>/{n;s|<version>.*-SNAPSHOT<\/version>|<version>${{ steps.version.outputs.release }}<\/version>|;}" {} \;
+
       - name: Open PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +47,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add $(git diff --name-only)
+          git add -u
           git commit -m "ship ${{ steps.version.outputs.release }}"
           git push origin "$BRANCH"
           gh pr create \

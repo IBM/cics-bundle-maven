@@ -54,6 +54,13 @@ jobs:
         if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
         run: mvn -B versions:set -DnewVersion=${{ steps.next.outputs.version }} -DgenerateBackupPoms=false -DprocessAllModules=true
 
+      - name: Update plugin version in samples
+        if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
+        run: |
+          # These sample POMs hardcode the plugin version directly and are not updated by versions:set
+          find samples -name "pom.xml" -exec \
+            sed -i "/<artifactId>cics-bundle-maven-plugin<\/artifactId>/{n;s|<version>.*<\/version>|<version>${{ steps.next.outputs.version }}<\/version>|;}" {} \;
+
       - name: Open next-dev PR
         if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
         env:
@@ -63,7 +70,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add $(git diff --name-only)
+          git add -u
           git commit -m "develop ${{ steps.next.outputs.version }}"
           git push origin "$BRANCH"
           gh pr create \
