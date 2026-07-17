@@ -63,7 +63,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add $(git diff --name-only)
+          git add -u
           git commit -m "develop ${{ steps.next.outputs.version }}"
           git push origin "$BRANCH"
           gh pr create \
