@@ -33,6 +33,20 @@ jobs:
       - name: Update pom.xml files
         run: mvn -B versions:set -DnewVersion=${{ steps.version.outputs.release }} -DgenerateBackupPoms=false -DprocessAllModules=true
 
+      - name: Update plugin version in samples
+        run: |
+          for POM in samples samples/bundle-war-deploy/demo-war/pom.xml; do
+            mvn -B versions:set-property \
+              -Dproperty=cics-bundle-maven-plugin.version \
+              -DnewVersion=${{ steps.version.outputs.release }} \
+              -DgenerateBackupPoms=false \
+              -f "$POM"
+          done
+          # demo-bundle uses cics-bundle packaging so Maven can't load it without the plugin installed;
+          # update its property directly
+          sed -i "s|<cics-bundle-maven-plugin.version>.*</cics-bundle-maven-plugin.version>|<cics-bundle-maven-plugin.version>${{ steps.version.outputs.release }}</cics-bundle-maven-plugin.version>|" \
+            samples/bundle-reactor-deploy/demo-bundle/pom.xml
+
       - name: Open PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +55,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add $(git diff --name-only)
+          git add -u
           git commit -m "ship ${{ steps.version.outputs.release }}"
           git push origin "$BRANCH"
           gh pr create \

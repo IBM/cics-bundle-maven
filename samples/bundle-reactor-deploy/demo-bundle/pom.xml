@@ -9,6 +9,10 @@
   </parent>
   <artifactId>demo-bundle</artifactId>
 
+  <properties>
+    <cics-bundle-maven-plugin.version>2.0.3-SNAPSHOT</cics-bundle-maven-plugin.version>
+  </properties>
+
   <!-- Tell Maven to build a CICS bundle -->
   <packaging>cics-bundle</packaging>
 
@@ -30,7 +34,7 @@
       <plugin>
         <groupId>com.ibm.cics</groupId>
         <artifactId>cics-bundle-maven-plugin</artifactId>
-        <version>2.0.3-SNAPSHOT</version>
+        <version>${cics-bundle-maven-plugin.version}</version>
         <extensions>true</extensions>
 
         <!-- Set the JVM server that the application will be installed into by default, This goes into the CICS bundle's manifest -->

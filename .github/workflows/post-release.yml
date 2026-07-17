@@ -54,6 +54,21 @@ jobs:
         if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
         run: mvn -B versions:set -DnewVersion=${{ steps.next.outputs.version }} -DgenerateBackupPoms=false -DprocessAllModules=true
 
+      - name: Update plugin version in samples
+        if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
+        run: |
+          for POM in samples samples/bundle-war-deploy/demo-war/pom.xml; do
+            mvn -B versions:set-property \
+              -Dproperty=cics-bundle-maven-plugin.version \
+              -DnewVersion=${{ steps.next.outputs.version }} \
+              -DgenerateBackupPoms=false \
+              -f "$POM"
+          done
+          # demo-bundle uses cics-bundle packaging so Maven can't load it without the plugin installed;
+          # update its property directly
+          sed -i "s|<cics-bundle-maven-plugin.version>.*</cics-bundle-maven-plugin.version>|<cics-bundle-maven-plugin.version>${{ steps.next.outputs.version }}</cics-bundle-maven-plugin.version>|" \
+            samples/bundle-reactor-deploy/demo-bundle/pom.xml
+
       - name: Open next-dev PR
         if: "!contains(steps.version.outputs.current, '-SNAPSHOT')"
         env:
@@ -63,7 +78,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add $(git diff --name-only)
+          git add -u
           git commit -m "develop ${{ steps.next.outputs.version }}"
           git push origin "$BRANCH"
           gh pr create \
