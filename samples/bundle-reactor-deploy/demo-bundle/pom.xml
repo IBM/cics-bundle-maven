@@ -10,7 +10,7 @@
   <artifactId>demo-bundle</artifactId>
 
   <properties>
-    <cics-bundle-maven-plugin.version>2.0.3-SNAPSHOT</cics-bundle-maven-plugin.version>
+    <cics-bundle-maven-plugin.version>2.0.3</cics-bundle-maven-plugin.version>
   </properties>
 
   <!-- Tell Maven to build a CICS bundle -->
