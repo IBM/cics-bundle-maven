@@ -8,3 +8,5 @@ target/
 .idea
 **/*.iml
 .scans/
+build-after.log
+build-baseline.log
