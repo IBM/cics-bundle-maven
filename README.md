@@ -67,7 +67,8 @@ The `cics-bundle-maven-plugin` supports building CICS bundles that contain the f
 - TRANSACTION
 - URIMAP
 
-**Note:** [Enterprise Bundle Archive (EBA) support is stabilized in CICS TS](https://www.ibm.com/docs/en/cics-ts/latest?topic=releases-stabilization-notices).
+> [!NOTE]
+> [Enterprise Bundle Archive (EBA) support is stabilized in CICS TS](https://www.ibm.com/docs/en/cics-ts/latest?topic=releases-stabilization-notices-discontinued-functions).
 
 It can deploy CICS bundles containing any bundleparts.
 
@@ -79,7 +80,7 @@ Make sure any required bundles or projects are installed into your local maven r
 
 The plugin builds CICS bundles for any in-service version of CICS Transaction Server for z/OS (version 5.3 and later at the time of writing).
 
-However, if you are using the `deploy` goal of the plugin to deploy bundles to CICS, you must enable the CICS bundle deployment API. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region or a single CICS region. See the [CICS TS doc](https://www.ibm.com/docs/en/cics-ts/6.1_beta?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) for details. To use the `deploy` goal, make sure that:
+However, if you are using the `deploy` goal of the plugin to deploy bundles to CICS, you must enable the CICS bundle deployment API. The CICS bundle deployment API is supported by the CMCI JVM server that must be set up in a WUI region or a single CICS region. See the [CICS TS doc](https://www.ibm.com/docs/en/cics-ts/latest?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) for details. To use the `deploy` goal, make sure that:
 
 - For a CICSPlex SM environment, set up the CMCI JVM server in the WUI region of the CICSplex that contains the deployment target region. The WUI region must be at CICS TS 5.6 or later.
 - For a single CICS region environment (SMSS), set up the CMCI JVM server in the deployment target region. The region must be at CICS TS 5.6 with APAR PH35122 applied, or later.
@@ -237,11 +238,12 @@ The bundle directory of the BUNDLE definition should be set as follows: `<bundle
     </build>
     ```
 
-    The username defined in the pom.xml is the developer’s credentials which need to have access to the appropriate RACF profile_prefix.CMCI.DEPLOYER EJBROLE. Credentials, such as a username and password, should not be directly placed into the pom.xml file. Instead, variables for the credentials should be referenced in the pom.xml file.
-
-    **Note:** If you're deploying the bundle into a single CICS region environment (SMSS), omit the `<cicsplex>` and `<region>` fields.
-
-1. Edit the values in the configuration section to match your CICS configuration.
+   The username defined in the pom.xml is the developer’s credentials which need to have access to the appropriate RACF profile_prefix.CMCI.DEPLOYER EJBROLE. Credentials, such as a username and password, should not be directly placed into the pom.xml file. Instead, variables for the credentials should be referenced in the pom.xml file.
+    
+> [!TIP]
+> If you're deploying the bundle into a single CICS region environment (SMSS), omit the `<cicsplex>` and `<region>` fields.
+    
+3. Edit the values in the configuration section to match your CICS configuration.
    - `url` - Set the transport, hostname, and port for your CMCI
    - `username` & `password` - These are your credentials for CICS. Use Maven's password encryption, or supply your credentials using environment variables or properties
    - `bunddef` - The name of the BUNDLE definition to be installed
@@ -344,7 +346,8 @@ You have two ways of resolving this issue:
 
     Add `<insecure>true</insecure>` to the `<configuration/>` block for the `deploy` goal in the bundle's `pom.xml` (See snippet in Step 2 in [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)).
 
-    **Note:** Trusting all certificates can pose a security issue for your environment.
+> [!WARNING]
+> Trusting all certificates can pose a security issue for your environment.
 
 ### `internal server error` during deployment
 
@@ -358,7 +361,7 @@ com.ibm.cics.bundle.deploy.BundleDeployException: An internal server error occur
 It indicates errors on the CMCI JVM server side.
 
 **How to resolve it?**  
-Contact your system administrator to check the `messages.log` file of the CMCI JVM server. For more information about how to resolve CMCI JVM server errors, see [Troubleshooting CMCI JVM server](https://www.ibm.com/docs/en/cics-ts/5.6?topic=troubleshooting-cmci-jvm-server) in CICS documentation.
+Contact your system administrator to check the `messages.log` file of the CMCI JVM server. For more information about how to resolve CMCI JVM server errors, see [Troubleshooting CMCI JVM server](https://www.ibm.com/docs/en/cics-ts/latest?topic=troubleshooting-cmci-jvm-server) in CICS documentation.
 
 ### `Error creating directory` during deployment
 
@@ -373,7 +376,7 @@ The error occurs because the credential that deploys the bundle doesn't have acc
 
 **How to resolve it?**  
 Contact your system administrator to make sure the `deploy_userid` configured for the CICS bundle deployment API has WRITE access to the bundles directory. The bundles directory is specified on the `com.ibm.cics.jvmserver.cmci.bundles.dir` option in the JVM profile of the CMCI JVM server.
-For instructions on how to specify the bundles directory and grant access to `deploy_userid`, see [Configuring the CMCI JVM server for the CICS bundle deployment API](https://www.ibm.com/docs/en/cics-ts/5.6?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) in CICS documentation.
+For instructions on how to specify the bundles directory and grant access to `deploy_userid`, see [Configuring the CMCI JVM server for the CICS bundle deployment API](https://www.ibm.com/docs/en/cics-ts/latest?topic=suc-configuring-cmci-jvm-server-cics-bundle-deployment-api) in CICS documentation.
 
 ### Failed to execute goal com.ibm.cics:cics-bundle-maven-plugin:2.0.0:deploy (default) on project standalone-war: Some of the supplied parameters were invalid
 
