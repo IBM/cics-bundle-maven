@@ -1,0 +1,63 @@
+package com.ibm.cics.cbmp;
+
+/*-
+ * #%L
+ * CICS Bundle Maven Plugin
+ * %%
+ * Copyright (C) 2024 IBM Corp.
+ * %%
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ * #L%
+ */
+
+import static com.ibm.cics.cbmp.BundleValidator.assertBundleContents;
+import static com.ibm.cics.cbmp.BundleValidator.bfv;
+import static com.ibm.cics.cbmp.BundleValidator.manifestValidator;
+import static org.junit.Assert.assertThat;
+
+import java.io.File;
+import java.nio.file.Path;
+
+import org.xmlunit.matchers.CompareMatcher;
+
+public class PostBuildWarName {
+
+	private static final String BASE_NAME = "/my-web-app";
+	private static final String WAR_BUNDLE_PART = BASE_NAME + ".warbundle";
+	private static final String WAR_FILE = BASE_NAME + ".war";
+
+	static void assertOutput(File root) throws Exception {
+		Path cicsBundle = root.toPath().resolve("target/test-bundle-0.0.1-SNAPSHOT.zip");
+
+		assertBundleContents(
+			cicsBundle,
+			manifestValidator(
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+				"<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\" bundleMajorVer=\"0\" bundleMicroVer=\"1\" bundleMinorVer=\"0\" bundleRelease=\"0\" bundleVersion=\"1\" id=\"test-bundle\">\n" +
+				"  <meta_directives>\n" +
+				"    <timestamp>2019-09-11T21:12:17.023Z</timestamp>\n" +
+				"  </meta_directives>\n" +
+				"  <define name=\"my-web-app\" path=\"my-web-app.warbundle\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/WARBUNDLE\"/>\n" +
+				"</manifest>"
+			),
+			bfv(
+				WAR_BUNDLE_PART,
+				is -> assertThat(
+					is,
+					CompareMatcher.isIdenticalTo(
+						"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+						"<warbundle jvmserver=\"EYUCMCIJ\" symbolicname=\"my-web-app\"/>"
+					)
+				)
+			),
+			bfv(
+				WAR_FILE,
+				is -> {}
+			)
+		);
+	}
+}
