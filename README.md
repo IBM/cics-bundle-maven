@@ -159,6 +159,33 @@ To create a CICS bundle in this way:
 1. To include CICS bundleparts like FILE or URIMAP, put the bundlepart files in your bundle Maven module's bundle parts directory, which defaults to `src/main/bundleParts`. Files in your Maven module's bundle parts directory will be included within the output CICS bundle, and supported types will have a `<define>` element added to the CICS bundle's `cics.xml`.
 The location of the bundle parts directory can be configured by using the `<bundlePartsDirectory>` property. The configured directory is relative to `src/main/`.
 
+### Configuring bundle part properties
+
+To configure properties of a specific bundle part beyond the `<defaultjvmserver>`, use `<bundleParts>` in the plugin configuration. Each `<bundlePart>` entry must specify an `implementation` attribute for the bundle part type and an `<artifact>` element to identify the matching dependency.
+
+All Java bundle parts support the following properties:
+
+- `jvmserver` - The name of the JVM server where the application will run (defaults to `<defaultjvmserver>`)
+- `name` - The name of the bundle part (optional, defaults to `artifactId-version`)
+
+The `name` property controls the filenames of the bundle part entries within the CICS bundle ZIP (e.g. `my-web-app.warbundle` and `my-web-app.war`). For WAR and EAR bundle parts deployed to a Liberty JVM server, the name is also used as the default HTTP context root — so setting `name` to `my-web-app` means the application will be accessible at `/my-web-app`. This gives you a convenient way to control the context root at build time without modifying the application itself.
+
+```xml
+<configuration>
+  <defaultjvmserver>DFHWLP</defaultjvmserver>
+  <bundleParts>
+    <bundlePart implementation="com.ibm.cics.cbmp.Warbundle">
+      <artifact>
+        <artifactId>my-web-project</artifactId>
+      </artifact>
+      <name>my-web-app</name>
+    </bundlePart>
+  </bundleParts>
+</configuration>
+```
+
+If `name` is not specified, it defaults to `artifactId-version` (e.g. `my-web-project-1.0.0`).
+
 ## Create a CICS bundle (from an existing Java module) using `cics-bundle-maven-plugin`
 
 This way of building a CICS bundle modifies an existing Java module to make it also build the CICS bundle. This makes it more lightweight, but it has limitations - the CICS bundle can only contain one Java bundlepart, and can't contain any extra bundleparts such as FILE or URIMAP.
