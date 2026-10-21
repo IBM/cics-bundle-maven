@@ -30,5 +30,5 @@ assert buildLog.text.contains("""\
 (deploy-and-fail-because-self-signed) @ test-bundle-deploy-insecure ---
 [INFO] Deploying test-app-bundle-0.0.1-SNAPSHOT.zip to https://localhost:${wiremockPort} into region cicsplex/region
 [INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
+[ERROR] BUILD FAILURE
 """)
