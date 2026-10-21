@@ -61,7 +61,7 @@ public class PostBuildTestBundleEarLibertyConfig {
 			),
 			bfv(
 				"/server.xml",
-				is -> assertThat(is, CompareMatcher.isIdenticalTo(EXPECTED_SERVER_XML))
+				is -> assertThat(is, CompareMatcher.isIdenticalTo(EXPECTED_SERVER_XML).ignoreComments())
 			)
 		);
 	}

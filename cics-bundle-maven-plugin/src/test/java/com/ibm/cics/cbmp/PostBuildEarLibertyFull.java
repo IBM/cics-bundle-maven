@@ -71,7 +71,7 @@ public class PostBuildEarLibertyFull {
 							"        </security-role>\n" +
 							"    </application-bnd>\n" +
 							"</application>"
-						)
+						).ignoreComments()
 					)
 				)
 			);

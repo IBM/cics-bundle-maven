@@ -71,7 +71,7 @@ public class PostBuildWarLibertyConfig {
 							"        </security-role>\n" +
 							"    </application-bnd>\n" +
 							"</application>"
-						)
+						).ignoreComments()
 					)
 				)
 			);

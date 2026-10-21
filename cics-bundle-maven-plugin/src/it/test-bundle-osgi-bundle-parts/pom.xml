@@ -22,7 +22,7 @@
   <packaging>eclipse-plugin</packaging>
 
   <properties>
-    <tycho-version>@tycho-version@</tycho-version>
+    <tycho-version>1.4.0</tycho-version>
   </properties>
 
   <dependencies>
