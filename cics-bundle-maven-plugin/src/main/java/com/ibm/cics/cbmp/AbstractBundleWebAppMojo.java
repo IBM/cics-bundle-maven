@@ -36,8 +36,8 @@ public abstract class AbstractBundleWebAppMojo extends AbstractBundleJavaMojo {
 	protected boolean addCicsAllAuthenticatedRole;
 
 	/**
-	 * Path to a Liberty server.xml snippet containing a single <code>>application<</code> element
-     * to add to the application when defined to Liberty.
+	 * Path to a Liberty server.xml snippet containing a single <code>&lt;application&gt;</code> element
+	 * to add to the application when defined to Liberty.
 	 * The path is relative to the project base directory.
 	 */
 	@Parameter(property = "cicsbundle.libertyAppConfigFile")
@@ -63,6 +63,8 @@ public abstract class AbstractBundleWebAppMojo extends AbstractBundleJavaMojo {
 
 	/**
 	 * Get the configured value for addCicsAllAuthenticatedRole.
+	 *
+	 * @return <code>true</code> if the <code>cicsAllAuthenticated</code> role should be added
 	 */
 	protected boolean isAddCicsAllAuthenticatedRole() {
 		return addCicsAllAuthenticatedRole;
@@ -70,6 +72,8 @@ public abstract class AbstractBundleWebAppMojo extends AbstractBundleJavaMojo {
 
 	/**
 	 * Get the configured Liberty app config file.
+	 *
+	 * @return the Liberty app config file, or <code>null</code> if none was configured
 	 */
 	protected File getLibertyAppConfigFile() {
 		return libertyAppConfigFile;
