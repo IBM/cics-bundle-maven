@@ -39,6 +39,7 @@ This project contains:
     Using the plugin you can:
   - [build specialist CICS bundle modules into CICS bundles](#create-a-cics-bundle-in-a-separate-module-using-cics-bundle-maven-plugin), including Java dependencies and other bundleparts (the powerful option)
   - [package existing Java modules into CICS bundles](#create-a-cics-bundle-from-an-existing-java-module-using-cics-bundle-maven-plugin) (the lightweight option)
+  - [customize the Liberty `<application>` element for WAR and EAR bundle parts](#customizing-the-liberty-application-element), for example to configure the class loader (requires CICS APAR PH70490 in the region where the bundle is installed)
   - [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)
 
 - `cics-bundle-reactor-archetype`, a Maven archetype that provides a simple reactor build that contains a CICS bundle and a Dynamic Web Project (WAR). This archetype builds and packages the WAR and CICS bundle.
@@ -84,6 +85,8 @@ However, if you are using the `deploy` goal of the plugin to deploy bundles to C
 
 - For a CICSPlex SM environment, set up the CMCI JVM server in the WUI region of the CICSplex that contains the deployment target region. The WUI region must be at CICS TS 5.6 or later.
 - For a single CICS region environment (SMSS), set up the CMCI JVM server in the deployment target region. The region must be at CICS TS 5.6 with APAR PH35122 applied, or later.
+
+To use the `libertyAppConfigFile` and `addCicsAllAuthenticatedRole` properties on WAR and EAR bundle parts, the CICS region where the bundle is installed must have APAR PH70490 applied. See [Customizing the Liberty application element](#customizing-the-liberty-application-element).
 
 ## Create a CICS bundle (in a separate module) using `cics-bundle-maven-plugin`
 
@@ -191,7 +194,7 @@ If you don't specify a `jvmserver` for a bundle part, it will use the `<defaultj
 
 #### WAR bundle part properties
 
-WAR bundle parts (`com.ibm.cics.cbmp.Warbundle`) additionally support the following properties:
+WAR bundle parts (`com.ibm.cics.cbmp.Warbundle`) additionally support the following properties. See [Customizing the Liberty application element](#customizing-the-liberty-application-element) for what they do and the CICS APAR they require:
 
 - `addCicsAllAuthenticatedRole` - Whether to add the CICS all-authenticated role (boolean, defaults to `true`)
 - `libertyAppConfigFile` - Path to a Liberty server.xml configuration file to include in the bundle (File, optional)
@@ -217,7 +220,7 @@ The `libertyAppConfigFile` path is relative to the bundle module's base director
 
 #### EAR bundle part properties
 
-EAR bundle parts (`com.ibm.cics.cbmp.Earbundle`) support the same properties as WAR bundle parts:
+EAR bundle parts (`com.ibm.cics.cbmp.Earbundle`) support the same properties as WAR bundle parts, with the same CICS APAR requirement:
 
 - `jvmserver` - The name of the JVM server (defaults to `<defaultjvmserver>`)
 - `addCicsAllAuthenticatedRole` - Whether to add the CICS all-authenticated role (boolean, defaults to `true`)
@@ -239,6 +242,27 @@ Example:
   </bundleParts>
 </configuration>
 ```
+
+#### Customizing the Liberty application element
+
+When a WAR or EAR bundle part is installed into a Liberty JVM server, CICS defines the application to Liberty on your behalf. You can customize that definition by supplying your own `<application>` element, in the same form that you would use in a Liberty `server.xml`. For example, you can use it to configure the application's class loader.
+
+To do this, put the `<application>` element in its own file and point the `libertyAppConfigFile` property at it. The file must contain a single `<application>` element. The path is relative to the project's base directory.
+
+For example, this snippet makes the application's class loader look in the application's own classes before the parent class loader:
+
+```xml
+<application id="my-web-app" name="my-web-app" type="war" location="my-web-app.war">
+    <classloader delegation="parentLast"/>
+</application>
+```
+
+When you build the CICS bundle, the plugin copies this file into the bundle as `server.xml` and references it from the `appConfigFile` attribute of the `warbundle` or `earbundle` descriptor.
+
+The `addCicsAllAuthenticatedRole` property controls whether the `cicsAllAuthenticated` role is added to the application. It defaults to `true`; set it to `false` to leave the role out.
+
+> [!IMPORTANT]
+> `libertyAppConfigFile` and `addCicsAllAuthenticatedRole` depend on two new attributes on the WAR and EAR bundle part descriptors, which are provided by CICS APAR PH70490 ("Custom application configuration for Liberty applications defined in CICS bundles"). You can only use these properties if the target CICS region has PH70490 applied.
 
 #### OSGi bundle part properties
 
@@ -264,7 +288,6 @@ Example:
 #### Multiple bundle parts example
 
 You can configure multiple bundle parts in a single CICS bundle, each with their own properties:
->>>>>>> 3741a8a (Add Liberty server.xml and auth role support for WAR/EAR bundles)
 
 ```xml
 <configuration>
@@ -335,6 +358,8 @@ When using the `bundle-war` or `bundle-ear` goals to package an existing Java mo
 - `jvmserver` - The name of the JVM server where the application will run (required)
 - `addCicsAllAuthenticatedRole` - Whether to add the CICS all-authenticated role (boolean, defaults to `true`)
 - `libertyAppConfigFile` - Path to a Liberty server.xml configuration file to include in the bundle (File, optional)
+
+See [Customizing the Liberty application element](#customizing-the-liberty-application-element) for what these two properties do and the CICS APAR they require.
 
 Example configuration:
 
