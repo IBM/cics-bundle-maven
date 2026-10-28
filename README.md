@@ -30,7 +30,16 @@ Also see the [Generated Maven plugin documentation ↗](https://ibm.github.io/ci
 
 ## About this project
 
-This is a Maven plugin and related utilities that can be used to build CICS bundles, and deploy them into CICS TS.
+This is a Maven plugin and related utilities that can be used to build CICS bundles, and deploy them into CICS TS. It also contains a separate plugin that uploads a WAR file directly to a Liberty JVM server, without using a CICS bundle.
+
+### Which plugin do I use?
+
+| I want to... | Use | Goal prefix |
+|---|---|---|
+| Build a CICS bundle, and optionally deploy it with the CICS bundle deployment API | `cics-bundle-maven-plugin` | `cics-bundle` |
+| Upload a WAR file directly to a Liberty JVM server that has the `cicsts:appDeploy-1.0` feature, without a CICS bundle | `cics-appdeploy-maven-plugin` | `cics-appdeploy` |
+
+The two plugins are independent. You can use either one without the other.
 
 This project contains:
 
@@ -40,6 +49,8 @@ This project contains:
   - [build specialist CICS bundle modules into CICS bundles](#create-a-cics-bundle-in-a-separate-module-using-cics-bundle-maven-plugin), including Java dependencies and other bundleparts (the powerful option)
   - [package existing Java modules into CICS bundles](#create-a-cics-bundle-from-an-existing-java-module-using-cics-bundle-maven-plugin) (the lightweight option)
   - [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)
+
+- `cics-appdeploy-maven-plugin`, a Maven plugin that uploads a WAR file directly to a Liberty JVM server that has the `cicsts:appDeploy-1.0` feature, using the `cics-appdeploy:upload-war` goal. It does not build or deploy a CICS bundle. See the [AppDeploy WAR upload sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/appdeploy-war-upload) for how to use it. Read the [generated plugin documentation](https://ibm.github.io/cics-bundle-maven/cics-appdeploy-maven-plugin/plugin-info.html) for information about its goal.
 
 - `cics-bundle-reactor-archetype`, a Maven archetype that provides a simple reactor build that contains a CICS bundle and a Dynamic Web Project (WAR). This archetype builds and packages the WAR and CICS bundle.
 
@@ -320,6 +331,10 @@ Use of this plugin will vary depending on what you're starting with and the stru
 - [WAR sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/bundle-war-deploy)
 
   This sample shows how you can add to the pom of an existing Java Maven project, to build it into a bundle and install it in CICS.
+
+- [AppDeploy WAR upload sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/appdeploy-war-upload)
+
+  This sample uses `cics-appdeploy-maven-plugin` to upload a WAR file directly to a Liberty JVM server, without building a CICS bundle.
 
 ## Archetypes
 

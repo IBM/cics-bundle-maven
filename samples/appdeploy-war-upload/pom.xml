@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ibm.cics</groupId>
+  <artifactId>demo-war-upload</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>CICS AppDeploy sample - WAR upload</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <cics-appdeploy-maven-plugin.version>2.0.6-SNAPSHOT</cics-appdeploy-maven-plugin.version>
+    <!-- The WAR goes to Liberty, not to a Maven repository, so skip the standard deploy plugin. -->
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+  <dependencies>
+    <!-- JCICS dependency, used in SimpleServlet.java -->
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>com.ibm.cics.server</artifactId>
+      <version>1.800.1-5.6-PH34012</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>jsr250-api</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <!-- Uploads the WAR straight to a Liberty JVM server that has the cicsts:appDeploy-1.0 feature. No CICS bundle is built.
+           "mvn cics-appdeploy:upload-war" compiles and packages the WAR first, then uploads it. -->
+      <plugin>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>cics-appdeploy-maven-plugin</artifactId>
+        <version>${cics-appdeploy-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>upload-war</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <cicsAppDeploy>
+            <!-- Base URL of the Liberty server. The plugin adds /appdeploy/uploadApp itself.
+                 Use https in a real environment. The samples build uses a local mock server. -->
+            <serverUrl>http://localhost:9080</serverUrl>
+
+            <!-- Supply credentials from Maven properties or environment variables -->
+            <bearerToken>${cics.token}</bearerToken>
+                        
+            <!-- Alternative: Basic Authentication -->
+            <!--<userName>${cics-user-id}</userName>
+            <password>${cics-password}</password>-->
+            
+            <!-- Alternative: Client Certificate Authentication -->
+            <!--<clientKeyStore>${client.keystore.path}</clientKeyStore>
+            <clientKeyStorePassword>${client.keystore.password}</clientKeyStorePassword>-->
+
+            <!-- Time to establish connection in milliseconds-->
+			<connectTimeout>${cics.connectTimeout}</connectTimeout>
+			
+			<!-- Time to wait for response in milliseconds -->
+    		<readTimeout>${cics.readTimeout}</readTimeout>
+
+            <!-- Option 1: inline Liberty application XML -->
+            <applicationXml><![CDATA[
+              <server>
+                <application id="demo-war-upload" location="demo-war-upload.war" type="war">
+                  <context-root>/demo-war-upload</context-root>
+                  <classloader delegation="parentLast"/>
+                </application>
+              </server>
+            ]]></applicationXml>
+
+            <!-- Option 2: read the Liberty application XML from a file instead -->
+            <!-- <applicationXmlLocation>${project.basedir}/src/main/resources/application.xml</applicationXmlLocation> -->
+          </cicsAppDeploy>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

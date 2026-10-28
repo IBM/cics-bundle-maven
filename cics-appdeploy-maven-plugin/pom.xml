@@ -1,0 +1,200 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.ibm.cics</groupId>
+    <artifactId>cics-bundle-maven</artifactId>
+    <version>2.0.6-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>cics-appdeploy-maven-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+
+  <name>CICS AppDeploy Maven Plugin</name>
+
+  <description>A Maven plugin to upload a WAR file directly to a Liberty JVM server, without using a CICS bundle.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>3.9.16</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- dependencies to annotations -->
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.16.0</version>
+      <scope>provided</scope><!-- annotations are needed only to build the plugin -->
+    </dependency>
+
+    <!-- test -->
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-jre8-standalone</artifactId>
+      <!-- pinned: wiremock 3.x (org.wiremock:wiremock) requires Java 11+; jre8 variant is end-of-line -->
+      <version>2.35.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- These Maven-provided libraries don't need a version, but this is done to keep Sonatype Portal happy -->
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-model</artifactId>
+        <scope>provided</scope>
+        <version>3.9.16</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-settings</artifactId>
+        <scope>provided</scope>
+        <version>3.9.16</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-builder-support</artifactId>
+        <scope>provided</scope>
+        <version>3.9.16</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-artifact</artifactId>
+        <scope>provided</scope>
+        <version>3.9.16</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <scope>provided</scope>
+        <version>3.9.16</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-model-builder</artifactId>
+        <scope>provided</scope>
+        <version>3.9.16</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-compat</artifactId>
+        <scope>provided</scope>
+        <version>3.9.16</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.16.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.16.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>reserve-network-port</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <portNames>
+                <portName>wiremockPort</portName>
+              </portNames>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <!-- Cannot upgrade to 3.7.0+ due to changes that conflict with shared WireMock port
+             architecture, causing intermittent BindException failures. -->
+        <version>3.6.1</version>
+        <configuration>
+          <debug>false</debug>
+          <projectsDirectory>src/it</projectsDirectory>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <streamLogs>true</streamLogs>
+          <showErrors>true</showErrors>
+          <addTestClassPath>true</addTestClassPath>
+          <goals>install</goals>
+          <mergeUserSettings>true</mergeUserSettings>
+          <scriptVariables>
+            <wiremockPort>${wiremockPort}</wiremockPort>
+            <pluginString>${project.groupId}:${project.artifactId}:${project.version}</pluginString>
+          </scriptVariables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.5.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.5.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.6.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.9.0</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <!-- don't produce any project info reports -->
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <!-- maven-plugin-plugin 3.8.2+ breaks the site build when the current
+           project version is not yet published to a remote repository. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.8.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

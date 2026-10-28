@@ -1,0 +1,55 @@
+<!--
+  #%L
+  CICS AppDeploy Maven Plugin
+  %%
+  Copyright (C) 2026 IBM Corp.
+  %%
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+  #L%
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ibm.cics.test-appdeploy</groupId>
+  <artifactId>upload-war_not-a-war</artifactId>
+  <name>upload-war_not-a-war</name>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <id>upload</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>upload-war</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <warFile>${basedir}/not-a-war.txt</warFile>
+          <cicsAppDeploy>
+            <serverUrl>http://localhost:@wiremockPort@</serverUrl>
+            <applicationXml><![CDATA[<server><application id="it-app" location="it-app.war" type="war"/></server>]]></applicationXml>
+            <userName>ituser</userName>
+            <password>itpassword</password>
+          </cicsAppDeploy>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
