@@ -1,5 +1,7 @@
 # Releasing
 
+This repository releases two Maven plugins, `cics-bundle-maven-plugin` and `cics-appdeploy-maven-plugin`, together. They share the parent `pom.xml` and always have the same version. There is no way to release one on its own.
+
 ## Prerequisites
 
 - Write access to this repository
@@ -11,7 +13,7 @@
    ```bash
    gh workflow run prepare-release.yml
    ```
-   This opens a PR that strips `-SNAPSHOT` from `pom.xml` (e.g. `2.0.5-SNAPSHOT → 2.0.5`).
+   This opens a PR that strips `-SNAPSHOT` from every module's `pom.xml` (e.g. `2.0.5-SNAPSHOT → 2.0.5`) and sets the `cics-bundle-maven-plugin.version` and `cics-appdeploy-maven-plugin.version` properties in the samples to the same version.
 
 2. **Review and merge the PR** — merging triggers the existing deploy to OSSRH via `maven-build.yml`.
 

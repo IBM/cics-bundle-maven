@@ -42,7 +42,7 @@
             <id>upload</id>
             <phase>verify</phase>
             <goals>
-              <goal>upload-war</goal>
+              <goal>deploy</goal>
             </goals>
           </execution>
         </executions>

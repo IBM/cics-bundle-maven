@@ -54,7 +54,7 @@
       </plugin>
 
       <!-- Uploads the WAR straight to a Liberty JVM server that has the cicsts:appDeploy-1.0 feature. No CICS bundle is built.
-           "mvn cics-appdeploy:upload-war" compiles and packages the WAR first, then uploads it. -->
+           "mvn cics-appdeploy:deploy" compiles and packages the WAR first, then uploads it. -->
       <plugin>
         <groupId>com.ibm.cics</groupId>
         <artifactId>cics-appdeploy-maven-plugin</artifactId>
@@ -62,7 +62,7 @@
         <executions>
           <execution>
             <goals>
-              <goal>upload-war</goal>
+              <goal>deploy</goal>
             </goals>
           </execution>
         </executions>

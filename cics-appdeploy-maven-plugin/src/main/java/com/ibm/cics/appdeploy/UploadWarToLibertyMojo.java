@@ -45,7 +45,7 @@ import javax.net.ssl.SSLSocketFactory;
  * Maven Mojo that uploads a WAR file to Liberty server using multipart/form-data.
  * Sends the WAR binary and applicationXml as separate named parts, streamed without loading into memory.
  */
-@Mojo(name = "upload-war", defaultPhase = LifecyclePhase.DEPLOY)
+@Mojo(name = "deploy", defaultPhase = LifecyclePhase.DEPLOY)
 @Execute(phase = LifecyclePhase.PACKAGE)
 public class UploadWarToLibertyMojo extends AbstractMojo {
 

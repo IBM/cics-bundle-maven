@@ -50,7 +50,7 @@ This project contains:
   - [package existing Java modules into CICS bundles](#create-a-cics-bundle-from-an-existing-java-module-using-cics-bundle-maven-plugin) (the lightweight option)
   - [deploy a CICS bundle to a target CICS region](#deploy-a-cics-bundle-using-cics-bundle-maven-plugin)
 
-- `cics-appdeploy-maven-plugin`, a Maven plugin that uploads a WAR file directly to a Liberty JVM server that has the `cicsts:appDeploy-1.0` feature, using the `cics-appdeploy:upload-war` goal. It does not build or deploy a CICS bundle. See the [AppDeploy WAR upload sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/appdeploy-war-upload) for how to use it. Read the [generated plugin documentation](https://ibm.github.io/cics-bundle-maven/cics-appdeploy-maven-plugin/plugin-info.html) for information about its goal.
+- `cics-appdeploy-maven-plugin`, a Maven plugin that uploads a WAR file directly to a Liberty JVM server that has the `cicsts:appDeploy-1.0` feature, using the `cics-appdeploy:deploy` goal. It does not build or deploy a CICS bundle. See the [AppDeploy WAR upload sample](https://github.com/IBM/cics-bundle-maven/tree/main/samples/appdeploy-war-upload) for how to use it. Read the [generated plugin documentation](https://ibm.github.io/cics-bundle-maven/cics-appdeploy-maven-plugin/plugin-info.html) for information about its goal.
 
 - `cics-bundle-reactor-archetype`, a Maven archetype that provides a simple reactor build that contains a CICS bundle and a Dynamic Web Project (WAR). This archetype builds and packages the WAR and CICS bundle.
 

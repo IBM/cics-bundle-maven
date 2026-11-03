@@ -16,7 +16,7 @@ context.get("wireMockServer").shutdownServer()
 File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.exists()
-assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:upload-war")
+assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:deploy")
 assert buildLog.text.contains("Upload failed with code 302")
 
 // The plugin never follows a redirect, so sending the request again cannot succeed

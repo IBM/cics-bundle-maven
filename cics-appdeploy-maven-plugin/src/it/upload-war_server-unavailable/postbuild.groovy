@@ -16,7 +16,7 @@ context.get("wireMockServer").shutdownServer()
 File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.exists()
-assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:upload-war")
+assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:deploy")
 assert buildLog.text.contains("Upload failed with code 503: Rejected by test server")
 
 // A 5xx response can be temporary, so the plugin must try again before it gives up

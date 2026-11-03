@@ -17,6 +17,6 @@ context.get("wireMockServer").shutdownServer()
 File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.exists()
-assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:upload-war")
+assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:deploy")
 assert buildLog.text.contains("Upload failed after 3 attempts")
 assert buildLog.text.contains("PKIX path building failed")

@@ -16,7 +16,7 @@ context.get("wireMockServer").shutdownServer()
 File buildLog = new File(basedir, 'build.log')
 
 assert buildLog.exists()
-assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:upload-war")
+assert buildLog.text.contains("[ERROR] Failed to execute goal ${pluginString}:deploy")
 assert buildLog.text.contains("Upload failed with code 403: Rejected by test server")
 
 // The server refused the request, so the plugin must not send it again

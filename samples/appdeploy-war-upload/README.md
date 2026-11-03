@@ -12,12 +12,12 @@ It is a different route from the `cics-bundle-maven-plugin` samples. Use this sa
 
 ## What the sample does
 
-The `pom.xml` is an ordinary WAR project with the `cics-appdeploy:upload-war` goal added. You don't configure how the WAR is built or packaged.
+The `pom.xml` is an ordinary WAR project with the `cics-appdeploy:deploy` goal added. You don't configure how the WAR is built or packaged.
 
 Running the goal does everything in order:
 
 1. Maven compiles the code and packages the WAR.
-2. The `upload-war` goal sends the WAR, plus the Liberty application XML, as a `multipart/form-data` POST to your Liberty server.
+2. The `deploy` goal sends the WAR, plus the Liberty application XML, as a `multipart/form-data` POST to your Liberty server.
 
 Because the WAR goes to Liberty and not to a Maven repository, the sample sets `maven.deploy.skip` to skip the standard Maven deploy step.
 
@@ -26,7 +26,7 @@ Because the WAR goes to Liberty and not to a Maven repository, the sample sets `
 Pass your credentials on the command line. Do not put them in the `pom.xml`.
 
 ```sh
-mvn cics-appdeploy:upload-war -Dcics-user-id=<user> -Dcics-password=<password>
+mvn cics-appdeploy:deploy -Dcics-user-id=<user> -Dcics-password=<password>
 ```
 
 This builds the WAR for you and then uploads it, so you don't need to run `mvn package` first. If the project is already built, it is built again, which takes a few seconds.
