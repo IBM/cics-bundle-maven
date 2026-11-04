@@ -9,7 +9,7 @@ package com.ibm.cics.cbmp;
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
@@ -23,11 +23,14 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
  * <p>Use this mojo to add configuration to an existing EAR project so that it is packaged as a CICS bundle, without creating an additional Maven module.</p>
  */
 @Mojo(name = "bundle-ear", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.VERIFY)
-public class BundleEarMojo extends AbstractBundleJavaMojo {
+public class BundleEarMojo extends AbstractBundleWebAppMojo {
 	
 	@Override
 	protected AbstractJavaBundlePartBinding getBundlePartBinding() {
-		return new Earbundle();
+		Earbundle earbundle = new Earbundle();
+		earbundle.setAddCicsAllAuthenticatedRole(isAddCicsAllAuthenticatedRole());
+		earbundle.setLibertyAppConfigFile(getLibertyAppConfigFile());
+		return earbundle;
 	}
 
 }
