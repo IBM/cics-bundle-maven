@@ -252,9 +252,11 @@ To do this, put the `<application>` element in its own file and point the `liber
 For example, this snippet makes the application's class loader look in the application's own classes before the parent class loader:
 
 ```xml
-<application id="my-web-app" name="my-web-app" type="war" location="my-web-app.war">
-    <classloader delegation="parentLast"/>
-</application>
+<server>
+    <application id="my-web-app" name="my-web-app" type="war" location="my-web-app.war">
+        <classloader delegation="parentLast"/>
+    </application>
+</server>
 ```
 
 When you build the CICS bundle, the plugin copies this file into the bundle as `server.xml` and references it from the `appConfigFile` attribute of the `warbundle` or `earbundle` descriptor.
