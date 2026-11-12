@@ -25,6 +25,7 @@ Also see the [Generated Maven plugin documentation ↗](https://ibm.github.io/ci
   - [Versioning your Maven-built CICS bundles](#versioning-your-maven-built-cics-bundles)
   - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
+- [Releasing the plugins](#releasing-the-plugins)
 - [Support](#support)
 - [License](#license)
 
@@ -445,6 +446,10 @@ If your project uses the cics-bundle packaging type to build any bundle part and
 ## Contributing
 
 We welcome contributions! Find out how in our [contribution guide](CONTRIBUTING.md).
+
+## Releasing the plugins
+
+`cics-bundle-maven-plugin` and `cics-appdeploy-maven-plugin` share one parent `pom.xml` and one version, so every release includes both. A release is started by running the Prepare Release workflow in GitHub Actions. The full step-by-step process is in [RELEASING.md](RELEASING.md).
 
 ## Support
 
