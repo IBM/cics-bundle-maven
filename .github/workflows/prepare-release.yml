@@ -47,6 +47,16 @@ jobs:
           sed -i "s|<cics-bundle-maven-plugin.version>.*</cics-bundle-maven-plugin.version>|<cics-bundle-maven-plugin.version>${{ steps.version.outputs.release }}</cics-bundle-maven-plugin.version>|" \
             samples/bundle-reactor-deploy/demo-bundle/pom.xml
 
+      - name: Update appdeploy plugin version in samples
+        run: |
+          for POM in samples samples/appdeploy-war-upload/pom.xml; do
+            mvn -B versions:set-property \
+              -Dproperty=cics-appdeploy-maven-plugin.version \
+              -DnewVersion=${{ steps.version.outputs.release }} \
+              -DgenerateBackupPoms=false \
+              -f "$POM"
+          done
+
       - name: Open PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

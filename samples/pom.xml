@@ -15,14 +15,20 @@
 
   <properties>
     <cics-bundle-maven-plugin.version>2.0.6-SNAPSHOT</cics-bundle-maven-plugin.version>
+    <cics-appdeploy-maven-plugin.version>2.0.6-SNAPSHOT</cics-appdeploy-maven-plugin.version>
   </properties>
 
   <dependencies>
-    <!-- This will be installed from this build into the invoker's repo by invoker:install -->
+    <!-- These will be installed from this build into the invoker's repo by invoker:install -->
     <dependency>
       <groupId>com.ibm.cics</groupId>
       <artifactId>cics-bundle-maven-plugin</artifactId>
       <version>${cics-bundle-maven-plugin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>cics-appdeploy-maven-plugin</artifactId>
+      <version>${cics-appdeploy-maven-plugin.version}</version>
     </dependency>
   </dependencies>
   
@@ -47,6 +53,24 @@
               <goal>install</goal>
               <goal>run</goal>
             </goals>
+            <configuration>
+              <pomExcludes>
+                <pomExclude>appdeploy-war-upload/pom.xml</pomExclude>
+              </pomExcludes>
+            </configuration>
+          </execution>
+          <!-- The AppDeploy upload goal runs in the deploy phase, so this sample is run with deploy instead of verify. -->
+          <execution>
+            <id>appdeploy-integration-test</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <goals>deploy</goals>
+              <pomIncludes>
+                <pomInclude>appdeploy-war-upload/pom.xml</pomInclude>
+              </pomIncludes>
+            </configuration>
           </execution>
         </executions>
       </plugin>

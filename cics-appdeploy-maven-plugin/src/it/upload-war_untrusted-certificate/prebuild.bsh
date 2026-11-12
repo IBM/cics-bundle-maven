@@ -1,0 +1,1 @@
+context.put("wireMockServer", com.ibm.cics.appdeploy.UploadPreBuild.setupWiremockHttps(Integer.parseInt(wiremockPort)));

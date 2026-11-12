@@ -50,6 +50,21 @@
               </resources>
             </configuration>
           </execution>
+          <execution>
+            <id>copy-appdeploy-docs</id>
+            <phase>post-site</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/../target/staging/cics-bundle-maven-plugin/cics-appdeploy-maven-plugin</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../target/staging/cics-appdeploy-maven-plugin</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
